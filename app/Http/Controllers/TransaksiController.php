@@ -12,8 +12,17 @@ class TransaksiController extends Controller
 {
     public function index()
     {
+        // Get IDs of jenis_motor that are currently rented
+        $rentedMotorIds = Transaksi::where('status', 'disewa')
+                                   ->pluck('id_jenis'); // Adjust the field name as needed
+
+        // Fetch all jenis_motor that are not rented
+        $jenis_motors = JenisMotor::whereNotIn('id', $rentedMotorIds)->get();
+
+        // Fetch all transactions and eager load jenis_motor
         $transaksis = Transaksi::with('jenisMotor')->get();
-        $jenis_motors = JenisMotor::all();
+
+        // Pass both the filtered jenis_motor and transactions to the view
         return view('rental.index', compact('transaksis', 'jenis_motors'));
     }
 

@@ -12,22 +12,23 @@ class AdminTransaksiController extends Controller
         return view('admin.index');
     }
 
-    public function transaksi()
+     public function transaksi()
     {
         return view('admin.transaksi.index');
     }
-
     public function getData(Request $request)
     {
         if ($request->ajax()) {
             $data = Transaksi::with('jenisMotor')->select('transaksi.*');
 
             return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="edit btn btn-success btn-sm">Edit</a> ';
-                    $actionBtn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
+               ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="edit btn btn-success btn-sm">Perpanjang</a> ';
+                    $detailBtn = '<a href="' . route('admin.transaksi.detail', $row->id) . '" class="edit btn btn-warning btn-sm">Detail</a> ';
+                    $deleteBtn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+
+                    return $editBtn . $detailBtn . $deleteBtn;
                 })
                 ->addColumn('checkbox', function($row) {
                     return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox" value="' . $row->id . '" />';
@@ -48,6 +49,7 @@ class AdminTransaksiController extends Controller
                 ->make(true);
         }
     }
+
 
 
     public function show(Transaksi $transaksi)

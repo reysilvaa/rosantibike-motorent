@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
           Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('transaksi');
           Route::get('/{transaksi}', [AdminTransaksiController::class, 'show'])->name('show');
           Route::get('/{transaksi}/edit', [AdminTransaksiController::class, 'edit'])->name('edit');
+          Route::get('/{transaksi}/detail', [AdminTransaksiController::class, 'edit'])->name('detail');
           Route::put('/{transaksi}', [AdminTransaksiController::class, 'update'])->name('update');
           Route::delete('/{transaksi}', [AdminTransaksiController::class, 'destroy'])->name('destroy');
           Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete'])->name('bulkDelete');

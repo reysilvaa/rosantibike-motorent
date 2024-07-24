@@ -11,20 +11,26 @@
     @include('layouts.styles')
 </head>
 <body class="sb-nav-fixed">
-    @include('layouts.topnav')
-
-    <div id="layoutSidenav">
-        @include('layouts.sidenav')
-
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    @yield('content')
-                </div>
-            </main>
-            @include('layouts.footer')
+    @auth
+        @include('layouts.topnav')
+        <div id="layoutSidenav">
+            @include('layouts.sidenav')
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        @yield('content')
+                    </div>
+                </main>
+                @include('layouts.footer')
+            </div>
         </div>
-    </div>
+    @else
+        <main>
+            <div class="container-fluid px-4">
+                @yield('content')
+            </div>
+        </main>
+    @endauth
 
     @include('layouts.scripts')
 </body>

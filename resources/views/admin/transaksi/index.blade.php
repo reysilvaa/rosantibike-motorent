@@ -3,11 +3,15 @@
 @section('title', 'Transaksi Management')
 
 @section('content')
+<h1 class="mt-4">Transaksi</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">List Transaksi</li>
+</ol>
 <div class="container-fluid px-10">
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            Transaksi Management
+            Tabel Transaksi
         </div>
         <div class="card-body">
             {{-- <a href="{{ route('transaksi.create') }}" class="btn btn-primary mb-3">Add New Transaksi</a> --}}
@@ -19,9 +23,6 @@
                             <th>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="select_all_checkbox">
-                                    <label class="form-check-label" for="select_all_checkbox">
-                                        Semua
-                                    </label>
                                 </div>
                             </th>
                             <th>No</th>

@@ -31,7 +31,7 @@ class AuthController extends Controller
             if (Hash::check($request->input('pass'), $user->pass)) {
                 Log::debug('Password correct');
                 Auth::login($user);
-                return redirect()->intended('admin/transaksi'); // Redirect after successful login
+                return redirect()->intended('admin'); // Redirect after successful login
             } else {
                 Log::debug('Password incorrect');
             }
