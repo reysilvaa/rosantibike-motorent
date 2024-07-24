@@ -8,8 +8,8 @@
     <div class="container-fluid px-10">
         <div class="row">
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">Tambah Rental</div>
+                <div class="card bg-primary text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
+                    <div class="card-body flex-1">Tambah Rental</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <a class="small text-white stretched-link" href="{{ route('transaksi.index')}}">View Details</a>
                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -17,8 +17,8 @@
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning text-white mb-4">
-                    <div class="card-body">List Transaksi Rental</div>
+                <div class="card bg-secondary text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
+                    <div class="card-body flex-1">List Transaksi Rental</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <a class="small text-white stretched-link" href="{{ route('admin.transaksi.transaksi')}}">View Details</a>
                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -26,8 +26,8 @@
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-success text-white mb-4">
-                    <div class="card-body">Tambah Unit</div>
+                <div class="card bg-success text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
+                    <div class="card-body flex-1">Tambah Unit</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <a class="small text-white stretched-link" href="#">View Details</a>
                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -35,8 +35,8 @@
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger text-white mb-4">
-                    <div class="card-body">Hapus Semua Data</div>
+                <div class="card bg-danger text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
+                    <div class="card-body flex-1">Hapus Semua Data</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <a class="small text-white stretched-link" href="#">View Details</a>
                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -54,14 +54,13 @@
             </div>
             <div class="card-body">
                 {{-- <a href="{{ route('transaksi.create') }}" class="btn btn-primary mb-3">Add New Transaksi</a> --}}
-                <button class="btn btn-danger mb-3" id="bulk-delete">Delete Selected</button>
+                <button class="btn btn-danger mb-3 md:mb-6 lg:mb-8 px-4 py-2 md:px-6 md:py-3" id="bulk-delete">Delete Selected</button>
                 <div class="table-responsive">
                     <table id="data-table" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>
                                     <input type="checkbox" class="form-check-input" id="select_all_checkbox">
-                                </div>
                                 </th>
                                 <th>No</th>
                                 <th>Nama Penyewa</th>
@@ -168,4 +167,3 @@
   });
 </script>
 @endpush
-
