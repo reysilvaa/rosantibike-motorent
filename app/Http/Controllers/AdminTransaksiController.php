@@ -1,56 +1,4 @@
 <?php
-//     public function getData(Request $request)
-//     {
-//         if ($request->ajax()) {
-//             $data = Transaksi::with('jenisMotor')->get();
-//             return DataTables::of($data)
-//                 ->addColumn('jenis_motor', function ($row) {
-//                     return $row->jenisMotor ? $row->jenisMotor->merk : 'N/A';
-//                 })
-//                 ->addColumn('tgl_sewa', function ($row) {
-//                     return $row->tgl_sewa->format('Y-m-d');
-//                 })
-//                 ->addColumn('tgl_kembali', function ($row) {
-//                     return $row->tgl_kembali->format('Y-m-d');
-//                 })
-//                 ->addColumn('total', function ($row) {
-//                     return "Rp. " . number_format($row->total, 0, ',', '.');
-//                 })
-//                 ->rawColumns(['total'])
-//                 ->make(true);
-//         }
-//     }
-//   public function index(Request $request)
-//   {
-//     $jenis_motors = JenisMotor::all();
-//     $transaksi = Transaksi::with('jenis_motor')->select(['id', 'id_jenis', 'nama_penyewa', 'wa1', 'wa2', 'wa3', 'tgl_sewa', 'tgl_kembali', 'status', 'total']);
-//     return view('admin.index', compact('transaksi', 'jenis_motors'));
-//   }
-
-//   public function transaksi(Request $request)
-//   {
-//     $jenis_motors = JenisMotor::all();
-//     $transaksi = Transaksi::with('jenis_motor')->select(['id', 'id_jenis', 'nama_penyewa', 'wa1', 'wa2', 'wa3', 'tgl_sewa', 'tgl_kembali', 'status', 'total']);
-//     return view('admin.transaksi.index', compact('transaksi', 'jenis_motors'));
-//   }
-//     public function show(Transaksi $transaksi)
-//     {
-//         return view('admin.transaksi.show', compact('transaksi'));
-//     }
-
-//     public function edit(Transaksi $transaksi)
-//     {
-//         $jenis_motors = JenisMotor::all();
-//         return view('admin.transaksi.edit', compact('transaksi', 'jenis_motors'));
-//     }
-
-//     public function destroy(Transaksi $transaksi)
-//     {
-//         $transaksi->delete();
-//         return redirect()->route('admin.transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
-//     }
-
-
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
@@ -73,6 +21,7 @@ class AdminTransaksiController extends Controller
     {
         if ($request->ajax()) {
             $data = Transaksi::with('jenisMotor')->select('transaksi.*');
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -80,11 +29,26 @@ class AdminTransaksiController extends Controller
                     $actionBtn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })
-                ->addColumn('checkbox', '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox" value="{{$id}}" />')
+                ->addColumn('checkbox', function($row) {
+                    return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox" value="' . $row->id . '" />';
+                })
+                ->addColumn('tgl_sewa', function($row) {
+                    return $row->tgl_sewa->format('d-m-Y');
+                })
+                ->addColumn('tgl_kembali', function($row) {
+                    return $row->tgl_kembali->format('d-m-Y');
+                })
+                ->addColumn('jenis_motor_merk', function($row) {
+                    return $row->jenisMotor->merk ?? ''; // Adjust if your relationship or field names are different
+                })
+                ->addColumn('total', function($row) {
+                    return "Rp. " . number_format($row->total, 0, ',', '.');
+                })
                 ->rawColumns(['action', 'checkbox'])
                 ->make(true);
         }
     }
+
 
     public function show(Transaksi $transaksi)
     {
