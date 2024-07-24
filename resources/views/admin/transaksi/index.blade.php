@@ -3,39 +3,39 @@
 @section('title', 'Transaksi Management')
 
 @section('content')
-<h1 class="mt-4">Transaksi</h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">List Transaksi</li>
+<h1 class="mt-4 text-2xl font-semibold">Transaksi</h1>
+<ol class="breadcrumb mb-4 flex items-center space-x-2 text-sm">
+    <li class="breadcrumb-item text-gray-500">List Transaksi</li>
 </ol>
-<div class="container-fluid px-10">
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Tabel Transaksi
+<div class="container mx-auto px-4">
+    <div class="bg-white shadow-md rounded-lg mb-4">
+        <div class="border-b p-4 bg-gray-100 flex items-center justify-between">
+            <i class="fas fa-table mr-2"></i>
+            <span class="font-semibold">Tabel Transaksi</span>
         </div>
-        <div class="card-body">
-            {{-- <a href="{{ route('transaksi.create') }}" class="btn btn-primary mb-3">Add New Transaksi</a> --}}
-            <button class="btn btn-danger mb-3" id="bulk-delete">Delete Selected</button>
-            <div class="table-responsive">
-                <table id="data-table" class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
+        <div class="p-4">
+            <button class="bg-red-600 text-white px-4 py-2 rounded-md mb-3 hover:bg-red-700" id="bulk-delete">Delete Selected</button>
+            <div class="overflow-x-auto">
+                <table id="data-table" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <th>
-                                <div class="form-check">
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <div class="flex items-center">
                                     <input type="checkbox" class="form-check-input" id="select_all_checkbox">
                                 </div>
                             </th>
-                            <th>No</th>
-                            <th>Nama Penyewa</th>
-                            <th>Jenis Motor</th>
-                            <th>Tanggal Sewa</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th>Action</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Penyewa</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Motor</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Sewa</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Rows will be dynamically inserted here -->
                     </tbody>
                 </table>
             </div>
@@ -45,8 +45,9 @@
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.tailwind.min.js"></script>
 <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
 
 <script type="text/javascript">

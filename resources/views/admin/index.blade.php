@@ -1,78 +1,70 @@
 @extends('layouts.admin')
 @section('title', 'Dashboard')
 @section('content')
-    <h1 class="mt-4">Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard</li>
+    <h1 class="mt-4 text-2xl font-semibold">Dashboard</h1>
+    <ol class="breadcrumb mb-4 flex items-center space-x-2">
+        <li class="breadcrumb-item text-gray-500">Dashboard</li>
     </ol>
-    <div class="container-fluid px-10">
-        <div class="row">
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
-                    <div class="card-body flex-1">Tambah Rental</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="{{ route('transaksi.index')}}">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Adjust card size by using smaller height and width -->
+            <div class="bg-blue-600 text-white rounded-lg shadow-md flex flex-col h-[200px] sm:h-[250px] lg:h-[300px]">
+                <div class="p-4 flex-1">Tambah Rental</div>
+                <div class="bg-blue-700 p-4 flex items-center justify-between rounded-b-lg">
+                    <a class="text-white hover:underline" href="{{ route('transaksi.index')}}">View Details</a>
+                    <i class="fas fa-angle-right"></i>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-secondary text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
-                    <div class="card-body flex-1">List Transaksi Rental</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="{{ route('admin.transaksi.transaksi')}}">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
+            <div class="bg-gray-600 text-white rounded-lg shadow-md flex flex-col h-[200px] sm:h-[250px] lg:h-[300px]">
+                <div class="p-4 flex-1">List Transaksi Rental</div>
+                <div class="bg-gray-700 p-4 flex items-center justify-between rounded-b-lg">
+                    <a class="text-white hover:underline" href="{{ route('admin.transaksi.transaksi')}}">View Details</a>
+                    <i class="fas fa-angle-right"></i>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-success text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
-                    <div class="card-body flex-1">Tambah Unit</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
+            <div class="bg-green-600 text-white rounded-lg shadow-md flex flex-col h-[200px] sm:h-[250px] lg:h-[300px]">
+                <div class="p-4 flex-1">Tambah Unit</div>
+                <div class="bg-green-700 p-4 flex items-center justify-between rounded-b-lg">
+                    <a class="text-white hover:underline" href="#">View Details</a>
+                    <i class="fas fa-angle-right"></i>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger text-white mb-4 flex flex-col h-[300px] sm:h-[350px] lg:h-[400px]">
-                    <div class="card-body flex-1">Hapus Semua Data</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
+            <div class="bg-red-600 text-white rounded-lg shadow-md flex flex-col h-[200px] sm:h-[250px] lg:h-[300px]">
+                <div class="p-4 flex-1">Hapus Semua Data</div>
+                <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
+                    <a class="text-white hover:underline" href="#">View Details</a>
+                    <i class="fas fa-angle-right"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid px-10">
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
+    <div class="container mx-auto px-6 mt-6">
+        <div class="bg-white shadow-md rounded-lg">
+            <div class="border-b p-4 text-lg font-semibold">
+                <i class="fas fa-table mr-2"></i>
                 Transaksi Management
             </div>
-            <div class="card-body">
-                {{-- <a href="{{ route('transaksi.create') }}" class="btn btn-primary mb-3">Add New Transaksi</a> --}}
-                <button class="btn btn-danger mb-3 md:mb-6 lg:mb-8 px-4 py-2 md:px-6 md:py-3" id="bulk-delete">Delete Selected</button>
-                <div class="table-responsive">
-                    <table id="data-table" class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
+            <div class="p-4">
+                <button class="bg-red-600 text-white px-4 py-2 rounded-md mb-3 hover:bg-red-700" id="bulk-delete">Delete Selected</button>
+                <div class="overflow-x-auto">
+                    <table id="data-table" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
                             <tr>
-                                <th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <input type="checkbox" class="form-check-input" id="select_all_checkbox">
                                 </th>
-                                <th>No</th>
-                                <th>Nama Penyewa</th>
-                                <th>Jenis Motor</th>
-                                <th>Tanggal Sewa</th>
-                                <th>Tanggal Kembali</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Penyewa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Motor</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Sewa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Kembali</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white divide-y divide-gray-200">
                         </tbody>
                     </table>
                 </div>
@@ -84,7 +76,7 @@
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.tailwind.min.js"></script>
 <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
 
 <script type="text/javascript">
