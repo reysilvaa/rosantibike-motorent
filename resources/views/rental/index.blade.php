@@ -16,7 +16,7 @@
                         <h5 class="mb-0">Formulir Booking</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('transaksi.store') }}" method="POST">
+                        <form action="{{ route('transaksi.store') }}" method="POST" id="bookingForm">
                             @csrf
                             <div class="form-floating form-floating-outline mb-4">
                                 <input type="text" class="form-control" id="nama_penyewa" name="nama_penyewa" placeholder="John Doe" required>
@@ -38,33 +38,44 @@
                                 <label for="wa3">WhatsApp 3 (Optional)</label>
                             </div>
 
-                            <div class="form-floating form-floating-outline mb-4">
-                                <input type="date" id="tgl_sewa" name="tgl_sewa" class="form-control" required>
-                                <label for="tgl_sewa">Tanggal Sewa</label>
+                            <div id="rentalForms">
+                                <div class="rental-form mb-4">
+                                    <h6>Rental 1</h6>
+                                    <div class="form-floating form-floating-outline mb-3">
+                                        <input type="date" class="form-control tgl_sewa" name="rentals[0][tgl_sewa]" required>
+                                        <label>Tanggal Sewa</label>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mb-3">
+                                        <input type="date" class="form-control tgl_kembali" name="rentals[0][tgl_kembali]" required>
+                                        <label>Tanggal Kembali</label>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mb-3">
+                                        <select class="form-select id_jenis" name="rentals[0][id_jenis]" required>
+                                            <option value="">Pilih Jenis Motor</option>
+                                            @foreach($jenis_motors as $jenis_motor)
+                                                <option value="{{ $jenis_motor->id }}" data-price="{{ $jenis_motor->harga_perHari }}">{{ $jenis_motor->merk }} (Rp. {{$jenis_motor->harga_perHari}})</option>
+                                            @endforeach
+                                        </select>
+                                        <label>Jenis Motor</label>
+                                    </div>
+
+                                    <div class="form-floating form-floating-outline mb-3">
+                                        <input type="text" class="form-control formatted_total" readonly>
+                                        <label>Harga per-unit</label>
+                                    </div>
+                                    <input type="hidden" class="total" name="rentals[0][total]">
+                                </div>
                             </div>
 
-                            <div class="form-floating form-floating-outline mb-4">
-                                <input type="date" id="tgl_kembali" name="tgl_kembali" class="form-control" required>
-                                <label for="tgl_kembali">Tanggal Kembali</label>
-                            </div>
-
-                            <div class="form-floating form-floating-outline mb-4">
-                                <select id="id_jenis" name="id_jenis" class="form-select" required>
-                                    <option value="">Pilih Jenis Motor</option>
-                                    @foreach($jenis_motors as $jenis_motor)
-                                        <option value="{{ $jenis_motor->id }}" data-price="{{ $jenis_motor->harga_perHari }}">{{ $jenis_motor->merk }} (Rp. {{$jenis_motor->harga_perHari}})</option>
-                                    @endforeach
-                                </select>
-                                <label for="id_jenis">Jenis Motor</label>
-                            </div>
-
-                            <div class="form-floating form-floating-outline mb-4">
-                                <input type="text" id="formatted_total" name="formatted_total" class="form-control" readonly>
-                                <label for="formatted_total">Total Harga</label>
-                            </div>
+                            <button type="button" id="addRental" class="btn btn-secondary mb-3">Add Another Rental</button>
 
                             <div id="error-message" class="text-danger mb-4"></div>
-                            <input type="hidden" id="total" name="total">
+                            <div class="form-floating form-floating-outline mb-4">
+                                <input type="text" id="grand_total" class="form-control" readonly>
+                                <label for="grand_total">Total Keseluruhan</label>
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit Booking</button>
                         </form>
                     </div>
@@ -74,14 +85,19 @@
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const tglSewaInput = document.getElementById('tgl_sewa');
-        const tglKembaliInput = document.getElementById('tgl_kembali');
-        const idJenisSelect = document.getElementById('id_jenis');
-        const formattedTotal = document.getElementById('formatted_total');
-        const totalInput = document.getElementById('total');
+        const rentalForms = document.getElementById('rentalForms');
+        const addRentalBtn = document.getElementById('addRental');
         const errorMessageDiv = document.getElementById('error-message');
+        const grandTotalInput = document.getElementById('grand_total');
+        let rentalCount = 1;
 
-        function calculateTotal() {
+        function calculateTotal(rentalForm) {
+            const tglSewaInput = rentalForm.querySelector('.tgl_sewa');
+            const tglKembaliInput = rentalForm.querySelector('.tgl_kembali');
+            const idJenisSelect = rentalForm.querySelector('.id_jenis');
+            const formattedTotal = rentalForm.querySelector('.formatted_total');
+            const totalInput = rentalForm.querySelector('.total');
+
             const tglSewa = new Date(tglSewaInput.value);
             const tglKembali = new Date(tglKembaliInput.value);
             const hargaPerHari = idJenisSelect.options[idJenisSelect.selectedIndex]?.dataset.price;
@@ -89,39 +105,65 @@
             if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || !hargaPerHari) {
                 errorMessageDiv.textContent = 'Please fill in all required fields correctly.';
                 formattedTotal.value = '';
-                totalInput.value = '';  // Clear hidden field
-                return;
+                totalInput.value = '';
+                return 0;
             }
 
             if (tglSewa < new Date() && tglSewa.toDateString() !== new Date().toDateString()) {
                 errorMessageDiv.textContent = 'Tanggal Sewa tidak boleh kurang dari tanggal hari ini.';
                 formattedTotal.value = '';
-                totalInput.value = '';  // Clear hidden field
-                return;
+                totalInput.value = '';
+                return 0;
             }
 
             if (tglKembali < tglSewa) {
                 errorMessageDiv.textContent = 'Tanggal Kembali tidak boleh kurang dari Tanggal Sewa.';
                 formattedTotal.value = '';
-                totalInput.value = '';  // Clear hidden field
-                return;
+                totalInput.value = '';
+                return 0;
             }
 
             const diffTime = Math.abs(tglKembali - tglSewa);
             const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
             const total = diffDays * hargaPerHari;
 
-            // Update the visible total input with formatted currency
             formattedTotal.value = `Rp. ${total.toLocaleString('id-ID')}`;
-            // Store the numeric value in the hidden input
             totalInput.value = total;
-            errorMessageDiv.textContent = '';  // Clear error message if all is well
+            errorMessageDiv.textContent = '';
+
+            return total;
         }
 
-        tglSewaInput.addEventListener('change', calculateTotal);
-        tglKembaliInput.addEventListener('change', calculateTotal);
-        idJenisSelect.addEventListener('change', calculateTotal);
-    });
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            document.querySelectorAll('.rental-form').forEach(form => {
+                grandTotal += calculateTotal(form);
+            });
+            grandTotalInput.value = `Rp. ${grandTotal.toLocaleString('id-ID')}`;
+        }
 
+        function addEventListeners(rentalForm) {
+            rentalForm.querySelector('.tgl_sewa').addEventListener('change', updateGrandTotal);
+            rentalForm.querySelector('.tgl_kembali').addEventListener('change', updateGrandTotal);
+            rentalForm.querySelector('.id_jenis').addEventListener('change', updateGrandTotal);
+        }
+
+        addRentalBtn.addEventListener('click', function() {
+            const newRentalForm = rentalForms.children[0].cloneNode(true);
+            rentalCount++;
+            newRentalForm.querySelector('h6').textContent = `Rental ${rentalCount}`;
+            const inputs = newRentalForm.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.name = input.name.replace('[0]', `[${rentalCount - 1}]`);
+                if (input.type !== 'hidden') {
+                    input.value = '';
+                }
+            });
+            rentalForms.appendChild(newRentalForm);
+            addEventListeners(newRentalForm);
+        });
+
+        addEventListeners(rentalForms.children[0]);
+    });
     </script>
 @endsection

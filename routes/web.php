@@ -19,14 +19,16 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
 
 // Admin Route
 Route::middleware(['auth'])->group(function () {
-  Route::prefix('admin')->group(function () {
-      Route::get('/', [AdminTransaksiController::class, 'index'])->name('dashboard');
-      Route::prefix('transaksi')->name('admin.transaksi.')->group(function () {
-        Route::get('/data', [AdminTransaksiController::class, 'getData'])->name('data');
-          Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('traansaksi');
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [AdminTransaksiController::class, 'index'])->name('dashboard');
+        Route::prefix('transaksi')->name('admin.transaksi.')->group(function () {
+          Route::get('/data', [AdminTransaksiController::class, 'getData'])->name('data');
+          Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('transaksi');
           Route::get('/{transaksi}', [AdminTransaksiController::class, 'show'])->name('show');
           Route::get('/{transaksi}/edit', [AdminTransaksiController::class, 'edit'])->name('edit');
+          Route::put('/{transaksi}', [AdminTransaksiController::class, 'update'])->name('update');
           Route::delete('/{transaksi}', [AdminTransaksiController::class, 'destroy'])->name('destroy');
-      });
+          Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete'])->name('bulkDelete');
+        });
+    });
   });
-});

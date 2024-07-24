@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>@yield('title', 'Dashboard') - SB Admin</title>
     @include('layouts.styles')
 </head>

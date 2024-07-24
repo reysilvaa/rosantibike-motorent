@@ -27,7 +27,7 @@ class Transaksi extends Model
     protected $casts = [
         'tgl_sewa' => 'date',
         'tgl_kembali' => 'date',
-        'status' => 'string',
+        'total' => 'decimal:2',
     ];
 
     public function user()
@@ -40,20 +40,23 @@ class Transaksi extends Model
         return $this->belongsTo(JenisMotor::class, 'id_jenis');
     }
 
-
-    public static function createTransaction($data)
+    public function getDurationAttribute()
     {
-        return self::create(array_merge($data, [
-            'status' => 'disewa',
-            'id_user' => 1 //ganti ke login user
-        ]));
+        return $this->tgl_sewa->diffInDays($this->tgl_kembali) + 1;
     }
 
-    public function updateTransaction($data)
+    public function scopeActive($query)
     {
-        $jenis_motor = JenisMotor::find($data['id_jenis']);
-        $total = $jenis_motor->calculateHarga($data['tgl_sewa'], $data['tgl_kembali']);
+        return $query->where('status', 'disewa');
+    }
 
-        $this->update(array_merge($data, ['total' => $total]));
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'tersedia');
+    }
+
+    public function isActive()
+    {
+        return $this->status === 'disewa';
     }
 }
