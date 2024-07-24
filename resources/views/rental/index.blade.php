@@ -59,12 +59,12 @@
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">
-                                <input type="text" id="total" name="total" class="form-control" readonly>
-                                <label for="total">Total Harga</label>
+                                <input type="text" id="formatted_total" name="formatted_total" class="form-control" readonly>
+                                <label for="formatted_total">Total Harga</label>
                             </div>
 
                             <div id="error-message" class="text-danger mb-4"></div>
-
+                            <input type="hidden" id="total" name="total">
                             <button type="submit" class="btn btn-primary">Submit Booking</button>
                         </form>
                     </div>
@@ -72,48 +72,56 @@
             </div>
         </div>
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tglSewaInput = document.getElementById('tgl_sewa');
-            const tglKembaliInput = document.getElementById('tgl_kembali');
-            const idJenisSelect = document.getElementById('id_jenis');
-            const totalInput = document.getElementById('total');
-            const errorMessageDiv = document.getElementById('error-message');
+    document.addEventListener('DOMContentLoaded', function() {
+        const tglSewaInput = document.getElementById('tgl_sewa');
+        const tglKembaliInput = document.getElementById('tgl_kembali');
+        const idJenisSelect = document.getElementById('id_jenis');
+        const formattedTotal = document.getElementById('formatted_total');
+        const totalInput = document.getElementById('total');
+        const errorMessageDiv = document.getElementById('error-message');
 
-            function calculateTotal() {
-                const tglSewa = new Date(tglSewaInput.value);
-                const tglKembali = new Date(tglKembaliInput.value);
-                const hargaPerHari = idJenisSelect.options[idJenisSelect.selectedIndex]?.dataset.price;
+        function calculateTotal() {
+            const tglSewa = new Date(tglSewaInput.value);
+            const tglKembali = new Date(tglKembaliInput.value);
+            const hargaPerHari = idJenisSelect.options[idJenisSelect.selectedIndex]?.dataset.price;
 
-                if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || !hargaPerHari) {
-                    errorMessageDiv.textContent = 'Please fill in all required fields correctly.';
-                    totalInput.value = '';
-                    return;
-                }
-
-                if (tglSewa < new Date()) {
-                    errorMessageDiv.textContent = 'Tanggal Sewa tidak boleh kurang dari tanggal hari ini.';
-                    totalInput.value = '';
-                    return;
-                }
-
-                if (tglKembali < tglSewa) {
-                    errorMessageDiv.textContent = 'Tanggal Kembali tidak boleh kurang dari Tanggal Sewa.';
-                    totalInput.value = '';
-                    return;
-                }
-
-                const diffTime = Math.abs(tglKembali - tglSewa);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const total = diffDays * hargaPerHari;
-                totalInput.value = `Rp. ${total.toLocaleString()}`;
-                errorMessageDiv.textContent = '';  // Clear error message if all is well
+            if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || !hargaPerHari) {
+                errorMessageDiv.textContent = 'Please fill in all required fields correctly.';
+                formattedTotal.value = '';
+                totalInput.value = '';  // Clear hidden field
+                return;
             }
 
-            tglSewaInput.addEventListener('change', calculateTotal);
-            tglKembaliInput.addEventListener('change', calculateTotal);
-            idJenisSelect.addEventListener('change', calculateTotal);
-        });
+            if (tglSewa < new Date() && tglSewa.toDateString() !== new Date().toDateString()) {
+                errorMessageDiv.textContent = 'Tanggal Sewa tidak boleh kurang dari tanggal hari ini.';
+                formattedTotal.value = '';
+                totalInput.value = '';  // Clear hidden field
+                return;
+            }
+
+            if (tglKembali < tglSewa) {
+                errorMessageDiv.textContent = 'Tanggal Kembali tidak boleh kurang dari Tanggal Sewa.';
+                formattedTotal.value = '';
+                totalInput.value = '';  // Clear hidden field
+                return;
+            }
+
+            const diffTime = Math.abs(tglKembali - tglSewa);
+            const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            const total = diffDays * hargaPerHari;
+
+            // Update the visible total input with formatted currency
+            formattedTotal.value = `Rp. ${total.toLocaleString('id-ID')}`;
+            // Store the numeric value in the hidden input
+            totalInput.value = total;
+            errorMessageDiv.textContent = '';  // Clear error message if all is well
+        }
+
+        tglSewaInput.addEventListener('change', calculateTotal);
+        tglKembaliInput.addEventListener('change', calculateTotal);
+        idJenisSelect.addEventListener('change', calculateTotal);
+    });
+
     </script>
 @endsection

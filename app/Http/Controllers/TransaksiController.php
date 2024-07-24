@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\JenisMotor;
-use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
@@ -27,10 +26,13 @@ class TransaksiController extends Controller
             'id_jenis' => 'required|exists:jenis_motor,id',
             'total' => 'required|numeric',
         ]);
+        // $jenis_motor = JenisMotor::find($request->id_jenis);
+        // $validatedData['total'] = $jenis_motor->calculateHarga($request->tgl_sewa, $request->tgl_kembali);
 
         Transaksi::createTransaction($validatedData);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dibuat.');
     }
+
 
 }

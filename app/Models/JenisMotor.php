@@ -23,4 +23,13 @@ class JenisMotor extends Model
         return $this->hasOne(Transaksi::class, 'id_jenis');
     }
 
+    // public function calculateHarga($tgl_sewa, $tgl_kembali)
+    // {
+    //     $harga_perHari = $this->harga_perHari;
+    //     $tgl_sewa = Carbon::parse($tgl_sewa);
+    //     $tgl_kembali = Carbon::parse($tgl_kembali);
+    //     $jumlah_hari = $tgl_sewa->diffInDays($tgl_kembali);
+
+    //     return $harga_perHari * $jumlah_hari;
+    // }
 }
