@@ -99,14 +99,16 @@
         }
 
         .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 10px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
             color: #666;
+            position: relative;
         }
 
         .footer p {
-            margin: 3px 0;
+            margin: 2px 0;
         }
 
         .footer-bottom {
@@ -115,7 +117,9 @@
             padding: 5px 0;
             font-size: 11px;
             text-align: center;
-            margin-top: 20px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
 
         .phone-table {
@@ -131,14 +135,41 @@
         .phone-table th {
             width: 20px;
         }
+
         .time-column {
-            width: 10%; /* Atur lebar sesuai kebutuhan */
+            width: 10%;
         }
+
         .extra-column {
             width: 15%;
             text-align: center;
         }
 
+        .signature-block {
+            text-align: center;
+            width: 48%;
+            position: absolute;
+            margin-bottom: 0; /* Adjust this value to increase or decrease space below the signature block */
+            margin-top: 10px; /* Adjust this value to increase or decrease space below the signature block */
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .signature-block-right {
+            text-align: center;
+            margin-top: 13.7px; /* Adjust this value to increase or decrease space below the signature block */
+            width: 48%;
+            position: absolute;
+            right: 0;
+            top: 0.91rem;
+            display: inline-block;
+        }
+
+        .signature-line {
+            border-top: 1px solid #666;
+            margin-top: 90px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -188,13 +219,17 @@
             <table class="table">
                 <tr>
                     <th width="20%">Tanggal Sewa</th>
-                    <td width="30%">{{ $transaksi->tgl_sewa }}</td>
+                    <td width="30%">
+                        {{ \Carbon\Carbon::parse($transaksi->tgl_sewa)->locale('id')->translatedFormat('l, d F Y') }}
+                    </td>
                     <th class="time-column">Jam</th>
                     <td>{{ $transaksi->jam_sewa ?? '...........' }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal Kembali</th>
-                    <td>{{ $transaksi->tgl_kembali }}</td>
+                    <td>
+                        {{ \Carbon\Carbon::parse($transaksi->tgl_kembali)->locale('id')->translatedFormat('l, d F Y') }}
+                    </td>
                     <th class="time-column">Jam</th>
                     <td>{{ $transaksi->jam_kembali ?? '...........' }}</td>
                 </tr>
@@ -234,11 +269,17 @@
         </div>
 
         <div class="footer">
-            <p>Malang, {{ now()->format('d M Y') }}</p>
-            <p>Pemilik Kendaraan</p>
-            <p>&nbsp;</p>
-            <p>MENYETUJUI PERNYATAAN DIATAS</p>
-            <p>({{ $transaksi->nama_penyewa }})</p>
+            <p style="text-align: center; font-size: 12px;">Malang, {{ now()->format('d M Y') }}</p>
+            <div class="signature-block">
+                <p>PEMILIK KENDARAAN</p>
+                <div class="signature-line"></div>
+                <p>(...................................................................................)</p>
+            </div>
+            <div class="signature-block-right">
+                <p>MENYETUJUI PERNYATAAN DIATAS</p>
+                <div class="signature-line"></div>
+                <p style="font-size: 11px;">({{ $transaksi->nama_penyewa }})</p>
+            </div>
         </div>
 
         <div class="footer-bottom">

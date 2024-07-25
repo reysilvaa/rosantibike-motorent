@@ -14,8 +14,8 @@ class InvoiceController extends Controller
         $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
 
         // Ensure dates are not null and correctly parsed
-        $tgl_sewa = Carbon::parse($transaksi->tgl_sewa ?? now()); // Default to now() if null
-        $tgl_kembali = Carbon::parse($transaksi->tgl_kembali ?? now()); // Default to now() if null
+        $tgl_sewa = Carbon::parse($transaksi->tgl_sewa ?? now());
+        $tgl_kembali = Carbon::parse($transaksi->tgl_kembali ?? now());
 
         // Calculate the difference in days
         $lama_sewa = $tgl_sewa->diffInDays($tgl_kembali);
