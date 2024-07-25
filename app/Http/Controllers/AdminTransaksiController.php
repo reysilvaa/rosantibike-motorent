@@ -18,20 +18,20 @@ class AdminTransaksiController extends Controller
     }
     public function getData(Request $request)
     {
+
         if ($request->ajax()) {
             $data = Transaksi::with('jenisMotor')->select('transaksi.*');
 
             return DataTables::of($data)
-               ->addIndexColumn()
+                ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="edit btn btn-success btn-sm">Perpanjang</a> ';
-                    $detailBtn = '<a href="' . route('admin.transaksi.detail', $row->id) . '" class="edit btn btn-warning btn-sm">Detail</a> ';
-                    $deleteBtn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">Delete</a>';
+                    $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-2 text-xs flex items-center justify-center"><i class="fa-solid fa-pen"></i></a>';
+                    $deleteBtn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="bg-red-600 text-white hover:bg-red-700 rounded px-3 py-2 text-xs flex items-center justify-center delete"><i class="fa-solid fa-trash"></i></a>';
 
-                    return $editBtn . $detailBtn . $deleteBtn;
+                    return '<div class="flex space-x-2 justify-center">' . $editBtn . $deleteBtn . '</div>';
                 })
                 ->addColumn('checkbox', function($row) {
-                    return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox" value="' . $row->id . '" />';
+                    return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox custom-checkbox" value="' . $row->id . '" />';
                 })
                 ->addColumn('tgl_sewa', function($row) {
                     return $row->tgl_sewa->format('d-m-Y');
@@ -49,7 +49,6 @@ class AdminTransaksiController extends Controller
                 ->make(true);
         }
     }
-
 
 
     public function show(Transaksi $transaksi)

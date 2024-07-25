@@ -11,14 +11,14 @@
     <title>@yield('title', 'Dashboard') - SB Admin</title>
     @include('layouts.styles')
 </head>
-<body class="sb-nav-fixed">
+<body class="bg-gray-100 flex flex-col min-h-screen">
     @auth
         @include('layouts.topnav')
-        <div id="layoutSidenav">
+        <div id="layoutSidenav" class="flex flex-1">
             @include('layouts.sidenav')
-            <div id="layoutSidenav_content">
+            <div id="layoutSidenav_content" class="flex-1">
                 <main>
-                    <div class="container-fluid px-4">
+                    <div class="container mx-auto px-4 py-6">
                         @yield('content')
                     </div>
                 </main>
@@ -27,12 +27,21 @@
         </div>
     @else
         <main>
-            <div class="container-fluid px-4">
+            <div class="container mx-auto px-4 py-6">
                 @yield('content')
             </div>
         </main>
     @endauth
 
     @include('layouts.scripts')
+    <style>
+        .custom-tbody-padding td {
+            padding: 10px;
+        }
+        /* Custom checkbox styles */
+        .custom-checkbox input[type="checkbox"] {
+            transform: scale(1.5); /* Scale up the checkbox */
+        }
+    </style>
 </body>
 </html>

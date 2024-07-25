@@ -1,25 +1,46 @@
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-    <!-- Navbar Search-->
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <div class="input-group">
-            {{-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> --}}
+<nav class="bg-gradient-to-r from-blue-800 to-blue-600 py-4 px-6 flex items-center justify-between shadow-lg">
+    <!-- Navbar Brand -->
+    <a class="text-white text-2xl font-extrabold flex items-center no-underline hover:text-gray-200 transition duration-300 ease-in-out" href="{{ route('dashboard') }}">
+        <span>Admin Rosanti</span>
+    </a>
+
+    <!-- Sidebar Toggle -->
+   <div class="flex-1"></div>
+    <button class="text-white text-2xl px-4 py-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-transform transform hover:scale-105" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="mx-2"></div>
+
+    <!-- New Dropdown Toggle -->
+    <div class="relative">
+        <button id="newDropdownToggle" class="text-white text-lg px-4 py-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-transform transform hover:scale-105">
+            <i class="fas fa-user"></i>
+        </button>
+        <div id="newDropdownMenu" class="absolute right-0 mt-2 bg-white text-gray-900 border border-gray-300 rounded-lg shadow-xl hidden transform scale-95 transition-transform origin-top-right">
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Profile</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Settings</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Logout</a>
         </div>
-    </form>
-    <!-- Navbar-->
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#!">Settings</a></li>
-                <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
-            </ul>
-        </li>
-    </ul>
+    </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newDropdownToggle = document.getElementById('newDropdownToggle');
+    const newDropdownMenu = document.getElementById('newDropdownMenu');
+
+    newDropdownToggle.addEventListener('click', function() {
+        newDropdownMenu.classList.toggle('hidden');
+        newDropdownMenu.classList.toggle('scale-100');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!newDropdownToggle.contains(event.target) && !newDropdownMenu.contains(event.target)) {
+            newDropdownMenu.classList.add('hidden');
+            newDropdownMenu.classList.remove('scale-100');
+        }
+    });
+});
+</script>
