@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\JenisMotor;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +14,7 @@ class TransaksiController extends Controller
     public function index()
     {
         // Get IDs of jenis_motor that are currently rented
-        $rentedMotorIds = Transaksi::where('status', 'disewa')
-                                   ->pluck('id_jenis'); // Adjust the field name as needed
+        $rentedMotorIds = Transaksi::where('status', 'disewa')->pluck('id_jenis');
 
         // Fetch all jenis_motor that are not rented
         $jenis_motors = JenisMotor::whereNotIn('id', $rentedMotorIds)->get();
@@ -44,8 +44,8 @@ class TransaksiController extends Controller
 
         try {
             foreach ($validatedData['rentals'] as $rental) {
-                Transaksi::create([
-                    'id_user' => 1,
+                $transaksi = Transaksi::create([
+                    'id_user' => 1, // Replace with the authenticated user ID if needed
                     'nama_penyewa' => $validatedData['nama_penyewa'],
                     'wa1' => $validatedData['wa1'],
                     'wa2' => $validatedData['wa2'],
@@ -59,10 +59,19 @@ class TransaksiController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dibuat.');
+            return redirect()->route('transaksi.preview', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
+    }
+
+    public function showInvoice($id)
+    {
+        // Fetch the transaction details
+        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
+
+
+        return view('rental.invoice', compact('transaksi'));
     }
 }
