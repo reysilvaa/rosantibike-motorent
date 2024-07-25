@@ -1,51 +1,56 @@
 @extends('layouts.admin')
 @section('title', 'Dashboard')
 @section('content')
-    <h1 class="mt-4 text-2xl font-semibold">Menu Utama</h1>
-    <ol class="breadcrumb mb-4 flex items-center space-x-2">
-        <li class="breadcrumb-item text-gray-500">Klik menu yang anda akan lakukan!</li>
-    </ol>
-    <div class="container mx-auto px-6">
-        <!-- Dashboard Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Card 1 -->
-            <a href="{{ route('transaksi.index') }}" class="block bg-blue-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
-                <div class="p-4 flex-1 text-lg font-semibold">Tambah Rental</div>
-                <div class="bg-blue-700 p-4 flex items-center justify-between rounded-b-lg">
-                    <span>View Details</span>
-                    <i class="fas fa-angle-right"></i>
-                </div>
-            </a>
-            <!-- Card 2 -->
-            <a href="{{ route('admin.transaksi.transaksi') }}" class="block bg-gray-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
-                <div class="p-4 flex-1 text-lg font-semibold">List Transaksi Rental</div>
-                <div class="bg-gray-700 p-4 flex items-center justify-between rounded-b-lg">
-                    <span>View Details</span>
-                    <i class="fas fa-angle-right"></i>
-                </div>
-            </a>
-            <!-- Card 3 -->
-            <a href="#" class="block bg-green-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
-                <div class="p-4 flex-1 text-lg font-semibold">Tambah Unit</div>
-                <div class="bg-green-700 p-4 flex items-center justify-between rounded-b-lg">
-                    <span>View Details</span>
-                    <i class="fas fa-angle-right"></i>
-                </div>
-            </a>
-            <!-- Card 4 -->
-            <a href="#" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
-                <div class="p-4 flex-1 text-lg font-semibold">Hapus Semua Data</div>
-                <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
-                    <span>View Details</span>
-                    <i class="fas fa-angle-right"></i>
-                </div>
-            </a>
-        </div>
+<div class="relative bg-gray-100 min-h-screen">
+    <div class="absolute inset-0 -z-10">
+        <!-- Background element -->
+        <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
+    </div>
+        <!-- Main Content Wrapper -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h1 class="text-2xl font-semibold">Menu Utama</h1>
+            <ol class="breadcrumb mb-4 flex items-center space-x-1">
+                <li class="breadcrumb-item text-gray-500">Klik menu yang anda akan lakukan!</li>
+            </ol>
 
+            <!-- Dashboard Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <!-- Card 1 -->
+                <a href="{{ route('transaksi.index') }}" class="block bg-blue-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">Tambah Rental</div>
+                    <div class="bg-blue-700 p-4 flex items-center justify-between rounded-b-lg">
+                        <span>View Details</span>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                </a>
+                <!-- Card 2 -->
+                <a href="{{ route('admin.transaksi.transaksi') }}" class="block bg-gray-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">List Transaksi Rental</div>
+                    <div class="bg-gray-700 p-4 flex items-center justify-between rounded-b-lg">
+                        <span>View Details</span>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                </a>
+                <!-- Card 3 -->
+                <a href="#" class="block bg-green-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">Tambah Unit</div>
+                    <div class="bg-green-700 p-4 flex items-center justify-between rounded-b-lg">
+                        <span>View Details</span>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                </a>
+                <!-- Card 4 -->
+                <a href="#" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">Hapus Semua Data</div>
+                    <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
+                        <span>View Details</span>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                </a>
+            </div>
 
-        <!-- DataTables Card -->
-        <div class="container mx-auto px-6 mt-6">
-            <div class="bg-white shadow-lg rounded-lg">
+            <!-- DataTables Card -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
                 <div class="border-b p-4 text-lg font-semibold flex items-center bg-gray-100 text-gray-800">
                     <i class="fas fa-table mr-2"></i>
                     Manager Penyewa
@@ -69,15 +74,17 @@
                                     <th class="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 text-center custom-tbody-padding">                                {{-- content otomatis datatables --}}
+                            <tbody class="bg-white divide-y divide-gray-200 text-center custom-tbody-padding">
+                                {{-- content otomatis datatables --}}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 @endsection
+
+
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
