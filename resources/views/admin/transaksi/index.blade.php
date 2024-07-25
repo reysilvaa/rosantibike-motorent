@@ -7,6 +7,7 @@
 <ol class="breadcrumb mb-4 flex items-center space-x-2 text-sm">
     <li class="breadcrumb-item text-gray-500">List Transaksi</li>
 </ol>
+
 <!-- DataTables Card -->
 <div class="container mx-auto px-6 mt-6">
     <div class="bg-white shadow-lg rounded-lg">

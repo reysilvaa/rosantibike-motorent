@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('title', 'Dashboard')
 @section('content')
-    <h1 class="mt-4 text-2xl font-semibold">Dashboard</h1>
+    <h1 class="mt-4 text-2xl font-semibold">Menu Utama</h1>
     <ol class="breadcrumb mb-4 flex items-center space-x-2">
-        <li class="breadcrumb-item text-gray-500">Dashboard</li>
+        <li class="breadcrumb-item text-gray-500">Klik menu yang anda akan lakukan!</li>
     </ol>
     <div class="container mx-auto px-6">
         <!-- Dashboard Cards -->
@@ -48,7 +48,7 @@
             <div class="bg-white shadow-lg rounded-lg">
                 <div class="border-b p-4 text-lg font-semibold flex items-center bg-gray-100 text-gray-800">
                     <i class="fas fa-table mr-2"></i>
-                    Transaksi Management
+                    Manager Penyewa
                 </div>
                 <div class="p-4">
                     <button class="bg-red-600 text-white px-4 py-2 rounded-md mb-3 hover:bg-red-700" id="bulk-delete">Delete Selected</button>
@@ -109,7 +109,7 @@ $(document).ready(function() {
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'nama_penyewa', name: 'nama_penyewa'},
-            {data: 'jenis_motor.merk', name: 'jenis_motor.merk'},
+            {data: 'jenis_motor.merk', name: 'jenisMotor.merk'},
             {data: 'tgl_sewa', name: 'tgl_sewa'},
             {data: 'tgl_kembali', name: 'tgl_kembali'},
             {data: 'status', name: 'status'},
