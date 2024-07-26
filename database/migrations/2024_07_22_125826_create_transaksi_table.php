@@ -18,7 +18,7 @@ class CreateTransaksiTable extends Migration
             $table->string('wa3')->nullable();
             $table->date('tgl_sewa');
             $table->date('tgl_kembali');
-            $table->enum('status', ['disewa', 'tersedia']);
+            $table->enum('status', ['disewa', 'tersedia', 'perpanjang']);
             $table->decimal('total', 10, 2);
             $table->timestamps();
         });

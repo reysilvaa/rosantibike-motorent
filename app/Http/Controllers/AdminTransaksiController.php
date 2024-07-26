@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\JenisMotor;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -12,13 +13,13 @@ class AdminTransaksiController extends Controller
         return view('admin.index');
     }
 
-     public function transaksi()
+    public function transaksi()
     {
         return view('admin.transaksi.index');
     }
+
     public function getData(Request $request)
     {
-
         if ($request->ajax()) {
             $data = Transaksi::with('jenisMotor')->select('transaksi.*');
 
@@ -26,7 +27,6 @@ class AdminTransaksiController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-2 text-xs flex items-center justify-center"><i class="fa-solid fa-pen"></i></a>';
-                    // $deleteBtn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="bg-red-600 text-white hover:bg-red-700 rounded px-3 py-2 text-xs flex items-center justify-center delete"><i class="fa-solid fa-trash"></i></a>';
                     $cetakBtn = '<a href="' . route('transaksi.invoice.preview', $row->id) . '" target="_blank" class="bg-blue-600 text-white hover:bg-blue-700 rounded px-3 py-2 text-xs flex items-center justify-center" title="Preview Invoice"><i class="fa-solid fa-eye"></i></a>';
 
                     return '<div class="flex space-x-2 justify-center">' . $editBtn . $cetakBtn . '</div>';
@@ -51,22 +51,70 @@ class AdminTransaksiController extends Controller
         }
     }
 
-
-    public function show(Transaksi $transaksi)
+    public function edit($id)
     {
-        return view('admin.transaksi.show', compact('transaksi'));
+        // Temukan transaksi yang akan diedit
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Ambil daftar jenis motor
+        $jenisMotorList = JenisMotor::whereDoesntHave('transaksi', function($query) {
+            $query->whereIn('status', ['disewa', 'perpanjang']);
+        })->get();
+
+        // Tampilkan view edit dengan data transaksi dan daftar jenis motor
+        return view('admin.transaksi.edit', compact('transaksi', 'jenisMotorList'));
     }
 
-    public function edit(Transaksi $transaksi)
+
+    public function update(Request $request, $id)
     {
-        return view('admin.transaksi.edit', compact('transaksi'));
+        // Validasi input
+        $validated = $request->validate([
+            'tgl_kembali' => 'required|date|after_or_equal:today',
+            'id_jenis' => 'required|exists:jenis_motor,id',
+        ]);
+
+        // Temukan transaksi yang akan diperbarui
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Simpan total awal sebelum update
+        $originalTotal = $transaksi->total;
+
+        // Simpan tanggal kembali yang asli
+        $originalTglKembali = $transaksi->tgl_kembali;
+
+        // Ambil data jenis motor terbaru
+        $jenisMotor = JenisMotor::findOrFail($validated['id_jenis']);
+
+        // Hitung jumlah hari perpanjangan dari tanggal kembali yang asli
+        $tglSewa = $transaksi->tgl_sewa;
+        $tglKembali = $validated['tgl_kembali'];
+
+        // Jika tanggal kembali baru lebih awal dari tanggal kembali asli, tidak perlu perpanjangan
+        if ($tglKembali <= $originalTglKembali) {
+            return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
+        }
+
+        // Hitung jumlah hari perpanjangan
+        $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
+
+        // Hitung total harga perpanjangan
+        $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotor->harga_perHari;
+
+        // Tambahkan total perpanjangan ke total yang sudah ada
+        $totalHargaBaru = $originalTotal + $totalHargaPerpanjangan;
+
+        // Perbarui data transaksi
+        $transaksi->tgl_kembali = $validated['tgl_kembali'];
+        $transaksi->id_jenis = $validated['id_jenis'];
+        $transaksi->total = $totalHargaBaru;
+        $transaksi->status = 'perpanjang'; // Atau status sesuai kebutuhan
+        $transaksi->save();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.transaksi.edit', ['transaksi' => $id])->with('success', 'Transaksi berhasil diperbarui.');
     }
 
-    public function update(Request $request, Transaksi $transaksi)
-    {
-        $transaksi->update($request->all());
-        return redirect()->route('admin.transaksi.transaksi')->with('success', 'Transaksi updated successfully');
-    }
 
     public function destroy(Transaksi $transaksi)
     {

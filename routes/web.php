@@ -19,7 +19,6 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::get('invoice/{id}/download', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
 });
 
-
 // Admin Routes
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
