@@ -14,7 +14,7 @@ class TransaksiController extends Controller
     public function index()
     {
         // Get IDs of jenis_motor that are currently rented
-        $rentedMotorIds = Transaksi::where('status', 'disewa')->pluck('id_jenis');
+        $rentedMotorIds = Transaksi::whereIn('status', ['disewa', 'perpanjang'])->pluck('id_jenis');
 
         // Fetch all jenis_motor that are not rented
         $jenis_motors = JenisMotor::whereNotIn('id', $rentedMotorIds)->get();

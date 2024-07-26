@@ -56,14 +56,16 @@ class AdminTransaksiController extends Controller
         // Temukan transaksi yang akan diedit
         $transaksi = Transaksi::findOrFail($id);
 
-        // Ambil daftar jenis motor
-        $jenisMotorList = JenisMotor::whereDoesntHave('transaksi', function($query) {
-            $query->whereIn('status', ['disewa', 'perpanjang']);
-        })->get();
+        // Ambil daftar jenis motor yang sedang tidak disewa, tetapi pastikan jenis motor yang sedang diedit tetap ada
+        $jenisMotorList = JenisMotor::where(function($query) use ($transaksi) {
+            $query->whereDoesntHave('transaksi', function($query) {
+                $query->whereIn('status', ['disewa', 'perpanjang']);
+            });
+        })->orWhere('id', $transaksi->id_jenis)->get();
 
         // Tampilkan view edit dengan data transaksi dan daftar jenis motor
         return view('admin.transaksi.edit', compact('transaksi', 'jenisMotorList'));
-    }
+            }
 
 
     public function update(Request $request, $id)

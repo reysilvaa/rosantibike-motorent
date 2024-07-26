@@ -44,6 +44,15 @@
         .custom-checkbox input[type="checkbox"] {
             transform: scale(1.5); /* Scale up the checkbox */
         }
+        /* kanban gawe transaksi/edit.blade */
+        #jenisMotorKanban .selected {
+            border-color: #4F46E5;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1), 0 4px 6px -2px rgba(79, 70, 229, 0.05);
+        }
+
+        #jenisMotorKanban > div:hover {
+            transform: translateY(-5px);
+        }
     </style>
 </body>
 </html>
