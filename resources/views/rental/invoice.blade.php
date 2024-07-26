@@ -193,9 +193,24 @@
                     <th>No. Handphone</th>
                     <td colspan="3">
                         <table class="phone-table">
-                            <tr><th>1.</th><td>{{ $transaksi->wa1 }}</td></tr>
-                            <tr><th>2.</th><td>{{ $transaksi->wa2 }}</td></tr>
-                            <tr><th>3.</th><td>{{ $transaksi->wa3 }}</td></tr>
+                            <tr>
+                                <th>1.</th>
+                                <td>{{ $transaksi->wa1 }}</td>
+                                <td>{{ $transaksi->nama }}</td>
+                                <td>Nama: ______________________</td>
+                            </tr>
+                            <tr>
+                                <th>2.</th>
+                                <td>{{ $transaksi->wa2 }}</td>
+                                <td></td>
+                                <td>Nama: ______________________</td>
+                            </tr>
+                            <tr>
+                                <th>3.</th>
+                                <td>{{ $transaksi->wa3 }}</td>
+                                <td></td>
+                                <td>Nama: ______________________</td>
+                            </tr>
                         </table>
                     </td>
                 </tr>
