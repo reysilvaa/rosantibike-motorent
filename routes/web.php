@@ -6,6 +6,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\WipeDataController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,19 +34,23 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
 
 // Admin Routes
 Route::middleware(['auth'])->group(function () {
+    // Admin dashboard
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminTransaksiController::class, 'index'])->name('dashboard');
 
+        // Transaksi routes
         Route::prefix('transaksi')->name('admin.transaksi.')->group(function () {
             Route::get('/data', [AdminTransaksiController::class, 'getData'])->name('data');
             Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('transaksi');
             Route::get('/{transaksi}', [AdminTransaksiController::class, 'show'])->name('show');
             Route::get('/{transaksi}/edit', [AdminTransaksiController::class, 'edit'])->name('edit');
-            Route::get('/{transaksi}/detail', [AdminTransaksiController::class, 'edit'])->name('detail');
+            Route::get('/{transaksi}/detail', [AdminTransaksiController::class, 'edit'])->name('detail'); // Note: This route seems to overlap with the 'edit' route.
             Route::put('/{transaksi}', [AdminTransaksiController::class, 'update'])->name('update');
             Route::delete('/{transaksi}', [AdminTransaksiController::class, 'destroy'])->name('destroy');
             Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete'])->name('bulkDelete');
         });
+
+        // Jenis Motor routes
         Route::prefix('jenis-motor')->name('admin.jenisMotor.')->group(function () {
             Route::get('/', [JenisMotorController::class, 'index'])->name('index');
             Route::get('/create', [JenisMotorController::class, 'create'])->name('create');
@@ -56,5 +61,10 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{jenisMotor}', [JenisMotorController::class, 'destroy'])->name('destroy');
         });
 
+        // Wipe Data routes
+        Route::prefix('wipe-data')->name('wipe.')->group(function () {
+            Route::get('/', [WipeDataController::class, 'index'])->name('index');
+            Route::post('/wipe', [WipeDataController::class, 'wipe'])->name('data');
+        });
     });
 });

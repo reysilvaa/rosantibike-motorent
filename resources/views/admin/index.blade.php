@@ -40,7 +40,7 @@
                     </div>
                 </a>
                 <!-- Card 4 -->
-                <a href="#" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                <a href="{{ route('wipe.index') }}" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
                     <div class="p-4 flex-1 text-lg font-semibold">Hapus Semua Data</div>
                     <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
                         <span>View Details</span>
