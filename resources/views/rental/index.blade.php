@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@if (!Auth::check())
+    @include('landing.assets.navbar')
+@endif
 
 @section('title', 'Form/Booking')
 

@@ -9,6 +9,7 @@
     @vite('resources/css/app.css')
     <meta name="author" content="" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <title>@yield('title', 'Dashboard') - SB Admin</title>
     @include('layouts.styles')
 
