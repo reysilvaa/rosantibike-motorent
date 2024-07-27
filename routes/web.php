@@ -3,8 +3,12 @@
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
+
+// Landing routes
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
