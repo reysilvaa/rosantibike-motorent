@@ -126,7 +126,7 @@
 
                         // Add "Selected" text
                         const selectedText = document.createElement('div');
-                        selectedText.textContent = 'Selected';
+                        selectedText.textContent = 'Saya Pilih Ini!';
                         selectedText.classList.add('selected-text', 'text-indigo-600', 'font-bold', 'mt-2');
                         this.appendChild(selectedText);
 
