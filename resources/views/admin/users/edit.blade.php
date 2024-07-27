@@ -20,4 +20,5 @@
         </div>
         <button type="submit">Update</button>
     </form>
+    <x-back-to-list-button route="{{ route('admin.user.index') }}" />
 @endsection

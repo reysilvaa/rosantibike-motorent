@@ -9,4 +9,6 @@
         @method('DELETE')
         <button type="submit">Delete</button>
     </form>
+    <x-back-to-list-button route="{{ route('admin.users.index') }}" />
+
 @endsection

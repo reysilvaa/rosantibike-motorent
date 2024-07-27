@@ -71,5 +71,6 @@
             @endif
         </div>
     </form>
+    <x-back-to-list-button route="{{ route('admin.jenisMotor.index') }}" />
 </div>
 @endsection

@@ -18,4 +18,6 @@
         </div>
         <button type="submit">Create</button>
     </form>
+    <x-back-to-list-button route="{{ route('admin.users.index') }}" />
+
 @endsection
