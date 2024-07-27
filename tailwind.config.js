@@ -6,7 +6,9 @@ export default {
       "./resources/**/*.vue",
     ],
     theme: {
-      extend: {},
+      extend: {
+
+      },
     },
     plugins: [],
   }

@@ -12,6 +12,7 @@ class CreateJenisMotorTable extends Migration
             $table->id();
             $table->string('merk');
             $table->string('nopol');
+            $table->string('foto')->nullable();
             $table->decimal('harga_perHari');
             $table->timestamps();
         });

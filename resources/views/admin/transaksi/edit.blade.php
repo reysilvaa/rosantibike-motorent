@@ -60,7 +60,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="jenisMotorKanban">
                 @foreach($jenisMotorList as $jenisMotor)
                     <div class="bg-white border-2 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-indigo-500" data-id="{{ $jenisMotor->id }}" data-price="{{ $jenisMotor->harga_perHari }}">
-                        <img src="{{ asset('images/motor/' . $jenisMotor->image) }}" alt="{{ $jenisMotor->merk }}" class="w-full h-32 object-cover rounded-md mb-3">
+                        <img src="{{ $jenisMotor->foto ? asset('storage/' . $jenisMotor->foto) : 'https://via.placeholder.com/150' }}" alt="{{ $jenisMotor->merk }}" class="w-full h-32 object-cover rounded-md mb-3">
                         <h3 class="text-sm font-semibold text-gray-800">{{ $jenisMotor->merk }}</h3>
                         <p class="text-xs text-gray-600">Nopol: {{ $jenisMotor->nopol }}</p>
                         <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->harga_perHari, 0, ',', '.') }}/hari</p>
@@ -72,6 +72,7 @@
                 <p class="text-rose-500 text-xs italic mt-1">{{ $message }}</p>
             @enderror
         </div>
+
 
         <div class="mt-12 bg-white p-8 rounded-lg shadow-md">
             <h3 class="text-2xl font-bold text-gray-800 mb-8">Rincian Biaya</h3>

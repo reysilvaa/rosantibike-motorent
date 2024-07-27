@@ -3,12 +3,20 @@
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\TransaksiController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Landing routes
-Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+
+    return (new LandingController)->index();
+})->name('landing');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -38,5 +46,15 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{transaksi}', [AdminTransaksiController::class, 'destroy'])->name('destroy');
             Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete'])->name('bulkDelete');
         });
+        Route::prefix('jenis-motor')->name('admin.jenisMotor.')->group(function () {
+            Route::get('/', [JenisMotorController::class, 'index'])->name('index');
+            Route::get('/create', [JenisMotorController::class, 'create'])->name('create');
+            Route::post('/', [JenisMotorController::class, 'store'])->name('store');
+            Route::get('/{jenisMotor}', [JenisMotorController::class, 'show'])->name('show');
+            Route::get('/{jenisMotor}/edit', [JenisMotorController::class, 'edit'])->name('edit');
+            Route::put('/{jenisMotor}', [JenisMotorController::class, 'update'])->name('update');
+            Route::delete('/{jenisMotor}', [JenisMotorController::class, 'destroy'])->name('destroy');
+        });
+
     });
 });
