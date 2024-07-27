@@ -13,8 +13,8 @@
         x-data="{ isOpen: false, isScrolled: false }"
         @scroll.window="isScrolled = (window.pageYOffset > 20) ? true : false"
         :class="{
-            'bg-white shadow-md py-2': isScrolled,
-            'bg-transparent py-4': !isScrolled
+            'bg-white shadow-md py-5': isScrolled,
+            'bg-transparent py-5': !isScrolled
         }">
     <nav class="container mx-auto px-6 flex justify-between items-center">
         <!-- Brand -->
@@ -25,14 +25,14 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-6 font-medium">
             <a href="#beranda"
-               :class="{'text-blue-500': isScrolled, 'text-white': !isScrolled}"
+               :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">Beranda</a>
             <a href="#layanan"
-               :class="{'text-blue-500': isScrolled, 'text-white': !isScrolled}"
+               :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">Layanan</a>
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open"
-                        :class="{'text-blue-500': isScrolled, 'text-white': !isScrolled}"
+                        :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                         class="flex items-center hover:text-blue-500 transition duration-300 ease-in-out">
                     Armada
                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -41,21 +41,21 @@
                 </button>
                 <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                     <a href="#"
-                       :class="{'text-blue-500': isScrolled, 'text-gray-800': !isScrolled}"
+                       :class="{'text-black': isScrolled, 'text-gray-800': !isScrolled}"
                        class="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white">Motor Matic</a>
                     <a href="#"
-                       :class="{'text-blue-500': isScrolled, 'text-gray-800': !isScrolled}"
+                       :class="{'text-black': isScrolled, 'text-gray-800': !isScrolled}"
                        class="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white">Motor Manual</a>
                     <a href="#"
-                       :class="{'text-blue-500': isScrolled, 'text-gray-800': !isScrolled}"
+                       :class="{'text-black': isScrolled, 'text-gray-800': !isScrolled}"
                        class="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white">Motor Sport</a>
                 </div>
             </div>
             <a href="#testimoni"
-               :class="{'text-blue-500': isScrolled, 'text-white': !isScrolled}"
+               :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">Testimoni</a>
             <a href="#kontak"
-               :class="{'text-blue-500': isScrolled, 'text-white': !isScrolled}"
+               :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">Kontak</a>
         </div>
 
