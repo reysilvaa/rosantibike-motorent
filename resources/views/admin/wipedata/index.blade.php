@@ -4,7 +4,7 @@
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-3xl font-bold mb-6">Wipe Data</h1>
 
-    <form action="{{ route('wipe.data') }}" method="POST">
+    <form action="{{ route('admin.wipe.wipe') }}" method="POST">
         @csrf
         <div class="flex flex-wrap gap-6">
             <!-- Jenis Motor Card -->

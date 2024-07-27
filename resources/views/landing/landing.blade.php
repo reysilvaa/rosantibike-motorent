@@ -26,13 +26,14 @@
 @include('landing.assets.keunggulan')
 
 <!-- Promo Section -->
-
+@include('landing.assets.promo')
 <!-- Layanan Section -->
 @include('landing.assets.layanan')
 
 <!-- Armada Section -->
 @include('landing.assets.armada')
-
+<!-- Syarat Rental Section -->
+@include('landing.assets.syarat')
 <!-- Fasilitas Section -->
 @include('landing.assets.fasilitas')
 

@@ -19,5 +19,11 @@ class UserSeeder extends Seeder
             ['uname' => '123'],
             ['pass' => Hash::make('123')]
         );
+
+        // Second user
+        User::updateOrCreate(
+            ['uname' => 'admin'],
+            ['pass' => Hash::make('admin')]
+        );
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WipeDataController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,10 +42,9 @@ Route::middleware(['auth'])->group(function () {
         // Transaksi routes
         Route::prefix('transaksi')->name('admin.transaksi.')->group(function () {
             Route::get('/data', [AdminTransaksiController::class, 'getData'])->name('data');
-            Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('transaksi');
+            Route::get('/', [AdminTransaksiController::class, 'transaksi'])->name('index');
             Route::get('/{transaksi}', [AdminTransaksiController::class, 'show'])->name('show');
             Route::get('/{transaksi}/edit', [AdminTransaksiController::class, 'edit'])->name('edit');
-            Route::get('/{transaksi}/detail', [AdminTransaksiController::class, 'edit'])->name('detail'); // Note: This route seems to overlap with the 'edit' route.
             Route::put('/{transaksi}', [AdminTransaksiController::class, 'update'])->name('update');
             Route::delete('/{transaksi}', [AdminTransaksiController::class, 'destroy'])->name('destroy');
             Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete'])->name('bulkDelete');
@@ -62,9 +62,21 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Wipe Data routes
-        Route::prefix('wipe-data')->name('wipe.')->group(function () {
+        Route::prefix('wipe-data')->name('admin.wipe.')->group(function () {
             Route::get('/', [WipeDataController::class, 'index'])->name('index');
-            Route::post('/wipe', [WipeDataController::class, 'wipe'])->name('data');
+            Route::post('/wipe', [WipeDataController::class, 'wipe'])->name('wipe');
         });
+
+        // User routes
+        Route::prefix('user')->name('admin.users.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('/{user}', [UserController::class, 'show'])->name('show');
+            Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/{user}', [UserController::class, 'update'])->name('update');
+            Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        });
+
     });
 });
