@@ -8,7 +8,7 @@
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<div class="container mx-auto px-8 py-16">
+<div class="container mx-auto px-8 py-10">
     <div class="text-center mb-10">
         <p class="text-2xl font-semibold">Booking Form</p>
     </div>
@@ -60,12 +60,13 @@
                             <label for="jenis_motor" class="block text-base font-medium text-gray-700">Pilih Jenis Motor</label>
                             <label for="jenis_motor" class="block text-base font-small text-sm text-red-700">(Motor yang ada dipilihan adalah motor yang sedang ready stok!)</label>
                             <div class="mb-6">
-                                <div class="flex flex-wrap gap-6">
+                                <div class="flex flex-wrap gap-10">
                                     @foreach($jenis_motors as $jenis_motor)
-                                        <div class="kanban-item p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100" data-value="{{ $jenis_motor->id }}" data-price="{{ $jenis_motor->harga_perHari }}">
-                                            <div class="text-lg font-medium">{{ $jenis_motor->merk }}</div>
-                                            <div class="text-base text-gray-500">Rp. {{ number_format($jenis_motor->harga_perHari, 0, ',', '.') }}</div>
-                                        </div>
+                                    <div class="kanban-item p-6 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-200 hover:bg-blue-300 transition-colors duration-200 ease-in-out w-64 flex flex-col justify-between" data-value="{{ $jenis_motor->id }}" data-price="{{ $jenis_motor->harga_perHari }}">
+                                        <img src="{{ $jenis_motor->foto ? (filter_var($jenis_motor->foto, FILTER_VALIDATE_URL) ? $jenis_motor->foto : asset('storage/' . $jenis_motor->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenis_motor->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
+                                        <div class="text-lg font-medium">{{ $jenis_motor->merk }}</div>
+                                        <div class="text-base text-gray-700">Rp. {{ number_format($jenis_motor->harga_perHari, 0, ',', '.') }}</div>
+                                    </div>
                                     @endforeach
                                 </div>
                                 <input type="hidden" class="id_jenis" name="rentals[0][id_jenis]" required>
@@ -93,5 +94,5 @@
         </div>
     </div>
 </div>
-@include('rental.script');
+@include('rental.script')
 @endsection

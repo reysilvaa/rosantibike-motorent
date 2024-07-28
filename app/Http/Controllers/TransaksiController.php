@@ -59,8 +59,7 @@ class TransaksiController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('transaksi.preview', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil dibuat.');
-        } catch (\Exception $e) {
+            return redirect()->route('transaksi.invoice.preview', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil dibuat.');        } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }

@@ -40,7 +40,7 @@
                     </svg>
                 </button>
                 <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-                    <a href="#"
+                    <a href="{{ route('landing.motor-matic') }}"
                        :class="{'text-black': isScrolled, 'text-gray-800': !isScrolled}"
                        class="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white">Motor Matic</a>
                     <a href="#"

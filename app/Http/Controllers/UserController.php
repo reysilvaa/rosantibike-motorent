@@ -21,10 +21,18 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'uname.required' => 'Masukkan Username.',
+            'uname.unique' => 'Username sudah digunakan.',
+            'pass.required' => 'Masukkan Password.',
+            'pass.confirmed' => 'Password Konfirmasi tidak sesuai.',
+            'pass.min' => 'Password harus minimal 6 karakter.',
+        ];
+
         $validated = $request->validate([
             'uname' => 'required|unique:users',
             'pass' => 'required|min:6',
-        ]);
+        ], $messages);
 
         $validated['pass'] = Hash::make($validated['pass']);
 
@@ -45,18 +53,29 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'uname' => 'required|unique:users,uname,' . $user->id,
-            'pass' => 'sometimes|min:6',
-        ]);
+        $messages = [
+            'uname.required' => 'Masukkan Username.',
+            'uname.unique' => 'Username sudah digunakan.',
+            'pass.confirmed' => 'Password Konfirmasi tidak sesuai.',
+            'pass.min' => 'Password harus minimal 6 karakter.',
+        ];
 
-        if (isset($validated['pass'])) {
-            $validated['pass'] = Hash::make($validated['pass']);
+        $rules = [
+            'uname' => 'required|unique:users,uname,' . $user->id,
+            'pass' => 'nullable|confirmed|min:6',
+        ];
+
+        $request->validate($rules, $messages);
+
+        $user->uname = $request->uname;
+
+        if ($request->filled('pass')) {
+            $user->pass = Hash::make($request->pass);
         }
 
-        $user->update($validated);
+        $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)

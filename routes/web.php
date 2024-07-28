@@ -20,6 +20,9 @@ Route::get('/', function () {
     return (new LandingController)->index();
 })->name('landing');
 
+// New route for motor-matic
+Route::get('/motor-matic', [LandingController::class, 'motorMatic'])->name('landing.motor-matic');
+
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
