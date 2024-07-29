@@ -47,7 +47,7 @@ class StokController extends Controller
         // Create a new Stok record
         Stok::create($data);
 
-        return redirect()->route('admin.stok.index')
+        return redirect()->route('admin.jenisMotor.index')
                          ->with('success', 'Stok created successfully.');
     }
 

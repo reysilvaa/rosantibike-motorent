@@ -13,18 +13,14 @@
                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-500 transition-colors duration-300">
                 Add New Jenis Motor
             </a>
-            <a href="{{ route('admin.stok.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-500 transition-colors duration-300">
-                Add New Merk Motor
-            </a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($jenisMotors as $jenisMotor)
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:scale-105">
                     <div class="relative w-full" style="padding-top: 66.67%; max-width: 600px; max-height: 400px;">
-                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->foto)) : 'https://via.placeholder.com/600x400' }}"
-                             alt="{{ $jenisMotor->merk }}"
+                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->stok->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->stok->foto)) : 'https://via.placeholder.com/600x400' }}"
+                             alt="{{ $jenisMotor->stok->merk }}"
                              class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                              style="max-width: 600px; max-height: 400px;">
                     </div>

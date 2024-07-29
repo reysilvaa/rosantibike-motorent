@@ -1,122 +1,115 @@
 @extends('layouts.admin')
-@section('title', isset($stok) ? 'Edit Unit Motor' : 'Tambahkan Unit Motor')
+@section('title', 'Manajemen Unit Motor')
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 sm:p-10">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
-                {{ isset($stok) ? 'Edit Unit Motor' : 'Tambahkan Unit Motor' }}
-            </h1>
-            <p class="mt-2 text-blue-100">
-                {{ isset($stok) ? 'Update details for ' . $stok->merk : 'Tambahkan Unit Baru ke Dalam Penyimpanan' }}
-            </p>
-        </div>
+<div x-data="{ activeTab: 'stokMotor' }" class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-8">
+                <h1 class="text-4xl font-bold text-white text-center">
+                    Manajemen Unit Motor
+                </h1>
+            </div>
 
-        <form action="{{ isset($stok) ? route('admin.stok.update', $stok->id) : route('admin.stok.store') }}"
-              method="POST"
-              enctype="multipart/form-data"
-              class="p-6 sm:p-10 space-y-8">
-            @csrf
-            @if(isset($stok))
-                @method('PUT')
-            @endif
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <div>
-                        <label for="merk" class="block text-sm font-medium text-gray-700">Merk</label>
-                        <input type="text" name="merk" id="merk"
-                               value="{{ old('merk', $stok->merk ?? '') }}"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300" required>
-                        @error('merk')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="harga_perHari" class="block text-sm font-medium text-gray-700">Harga per Hari</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <span class="text-gray-500 sm:text-sm">Rp</span>
-                            </div>
-                            <input type="number" name="harga_perHari" id="harga_perHari"
-                                   value="{{ old('harga_perHari', $stok->harga_perHari ?? '') }}"
-                                   class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300" required>
-                        </div>
-                        @error('harga_perHari')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+            <div class="p-8">
+                <!-- Tab Navigation -->
+                <div class="mb-8 flex justify-center space-x-6">
+                    <button @click="activeTab = 'unitMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'unitMotor', 'bg-gray-200 text-gray-700': activeTab !== 'unitMotor' }" class="px-6 py-3 rounded-full text-lg font-medium transition-all duration-300">
+                        Unit Motor
+                    </button>
+                    <button @click="activeTab = 'stokMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'stokMotor', 'bg-gray-200 text-gray-700': activeTab !== 'stokMotor' }" class="px-6 py-3 rounded-full text-lg font-medium transition-all duration-300">
+                        Stok Motor
+                    </button>
                 </div>
 
-                <div class="space-y-6">
-                    <div>
-                        <label for="foto_url" class="block text-sm font-medium text-gray-700">Foto URL</label>
-                        <input type="text" name="foto_url" id="foto_url"
-                               value="{{ old('foto_url', $stok->foto_url ?? '') }}"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300"
-                               placeholder="https://example.com/image.jpg">
-                        <p class="mt-2 text-sm text-gray-500">Masukkan URL atau Upload foto dibawah.</p>
-                        @error('foto_url')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="foto" class="block text-sm font-medium text-gray-700">Upload Foto</label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition duration-300">
-                            <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex text-sm text-gray-600">
-                                    <label for="foto" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload sebuah Foto</span>
-                                        <input id="foto" name="foto" type="file" class="sr-only">
+                <!-- Unit Motor Form -->
+                <div x-show="activeTab === 'unitMotor'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                    <form action="{{ route('admin.jenisMotor.store') }}" method="POST" class="space-y-8">
+                        @csrf
+
+                        <div class="space-y-6">
+                            <label for="id_stok" class="block text-lg font-medium text-gray-700">Merk</label>
+                            <div class="grid grid-cols-3 gap-6" x-data="{ selectedMerk: '' }">
+                                @foreach($stoks as $stok)
+                                <div class="relative">
+                                    <input type="radio" id="merk_{{ $stok->id }}" name="id_stok" value="{{ $stok->id }}" class="sr-only" x-model="selectedMerk">
+                                    <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300" :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == {{ $stok->id }}, 'border-gray-300 hover:border-indigo-300': selectedMerk != {{ $stok->id }} }">
+                                        <span class="text-lg font-medium">{{ $stok->merk }}</span>
                                     </label>
-                                    <p class="pl-1">atau drag and drop</p>
                                 </div>
-                                <p class="text-xs text-gray-500">PNG, JPG, GIF maksimal 2MB</p>
+                                @endforeach
                             </div>
                         </div>
-                        @error('foto')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-            </div>
 
-            <div class="mt-8 border-t border-gray-200 pt-8">
-                <h3 class="text-lg font-medium text-gray-900">Pratinjau</h3>
-                <div class="mt-4 bg-gray-100 p-4 rounded-lg">
-                    <div id="imagePreview" class="aspect-w-16 aspect-h-9">
-                        @if(isset($stok) && ($stok->foto_url || $stok->foto))
-                            <img src="{{ $stok->foto_url ?: asset('storage/' . $stok->foto) }}"
-                                 alt="{{ $stok->merk }}"
-                                 class="w-full h-full object-cover rounded-lg shadow-md">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
-                                <p class="text-gray-500">Tidak Ada Foto</p>
+                        <div class="space-y-4">
+                            <label for="nopol" class="block text-lg font-medium text-gray-700">Nopol</label>
+                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
+                                Tambah Unit Motor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Stok Motor Form -->
+                <div x-show="activeTab === 'stokMotor'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                    <form action="{{ route('admin.stok.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                        @csrf
+
+                        <div class="space-y-4">
+                            <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
+                            <input type="text" name="merk" id="merk" value="{{ old('merk') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="harga_perHari" class="block text-lg font-medium text-gray-700">Harga per Hari</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-lg">Rp</span>
+                                </div>
+                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari') }}" class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
                             </div>
-                        @endif
-                    </div>
+                        </div>
+
+                        <div x-data="{ photoPreview: null, photoUrl: '' }" class="space-y-6">
+                            <label class="block text-lg font-medium text-gray-700">Foto Motor</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-8m36-8H36m4 0v-4a4 4 0 00-4-4h-4l-6-6H14a4 4 0 00-4 4v4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <div class="flex text-sm text-gray-600">
+                                        <label for="foto" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                            <span>Upload a file</span>
+                                            <input id="foto" name="foto" type="file" class="sr-only" @change="photoPreview = URL.createObjectURL($event.target.files[0])">
+                                        </label>
+                                        <p class="pl-1">or drag and drop</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <label for="foto_url" class="block text-lg font-medium text-gray-700">Atau masukkan URL foto</label>
+                                <input type="text" name="foto_url" id="foto_url" x-model="photoUrl" @input="photoPreview = photoUrl" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div x-show="photoPreview" class="mt-4">
+                                <img :src="photoPreview" alt="Preview" class="object-cover rounded-lg h-64 w-full">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
+                                Tambah Stok Motor
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="flex items-center justify-between pt-6">
-                <a href="{{ route('admin.stok.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 active:bg-gray-300 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Kembali ke list
-                </a>
-                <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-700 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ isset($stok) ? 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' : 'M12 6v6m0 0v6m0-6h6m-6 0H6' }}"></path>
-                    </svg>
-                    {{ isset($stok) ? 'Update' : 'Tambah' }} Unit Motor
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-@include('admin.unit.script')
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 @endsection

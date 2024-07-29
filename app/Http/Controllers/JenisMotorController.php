@@ -90,11 +90,6 @@ class JenisMotorController extends Controller
     {
         $jenisMotor = JenisMotor::findOrFail($id);
 
-        // Increment the stok value
-        $stok = $jenisMotor->stok;
-        $stok->stok += 1;
-        $stok->save();
-
         // Delete the JenisMotor record
         $jenisMotor->delete();
 
