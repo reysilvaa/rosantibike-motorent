@@ -326,7 +326,7 @@
             </tr>
             <tr>
                 <th>Jenis Motor</th>
-                <td>{{ $transaksi->jenisMotor->merk ?? '_______________________' }}</td>
+                <td>{{ $transaksi->jenisMotor->stok->merk ?? '_______________________' }}</td>
                 <th class="extra-column">Helm</th>
                 <td>{{ $transaksi->helm ?? '_______' }} Buah</td>
             </tr>
