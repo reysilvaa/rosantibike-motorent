@@ -22,6 +22,7 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'uname' => 'required|string',
             'pass' => 'required|string',
+            'remember' => 'nullable|boolean', // Add validation for remember me checkbox
         ]);
 
         // Retrieve user by username
@@ -32,8 +33,8 @@ class AuthController extends Controller
             // Log the successful authentication event
             Log::info('User ' . $user->uname . ' successfully logged in.');
 
-            // Log the user in
-            Auth::login($user);
+            // Log the user in with or without remember me option
+            Auth::attempt($credentials, $credentials['remember'] ?? false);
 
             // Redirect to intended route or default route
             return redirect()->intended('admin');
@@ -47,6 +48,7 @@ class AuthController extends Controller
             'msg' => 'Username atau password salah!',
         ]);
     }
+
 
     public function logout(Request $request)
     {

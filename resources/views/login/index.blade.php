@@ -35,7 +35,7 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember_me" type="checkbox" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-700 rounded" />
+                        <input id="remember_me" type="checkbox" name="remember" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-700 rounded" />
                         <label for="remember_me" class="ml-2 text-sm text-gray-400">Remember me</label>
                     </div>
                     <a href="#" class="text-sm text-blue-400 hover:text-blue-300">Forgot your password?</a>
