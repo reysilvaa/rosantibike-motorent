@@ -5,35 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\JenisMotor;
-use Carbon\Carbon;
+use App\Models\Stok;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
+    // Display a listing of transactions
     public function index()
     {
-        // Get IDs of jenis_motor that are currently rented
-        $rentedMotorIds = Transaksi::whereIn('status', ['disewa', 'perpanjang'])->pluck('id_jenis');
+        $jenis_motors = JenisMotor::select('id_stok', DB::raw('MIN(id) as id'))
+            ->where('status', 'ready')
+            ->groupBy('id_stok')
+            ->get()
+            ->map(function ($item) {
+                // Retrieve the JenisMotor record using the selected ID
+                $jenis_motor = JenisMotor::find($item->id);
 
-        // Fetch all jenis_motor that are not rented
-        $jenis_motors = JenisMotor::whereNotIn('id', $rentedMotorIds)->get();
+                // Count the available stock for the current id_stok
+                $stok = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                    ->where('status', 'ready')
+                    ->count();
 
-        // Fetch all transactions and eager load jenis_motor
-        $transaksis = Transaksi::with('jenisMotor')->get();
+                // Add the available stock count to the JenisMotor instance
+                $jenis_motor->available_stock = $stok;
+                return $jenis_motor;
+            });
 
-        // Pass both the filtered jenis_motor and transactions to the view
-        return view('rental.index', compact('transaksis', 'jenis_motors'));
+        return view('rental.index', compact('jenis_motors'));
     }
 
+    // Show the form for creating a new transaction
+    public function create()
+    {
+        $jenis_motor = JenisMotor::all(); // Get all jenis_motor for the dropdown
+        return view('rental.index', compact('jenis_motor'));
+    }
+
+    // Store a newly created transaction in storage
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        // Validate the request data
+        $validated = $request->validate([
             'nama_penyewa' => 'required|string|max:255',
-            'wa1' => 'required|string|max:15',
-            'wa2' => 'nullable|string|max:15',
-            'wa3' => 'nullable|string|max:15',
-            'rentals' => 'required|array|min:1',
+            'wa1' => 'required|string|max:20',
+            'wa2' => 'nullable|string|max:20',
+            'wa3' => 'nullable|string|max:20',
+            'rentals' => 'required|array',
             'rentals.*.tgl_sewa' => 'required|date',
             'rentals.*.tgl_kembali' => 'required|date|after_or_equal:rentals.*.tgl_sewa',
             'rentals.*.id_jenis' => 'required|exists:jenis_motor,id',
@@ -43,34 +60,75 @@ class TransaksiController extends Controller
         DB::beginTransaction();
 
         try {
-            foreach ($validatedData['rentals'] as $rental) {
+            foreach ($validated['rentals'] as $rental) {
                 $transaksi = Transaksi::create([
-                    'id_user' => 1, // Replace with the authenticated user ID if needed
-                    'nama_penyewa' => $validatedData['nama_penyewa'],
-                    'wa1' => $validatedData['wa1'],
-                    'wa2' => $validatedData['wa2'],
-                    'wa3' => $validatedData['wa3'],
+                    'nama_penyewa' => $validated['nama_penyewa'],
+                    'wa1' => $validated['wa1'],
+                    'wa2' => $validated['wa2'],
+                    'wa3' => $validated['wa3'],
                     'tgl_sewa' => $rental['tgl_sewa'],
                     'tgl_kembali' => $rental['tgl_kembali'],
                     'id_jenis' => $rental['id_jenis'],
                     'total' => $rental['total'],
-                    'status' => 'disewa',
                 ]);
+
+                // Find the JenisMotor instance and update its status
+                $jenis_motor = JenisMotor::find($rental['id_jenis']);
+                if ($jenis_motor) {
+                    $jenis_motor->update(['status' => 'disewa']);
+                }
             }
 
             DB::commit();
-            return redirect()->route('transaksi.invoice.preview', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil dibuat.');        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return redirect()->route('transaksi.index')->with('success', 'Transactions created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'An error occurred while creating the transactions: ' . $e->getMessage());
         }
     }
-
-    public function showInvoice($id)
+    // Display the specified transaction
+    public function show(Transaksi $transaksi)
     {
-        // Fetch the transaction details
-        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
-
-
-        return view('rental.invoice', compact('transaksi'));
+        $transaksi->load('jenisMotor.stok'); // Eager load related models
+        return view('transaksi.show', compact('transaksi'));
     }
+
+    // Show the form for editing the specified transaction
+    public function edit(Transaksi $transaksi)
+    {
+        $jenisMotor = JenisMotor::all(); // Get all jenis_motor for the dropdown
+        return view('transaksi.edit', compact('transaksi', 'jenisMotor'));
+    }
+
+    // Update the specified transaction in storage
+    public function update(Request $request, Transaksi $transaksi)
+    {
+        $request->validate([
+            'id_jenis' => 'required|exists:jenis_motor,id',
+            'nama_penyewa' => 'required|string|max:255',
+            'wa1' => 'required|string|max:15',
+            'wa2' => 'nullable|string|max:15',
+            'wa3' => 'nullable|string|max:15',
+            'tgl_sewa' => 'required|date',
+            'tgl_kembali' => 'required|date|after_or_equal:tgl_sewa',
+            'total' => 'required|numeric',
+        ]);
+
+        $transaksi->update($request->all());
+        return redirect()->route('transaksi.index')->with('success', 'Transaction updated successfully.');
+    }
+
+    // In your controller (e.g., TransaksiController)
+    public function getAvailableStock(Request $request)
+    {
+        $jenisMotorId = $request->input('id_jenis');
+        $availableStock = JenisMotor::where('id', $jenisMotorId)
+            ->whereHas('stok', function($query) {
+                $query->where('status', 'ready');
+            })
+            ->count();
+
+        return response()->json(['available_stock' => $availableStock]);
+    }
+
 }

@@ -1,8 +1,6 @@
 <?php
-
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,14 +11,21 @@ class JenisMotor extends Model
     protected $table = 'jenis_motor';
 
     protected $fillable = [
-        'merk',
+        'id_stok',
+        'status',
         'nopol',
-        'foto',
-        'harga_perHari',
+        'created_at',
+        'updated_at',
     ];
+    public $timestamps = false;
+
+    public function stok()
+    {
+        return $this->belongsTo(Stok::class, 'id_stok', 'id');
+    }
 
     public function transaksi()
     {
-        return $this->hasOne(Transaksi::class, 'id_jenis');
+        return $this->hasMany(Transaksi::class, 'id_jenis', 'id');
     }
 }

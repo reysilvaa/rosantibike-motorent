@@ -62,26 +62,25 @@ $(document).ready(function() {
             search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
         }
     });
-
     var table = $('#data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('admin.transaksi.data') }}",
-        fixedHeader: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        columns: [
-            {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'nama_penyewa', name: 'nama_penyewa'},
-            {data: 'jenis_motor.merk', name: 'jenis_motor.merk'},
-            {data: 'tgl_sewa', name: 'tgl_sewa'},
-            {data: 'tgl_kembali', name: 'tgl_kembali'},
-            {data: 'status', name: 'status'},
-            {data: 'total', name: 'total'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
+    processing: true,
+    serverSide: true,
+    ajax: "{{ route('admin.transaksi.data') }}",
+    fixedHeader: true,
+    paging: true,
+    searching: true,
+    ordering: true,
+    columns: [
+        {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
+        {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+        {data: 'nama_penyewa', name: 'nama_penyewa'},
+        {data: 'merk_motor', name: 'merk_motor'},
+        {data: 'tgl_sewa', name: 'tgl_sewa'},
+        {data: 'tgl_kembali', name: 'tgl_kembali'},
+        {data: 'status', name: 'status'},
+        {data: 'total', name: 'total'},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
+    ],
         drawCallback: function() {
             $('.paginate_button').addClass('px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100');
             $('.paginate_button.current').addClass('bg-blue-600 text-white hover:bg-blue-700').removeClass('text-gray-700 bg-white hover:bg-gray-100');

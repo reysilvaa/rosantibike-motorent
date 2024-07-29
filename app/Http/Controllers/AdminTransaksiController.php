@@ -21,14 +21,12 @@ class AdminTransaksiController extends Controller
     public function getData(Request $request)
     {
         if ($request->ajax()) {
-            $data = Transaksi::with('jenisMotor')->select('transaksi.*');
-
+            $data = Transaksi::with('jenisMotor.stok')->select('transaksi.*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-2 text-xs flex items-center justify-center"><i class="fa-solid fa-pen"></i></a>';
                     $cetakBtn = '<a href="' . route('transaksi.invoice.preview', $row->id) . '" target="_blank" class="bg-blue-600 text-white hover:bg-blue-700 rounded px-3 py-2 text-xs flex items-center justify-center" title="Preview Invoice"><i class="fa-solid fa-eye"></i></a>';
-
                     return '<div class="flex space-x-2 justify-center">' . $editBtn . $cetakBtn . '</div>';
                 })
                 ->addColumn('checkbox', function($row) {
@@ -40,8 +38,11 @@ class AdminTransaksiController extends Controller
                 ->addColumn('tgl_kembali', function($row) {
                     return $row->tgl_kembali->format('d-m-Y');
                 })
-                ->addColumn('jenis_motor_merk', function($row) {
-                    return $row->jenisMotor->merk ?? ''; // Adjust if your relationship or field names are different
+                ->addColumn('merk_motor', function($row) {
+                    return $row->jenisMotor->stok->merk ?? '';
+                })
+                ->addColumn('status', function($row) {
+                    return $row->jenisMotor->status ?? '';
                 })
                 ->addColumn('total', function($row) {
                     return "Rp. " . number_format($row->total, 0, ',', '.');
@@ -110,7 +111,7 @@ class AdminTransaksiController extends Controller
         $transaksi->tgl_kembali = $validated['tgl_kembali'];
         $transaksi->id_jenis = $validated['id_jenis'];
         $transaksi->total = $totalHargaBaru;
-        $transaksi->status = 'perpanjang'; // Atau status sesuai kebutuhan
+        $transaksi->jenisMotor->status = 'perpanjang'; // Atau status sesuai kebutuhan
         $transaksi->save();
 
         // Redirect dengan pesan sukses
@@ -120,14 +121,39 @@ class AdminTransaksiController extends Controller
 
     public function destroy(Transaksi $transaksi)
     {
+        $jenisMotor = JenisMotor::find($transaksi->id_jenis);
+
+        // Check if JenisMotor exists
+        if ($jenisMotor) {
+            // Update the status to 'ready'
+            $jenisMotor->update(['status' => 'ready']);
+        }
+
+        // Delete the transaksi record
         $transaksi->delete();
         return response()->json(['success'=>'Transaksi deleted successfully.']);
     }
 
     public function bulkDelete(Request $request)
     {
+        // Get the IDs from the request
         $ids = $request->ids;
+
+        // Delete the transactions with the specified IDs
+        Transaksi::whereIn('id', $ids)->each(function ($transaksi) {
+            // Find the JenisMotor associated with the current transaksi
+            $jenisMotor = JenisMotor::find($transaksi->id_jenis);
+
+            // Check if JenisMotor exists and update its status
+            if ($jenisMotor) {
+                $jenisMotor->update(['status' => 'ready']);
+            }
+        });
+
+        // Delete the transactions after updating JenisMotor statuses
         Transaksi::whereIn('id', $ids)->delete();
-        return response()->json(['success'=>"Transaksi Deleted successfully."]);
+
+        // Return a success response
+        return response()->json(['success' => "Transaksi deleted successfully."]);
     }
 }

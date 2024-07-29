@@ -5,41 +5,36 @@
 <div x-data="{ showModal: false, selectedMotor: null }" class="bg-gray-50 min-h-screen p-6">
     <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 class="text-3xl font-semibold text-gray-900 mb-6">
-            Jenis Motor Management
+            Stok Management
         </h1>
 
         <div class="mb-6">
-            <a href="{{ route('admin.jenisMotor.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-500 transition-colors duration-300">
-                Add New Jenis Motor
-            </a>
             <a href="{{ route('admin.stok.create') }}"
                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-500 transition-colors duration-300">
-                Add New Merk Motor
+                Add New Stok
             </a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($jenisMotors as $jenisMotor)
+            @foreach ($stok as $item)
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:scale-105">
                     <div class="relative w-full" style="padding-top: 66.67%; max-width: 600px; max-height: 400px;">
-                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->foto)) : 'https://via.placeholder.com/600x400' }}"
-                             alt="{{ $jenisMotor->merk }}"
+                        <img src="{{ $item->foto ? (filter_var($item->foto, FILTER_VALIDATE_URL) ? $item->foto : asset('storage/' . $stok->foto)) : 'https://via.placeholder.com/600x400' }}"
+                             alt="{{ $item->merk }}"
                              class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                              style="max-width: 600px; max-height: 400px;">
                     </div>
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ $jenisMotor->stok->merk }}</h2>
-                        <p class="text-gray-700 mb-2">Nopol: {{ $jenisMotor->nopol }}</p>
-                        <p class="text-gray-700 mb-4">Harga per Hari: Rp {{ number_format($jenisMotor->stok->harga_perHari, 0, ',', '.') }}</p>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ $item->merk }}</h2>
+                        <p class="text-gray-700 mb-4">Harga per Hari: Rp {{ number_format($item->harga_perHari, 0, ',', '.') }}</p>
                         <div class="flex space-x-2">
-                            <a href="{{ route('admin.jenisMotor.show', $jenisMotor->id) }}" class="inline-flex items-center px-3 py-2 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-500 transition-colors duration-300">
+                            <a href="{{ route('admin.stok.show', $item->id) }}" class="inline-flex items-center px-3 py-2 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-500 transition-colors duration-300">
                                 View
                             </a>
-                            <a href="{{ route('admin.jenisMotor.edit', $jenisMotor->id) }}" class="inline-flex items-center px-3 py-2 bg-yellow-500 text-white font-medium rounded-md shadow-sm hover:bg-yellow-400 transition-colors duration-300">
+                            <a href="{{ route('admin.stok.edit', $item->id) }}" class="inline-flex items-center px-3 py-2 bg-yellow-500 text-white font-medium rounded-md shadow-sm hover:bg-yellow-400 transition-colors duration-300">
                                 Edit
                             </a>
-                            <form action="{{ route('admin.jenisMotor.destroy', $jenisMotor->id) }}" method="POST" onsubmit="return confirm('Are you sure?')" class="inline">
+                            <form action="{{ route('admin.stok.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Are you sure?')" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-3 py-2 bg-red-500 text-white font-medium rounded-md shadow-sm hover:bg-red-400 transition-colors duration-300">

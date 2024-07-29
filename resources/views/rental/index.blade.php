@@ -62,10 +62,16 @@
                             <div class="mb-6">
                                 <div class="flex flex-wrap gap-10">
                                     @foreach($jenis_motors as $jenis_motor)
-                                    <div class="kanban-item p-6 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-200 hover:bg-blue-300 transition-colors duration-200 ease-in-out w-64 flex flex-col justify-between" data-value="{{ $jenis_motor->id }}" data-price="{{ $jenis_motor->harga_perHari }}">
-                                        <img src="{{ $jenis_motor->foto ? (filter_var($jenis_motor->foto, FILTER_VALIDATE_URL) ? $jenis_motor->foto : asset('storage/' . $jenis_motor->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenis_motor->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
-                                        <div class="text-lg font-medium">{{ $jenis_motor->merk }}</div>
-                                        <div class="text-base text-gray-700">Rp. {{ number_format($jenis_motor->harga_perHari, 0, ',', '.') }}</div>
+                                    <div class="kanban-item p-6 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-200 hover:bg-blue-300 transition-colors duration-200 ease-in-out w-64 flex flex-col justify-between"
+                                         data-value="{{ $jenis_motor->id }}"
+                                         data-price="{{ $jenis_motor->stok->harga_perHari }}"
+                                         data-stock="{{ $jenis_motor->available_stock }}">
+                                        <img src="{{ $jenis_motor->stok->foto ? (filter_var($jenis_motor->stok->foto, FILTER_VALIDATE_URL) ? $jenis_motor->stok->foto : asset('storage/' . $jenis_motor->stok->foto)) : 'https://via.placeholder.com/600x400' }}"
+                                             alt="{{ $jenis_motor->stok->merk ?: 'Motor Image' }}"
+                                             class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
+                                        <div class="text-lg font-medium">{{ $jenis_motor->stok->merk }}</div>
+                                        <div class="text-base text-gray-700">Rp. {{ number_format($jenis_motor->stok->harga_perHari, 0, ',', '.') }}</div>
+                                        <div class="text-sm text-gray-600">Stock: <span class="stock-count">{{ $jenis_motor->available_stock }}</span></div>
                                     </div>
                                     @endforeach
                                 </div>

@@ -59,8 +59,8 @@
             <h3 class="text-2xl font-bold text-gray-800 mb-8">Pilih Jenis Motor</h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="jenisMotorKanban">
                 @foreach($jenisMotorList as $jenisMotor)
-                    <div class="bg-white border-2 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-indigo-500" data-id="{{ $jenisMotor->id }}" data-price="{{ $jenisMotor->harga_perHari }}">
-                        <img src="{{ $jenisMotor->foto ? (filter_var($jenisMotor->foto, FILTER_VALIDATE_URL) ? $jenisMotor->foto : asset('storage/' . $jenisMotor->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenisMotor->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
+                    <div class="bg-white border-2 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-indigo-500" data-id="{{ $jenisMotor->id }}" data-price="{{ $jenisMotor->stok->harga_perHari }}">
+                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->stok->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenisMotor->stok->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
                         <h3 class="text-sm font-semibold text-gray-800">{{ $jenisMotor->merk }}</h3>
                         <p class="text-xs text-gray-600">Nopol: {{ $jenisMotor->nopol }}</p>
                         <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->harga_perHari, 0, ',', '.') }}/hari</p>
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const rincianDetailEl = document.getElementById('rincianDetail');
 
     const originalTotal = parseFloat("{{ $transaksi->total }}");
-    const originalMotor = "{{ $transaksi->jenisMotor->merk }} (Nopol: {{ $transaksi->jenisMotor->nopol }})";
+    const originalMotor = "{{ $transaksi->jenisMotor->stok->merk }} (Nopol: {{ $transaksi->jenisMotor->nopol }})";
     let currentMotor = originalMotor;
 
     function formatRupiah(angka) {

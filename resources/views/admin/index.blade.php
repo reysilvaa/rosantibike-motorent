@@ -116,7 +116,7 @@ $(document).ready(function() {
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'nama_penyewa', name: 'nama_penyewa'},
-            {data: 'jenis_motor.merk', name: 'jenisMotor.merk'},
+            {data: 'merk_motor', name: 'merk_motor'},
             {data: 'tgl_sewa', name: 'tgl_sewa'},
             {data: 'tgl_kembali', name: 'tgl_kembali'},
             {data: 'status', name: 'status'},

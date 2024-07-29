@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\StokController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WipeDataController;
@@ -35,6 +36,9 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::get('invoice/{id}/preview', [InvoiceController::class, 'previewInvoice'])->name('invoice.preview');
     Route::get('invoice/{id}/download', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
 });
+// In your web.php (or routes file)
+Route::post('/transaksi/available-stock', [TransaksiController::class, 'getAvailableStock']);
+
 
 // Admin Routes
 Route::middleware(['auth'])->group(function () {
@@ -80,6 +84,14 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{user}', [UserController::class, 'update'])->name('update');
             Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
         });
-
+        Route::prefix('stok')->name('admin.stok.')->group(function () {
+            Route::get('/', [StokController::class, 'index'])->name('index');
+            Route::get('/create', [StokController::class, 'create'])->name('create');
+            Route::post('/', [StokController::class, 'store'])->name('store');
+            Route::get('/{stok}', [StokController::class, 'show'])->name('show');
+            Route::get('/{stok}/edit', [StokController::class, 'edit'])->name('edit');
+            Route::put('/{stok}', [StokController::class, 'update'])->name('update');
+            Route::delete('/{stok}', [StokController::class, 'destroy'])->name('destroy');
+        });
     });
 });
