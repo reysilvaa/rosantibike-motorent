@@ -98,12 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    let selectedIdJenis = new Set();
     function addKanbanSelectListeners() {
         document.querySelectorAll('.rental-form').forEach((form, formIndex) => {
             form.querySelectorAll('.kanban-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const motorId = this.getAttribute('data-value');
                     const availableStock = parseInt(this.getAttribute('data-stock'));
+                    const allIds = JSON.parse(this.getAttribute('data-all-ids'));
                     const selectedCount = selectedMotors[motorId] || 0;
 
                     if (selectedCount >= availableStock && !this.classList.contains('selected')) {
@@ -116,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (i.classList.contains('selected')) {
                             const prevMotorId = i.getAttribute('data-value');
                             selectedMotors[prevMotorId]--;
+                            // Remove the previously selected id_jenis
+                            selectedIdJenis.delete(parseInt(form.querySelector('.id_jenis').value));
                         }
                         i.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
                         i.classList.add('bg-gray-100', 'border-gray-200');
@@ -125,7 +129,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Add selection to the clicked item
                     this.classList.add('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
                     this.classList.remove('bg-gray-100', 'border-gray-200');
-                    form.querySelector('.id_jenis').value = motorId;
+
+                    // Select an available id_jenis
+                    const availableIds = allIds.filter(id => !selectedIdJenis.has(id));
+                    if (availableIds.length === 0) {
+                        errorMessageDiv.textContent = 'Tidak ada motor tersedia untuk jenis ini';
+                        return;
+                    }
+                    const selectedId = availableIds[Math.floor(Math.random() * availableIds.length)];
+                    selectedIdJenis.add(selectedId);
+                    form.querySelector('.id_jenis').value = selectedId;
                     form.querySelector('.id_jenis').dataset.price = this.getAttribute('data-price');
 
                     // Update selected motors count
@@ -145,6 +158,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function resetSelections() {
+        selectedIdJenis.clear();
+        selectedMotors = {};
+        document.querySelectorAll('.rental-form').forEach(form => {
+            form.querySelectorAll('.kanban-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
+                item.classList.add('bg-gray-100', 'border-gray-200');
+                item.querySelector('.selected-text')?.remove();
+            });
+            form.querySelector('.id_jenis').value = '';
+        });
+        updateMotorSelectionStatus();
+    }
+
     addRentalBtn.addEventListener('click', function() {
         const newRentalForm = rentalForms.children[0].cloneNode(true);
         rentalCount++;
@@ -162,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             item.querySelector('.selected-text')?.remove();
             item.querySelector('.out-of-stock-text')?.remove();
         });
+        resetSelections();
         rentalForms.appendChild(newRentalForm);
         addEventListeners(newRentalForm);
         addKanbanSelectListeners();

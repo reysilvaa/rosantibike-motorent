@@ -65,7 +65,8 @@
                                     <div class="kanban-item p-6 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-200 hover:bg-blue-300 transition-colors duration-200 ease-in-out w-64 flex flex-col justify-between"
                                          data-value="{{ $jenis_motor->id }}"
                                          data-price="{{ $jenis_motor->stok->harga_perHari }}"
-                                         data-stock="{{ $jenis_motor->available_stock }}">
+                                         data-stock="{{ $jenis_motor->available_stock }}"
+                                         data-all-ids="{{ $jenis_motor->all_ids }}">
                                         <img src="{{ $jenis_motor->stok->foto ? (filter_var($jenis_motor->stok->foto, FILTER_VALIDATE_URL) ? $jenis_motor->stok->foto : asset('storage/' . $jenis_motor->stok->foto)) : 'https://via.placeholder.com/600x400' }}"
                                              alt="{{ $jenis_motor->stok->merk ?: 'Motor Image' }}"
                                              class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">

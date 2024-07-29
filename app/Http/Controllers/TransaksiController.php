@@ -10,38 +10,38 @@ use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
-    // Display a listing of transactions
     public function index()
     {
         $jenis_motors = JenisMotor::select('id_stok', DB::raw('MIN(id) as id'))
-            ->where('status', 'ready')
             ->groupBy('id_stok')
             ->get()
             ->map(function ($item) {
-                // Retrieve the JenisMotor record using the selected ID
                 $jenis_motor = JenisMotor::find($item->id);
 
-                // Count the available stock for the current id_stok
-                $stok = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
                     ->where('status', 'ready')
                     ->count();
 
-                // Add the available stock count to the JenisMotor instance
-                $jenis_motor->available_stock = $stok;
+                $jenis_motor->available_stock = $available_stock;
+                $jenis_motor->total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
+
+                // Get all id_jenis for this id_stok
+                $jenis_motor->all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                    ->pluck('id')
+                    ->toJson();
+
                 return $jenis_motor;
             });
 
         return view('rental.index', compact('jenis_motors'));
     }
 
-    // Show the form for creating a new transaction
     public function create()
     {
-        $jenis_motor = JenisMotor::all(); // Get all jenis_motor for the dropdown
+        $jenis_motor = JenisMotor::all();
         return view('rental.index', compact('jenis_motor'));
     }
 
-    // Store a newly created transaction in storage
     public function store(Request $request)
     {
         // Validate the request data
@@ -72,7 +72,6 @@ class TransaksiController extends Controller
                     'total' => $rental['total'],
                 ]);
 
-                // Find the JenisMotor instance and update its status
                 $jenis_motor = JenisMotor::find($rental['id_jenis']);
                 if ($jenis_motor) {
                     $jenis_motor->update(['status' => 'disewa']);
@@ -86,21 +85,18 @@ class TransaksiController extends Controller
             return back()->with('error', 'An error occurred while creating the transactions: ' . $e->getMessage());
         }
     }
-    // Display the specified transaction
     public function show(Transaksi $transaksi)
     {
-        $transaksi->load('jenisMotor.stok'); // Eager load related models
+        $transaksi->load('jenisMotor.stok');
         return view('transaksi.show', compact('transaksi'));
     }
 
-    // Show the form for editing the specified transaction
     public function edit(Transaksi $transaksi)
     {
         $jenisMotor = JenisMotor::all(); // Get all jenis_motor for the dropdown
         return view('transaksi.edit', compact('transaksi', 'jenisMotor'));
     }
 
-    // Update the specified transaction in storage
     public function update(Request $request, Transaksi $transaksi)
     {
         $request->validate([
@@ -118,7 +114,6 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.index')->with('success', 'Transaction updated successfully.');
     }
 
-    // In your controller (e.g., TransaksiController)
     public function getAvailableStock(Request $request)
     {
         $jenisMotorId = $request->input('id_jenis');
