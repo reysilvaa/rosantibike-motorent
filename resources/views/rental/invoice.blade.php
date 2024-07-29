@@ -149,7 +149,7 @@
         }
 
         .terms {
-            font-size: 10px;
+            font-size: 10.3px;
             color: #333;
             margin-top: 20px;
             border: 1px solid #ddd;
@@ -275,6 +275,39 @@
             align-items: flex-end;
         }
     }
+    .dokumen-jaminan {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10rem;
+        color: #666;
+        padding: 0.5rem;
+    }
+
+    .checkbox-item {
+        font-size: 0.790rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 10px;
+        margin-right: 20px
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        margin: 0;
+        vertical-align: middle;
+        position: relative;
+        top: 4px;
+    }
+
+    .underline {
+        border-bottom: 1px solid #000;
+        padding-bottom: 1px;
+    }
+
+    .full-width {
+        flex-grow: 1;
+        min-width: 150px;
+    }
     </style>
 </head>
 <body class="bg-white dark:bg-zinc-800">
@@ -376,19 +409,31 @@
             </tr>
         </table>
     </div>
-
-    <!-- Keterangan Lain -->
     <div class="section mt-4">
-        <div class="section-header">Keterangan Lain</div>
+        <div class="section-header">Dokumen Jaminan</div>
         <table class="table">
             <tr>
-                <td class="notes">
-                    {{ $transaksi->keterangan_lain ?? '____________________________________________________-' }}
+                <td class="dokumen-jaminan">
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        e-KTP
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        SIM _____
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        Kartu Nikah
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        Lainnya ________________</span>
+                    </label>
                 </td>
             </tr>
         </table>
     </div>
-
     <div class="terms">
         <h4>PENTING DIKETAHUI KETENTUAN-KETENTUAN DIBAWAH INI:</h4>
         <ol>
