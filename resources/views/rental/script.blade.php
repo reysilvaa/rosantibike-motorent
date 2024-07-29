@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
             item.querySelector('.selected-text')?.remove();
             item.querySelector('.out-of-stock-text')?.remove();
         });
-        resetSelections();
         rentalForms.appendChild(newRentalForm);
+        // resetSelections();
         addEventListeners(newRentalForm);
         addKanbanSelectListeners();
         updateMotorSelectionStatus();
