@@ -21,7 +21,7 @@ class JenisMotorController extends Controller
     // Show the form for creating a new resource.
     public function create()
     {
-        $jenisMotors = JenisMotor::with('stok')->get();
+        $jenisMotors = JenisMotor::with('stok')->distinct('id_stok')->get();
         $stoks = Stok::all(); // Retrieve all stok records
 
 

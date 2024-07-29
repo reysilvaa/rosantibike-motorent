@@ -5,13 +5,13 @@
 <div x-data="{ showModal: false, selectedMotor: null }" class="bg-gray-50 min-h-screen p-6">
     <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 class="text-3xl font-semibold text-gray-900 mb-6">
-            Stok Management
+            Merk Motor
         </h1>
 
         <div class="mb-6">
             <a href="{{ route('admin.stok.create') }}"
                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-500 transition-colors duration-300">
-                Add New Stok
+                Tambah Merk Baru
             </a>
         </div>
 

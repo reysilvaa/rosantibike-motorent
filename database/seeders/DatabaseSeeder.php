@@ -2,22 +2,25 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Stok;
+use App\Models\JenisMotor;
+use App\Models\Transaksi;
+
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // $this->call(UsersTableSeeder::class);
+        // Seed users first
         $this->call(UserSeeder::class);
-        // $this->call(JenisMotorSeeder::class);
+
+        // Create stock data
+        Stok::factory(10)->create()->each(function ($stok) {
+            // Create related motor types
+            JenisMotor::factory(5)->create(['id_stok' => $stok->id])->each(function ($jenisMotor) {
+                // Create related transactions
+                // Transaksi::factory(3)->create(['id_jenis' => $jenisMotor->id]);
+            });
+        });
     }
 }

@@ -18,7 +18,9 @@ class StokController extends Controller
     // Show the form for creating a new resource.
     public function create()
     {
-        return view('admin.stok.create');
+        $stoks = Stok::all();
+
+        return view('admin.stok.create', compact('stoks'));
     }
 
     // Store a newly created resource in storage.
