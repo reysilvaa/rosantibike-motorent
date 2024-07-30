@@ -5,29 +5,39 @@
         <div class="relative">
             <div class="swiper-container overflow-hidden">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="bg-white rounded-lg p-8 shadow-lg transform transition duration-300 hover:scale-105">
-                            <div class="flex items-center mb-6">
-                                <img src="https://example.com/avatar1.jpg" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-blue-500 mr-4">
-                                <div>
-                                    <h3 class="text-2xl font-semibold text-gray-800">John Doe</h3>
-                                    <p class="text-blue-600">Adventurer dari Jakarta</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-6 italic">"Pengalaman luar biasa! Motor yang disewakan dalam kondisi sempurna, dan staf sangat membantu dalam merekomendasikan rute terbaik di Malang. Pasti akan kembali lagi!"</p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-yellow-400">
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                </div>
-                                <span class="text-gray-500">2 hari yang lalu</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add more swiper-slide elements for additional testimonials -->
+                    <x-review-card
+                        avatar="https://lh3.googleusercontent.com/a-/ALV-UjUagSwJ8uvyLK0unN-bvLzI2hGU_9S3VXD6iZLRaShUbOsZvK3p=w45-h45-p-rp-mo-ba6-br100"
+                        name="Muhammad Rosyid"
+                        role="Local Guide"
+                        review="pelayanan mantap, ramah dan responsif, kondisi motor oke, include helm dan jas hujan, harga terjangkau, lokasi mudah ditengah kota, mudah diakses, proses cepat"
+                        rating="5"
+                        timeAgo="5 bulan yang lalu"
+                    />
+                <!-- Add more swiper-slide elements for additional testimonials -->
+                <x-review-card
+                        avatar="https://lh3.googleusercontent.com/a-/ALV-UjUn_5YJOLPMhTrNOZ_tc5cZTS-Rloh6udz-WlX7kzZTZGdtel-L=w75-h75-p-rp-mo-br100"
+                        name="rifdah audia"
+                        role="Wisatawan"
+                        review="Pelayanan ramah, bisa di order lebih cepat dari perkiraan di gform, dan bisa req 2 helm dg 2 jas hujan, terima kasihh kak sdh di bantu sukses selalu."
+                        rating="5"
+                        timeAgo="6 bulan yang lalu"
+                    />
+                <x-review-card
+                    avatar="https://lh3.googleusercontent.com/a-/ALV-UjXULjQEmj0Xli9PiXAIMLVSB3PUuiMnnmaOWbvYQS329iwoQ1m_=w45-h45-p-rp-mo-ba5-br100"
+                    name="Firdaus Manah"
+                    role="Local Guide"
+                    review="saya menggunakan motor Yamaha Lexi, Terima kasih Rosantibike Motorent 🙏 semoga selalu amanah kedepannya. …"
+                    rating="5"
+                    timeAgo="7 bulan yang lalu"
+                />
+                <x-review-card
+                avatar="https://lh3.googleusercontent.com/a/ACg8ocKXqwT2NF64dhGvLYO0rQBKH2Zx-gurzVODGGrSk3mU6uyOEQ=w45-h45-p-rp-mo-br100"
+                name="Pengusaha Bisnis"
+                role="Pengunjung"
+                review="Sangat membantu saya dan istri  untuk keliling kota, kabupaten malang dan batu. respon cepat, helem 2 bersih, ada jas hujan  juga dua dalam jok, stnk lengkap, motor kuat, urusan rental tidak ribet, Terpercaya, bisa ambil di tempat maupun di antar dan jemput. suatu saat nanti akan kesini kalau liburan dari kalimantan ke malang lagi. sukses dan sehat selalu bpk ibu rosanti, By. Ahmad Irfan Kalimantan"
+                rating="5"
+                timeAgo="1 bulan yang lalu"
+                />
                 </div>
             </div>
             <div class="swiper-button-next absolute top-1/2 -right-12 transform -translate-y-1/2 bg-white rounded-full shadow-md p-4 focus:outline-none"></div>

@@ -8,6 +8,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        watch: {
+            usePolling: true,
+        },
+    },
     css: {
         postcss: './postcss.config.cjs',
     },

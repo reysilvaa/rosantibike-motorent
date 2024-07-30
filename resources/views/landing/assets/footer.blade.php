@@ -2,8 +2,11 @@
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h3 class="text-2xl font-bold mb-4">Rental Motor Malang</h3>
-                <p class="text-gray-400">Solusi terbaik untuk kebutuhan transportasi Anda di Malang.</p>
+                <h3 class="text-2xl font-bold mb-4">RosantiBike Motorent</h3>
+                {{-- <h3 class="text-2xl font-bold mb-4">
+                    <img src="https://i.ibb.co.com/k6sDTzz/Upscale-Image-1-20240729-removebg.png" alt="Upscale-Image-1-20240729" class="logo-image max-w-[250px] h-auto">
+                </h3> --}}
+                <p class="text-gray-400">Setiap perjalanan penuh tawa Anda adalah kisah sukses kami.</p>
             </div>
             <div>
                 <h4 class="text-lg font-semibold mb-4">Tautan Cepat</h4>
@@ -18,8 +21,8 @@
             <div>
                 <h4 class="text-lg font-semibold mb-4">Kontak</h4>
                 <ul class="space-y-2 text-gray-400">
-                    <li>Jl. Soekarno Hatta No. 123, Malang</li>
-                    <li>Telepon: (0341) 123456</li>
+                    <li>Jl. Bauksit No 90C, Malang</li>
+                    <li>Telepon: (+62) 8233-104-4747</li>
                     <li>Email: info@rentalmotormalang.com</li>
                 </ul>
             </div>
@@ -39,7 +42,7 @@
             </div>
         </div>
         <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Rental Motor Malang. All rights reserved.</p>
+            <p>&copy; 2024 RosantiBike Motorent. All rights reserved.</p>
         </div>
     </div>
 </footer>
