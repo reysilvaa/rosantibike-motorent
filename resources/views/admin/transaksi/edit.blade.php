@@ -63,7 +63,7 @@
                         <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->stok->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenisMotor->stok->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
                         <h3 class="text-sm font-semibold text-gray-800">{{ $jenisMotor->stok->merk }}</h3>
                         <p class="text-xs text-gray-600">Nopol: {{ $jenisMotor->nopol }}</p>
-                        <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->harga_perHari, 0, ',', '.') }}/hari</p>
+                        <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->stok->harga_perHari, 0, ',', '.') }}/hari</p>
                     </div>
                 @endforeach
             </div>
@@ -167,9 +167,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 motorSesudahEl.classList.remove('text-rose-500', 'text-sm');
                 lamaPerpanjangEl.classList.remove('text-rose-500', 'text-sm');
             }
-
-            rincianBiayaEl.textContent = formatRupiah(newTotal);
-            rincianDetailEl.textContent = `${formatRupiah(originalTotal)} (sebelum perpanjang) + ${formatRupiah(biayaPerpanjangan)} (biaya ${currentMotor} untuk ${jumlahHari} hari) = ${formatRupiah(newTotal)}`;
+            const rincianBiaya = newTotal - originalTotal;
+            rincianBiayaEl.textContent = `Total : ${formatRupiah(rincianBiaya)}`;
+            rincianDetailEl.textContent = `${formatRupiah(biayaPerpanjangan)} x ${jumlahHari} hari = ${formatRupiah(rincianBiaya)}`;
+            // rincianDetailEl.textContent = `${formatRupiah(originalTotal)} ${formatRupiah(biayaPerpanjangan)} (biaya ${currentMotor} untuk ${jumlahHari} hari) = ${formatRupiah(newTotal)}`;
 
             totalInput.value = newTotal;
         }
