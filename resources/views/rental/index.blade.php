@@ -106,6 +106,12 @@
                         <label for="grand_total" class="w-1/3 text-sm font-medium text-gray-700">Total Keseluruhan</label>
                         <input type="text" id="grand_total" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" readonly>
                     </div>
+                    <div class="mb-6 flex items-center gap-3">
+                        <input type="checkbox" id="agreement" name="agreement" required class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="agreement" class="text-sm font-medium text-gray-700">
+                            Saya Setuju <a href="#" class="text-indigo-600 hover:text-indigo-500">dengan semua syarat dan aturan yang berlaku</a>.
+                        </label>
+                    </div>
                     <button type="submit" class="inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit Booking</button>
                 </form>
             </div>

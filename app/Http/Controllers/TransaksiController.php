@@ -57,6 +57,7 @@ class TransaksiController extends Controller
             'rentals.*.total' => 'required|numeric',
             'rentals.*.jashujan' => 'required|integer',
             'rentals.*.helm' => 'required|integer',
+            'agreement' => 'accepted',
         ]);
 
         DB::beginTransaction();
