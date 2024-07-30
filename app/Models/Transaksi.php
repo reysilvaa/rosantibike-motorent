@@ -19,6 +19,8 @@ class Transaksi extends Model
         'wa3',
         'tgl_sewa',
         'tgl_kembali',
+        'helm',
+        'jashujan',
         'total',
     ];
 

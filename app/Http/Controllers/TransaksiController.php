@@ -55,6 +55,8 @@ class TransaksiController extends Controller
             'rentals.*.tgl_kembali' => 'required|date|after_or_equal:rentals.*.tgl_sewa',
             'rentals.*.id_jenis' => 'required|exists:jenis_motor,id',
             'rentals.*.total' => 'required|numeric',
+            'rentals.*.jashujan' => 'required|integer',
+            'rentals.*.helm' => 'required|integer',
         ]);
 
         DB::beginTransaction();
@@ -70,6 +72,8 @@ class TransaksiController extends Controller
                     'tgl_kembali' => $rental['tgl_kembali'],
                     'id_jenis' => $rental['id_jenis'],
                     'total' => $rental['total'],
+                    'helm' => $rental['helm'],
+                    'jashujan' => $rental['jashujan'],
                 ]);
 
                 $jenis_motor = JenisMotor::find($rental['id_jenis']);
@@ -108,6 +112,8 @@ class TransaksiController extends Controller
             'tgl_sewa' => 'required|date',
             'tgl_kembali' => 'required|date|after_or_equal:tgl_sewa',
             'total' => 'required|numeric',
+            'helm' => 'required|integer',
+            'jashujan' => 'required|integer',
         ]);
 
         $transaksi->update($request->all());

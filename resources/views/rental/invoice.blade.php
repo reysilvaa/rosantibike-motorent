@@ -367,7 +367,7 @@
                 <th>No. Pol</th>
                 <td>{{ $transaksi->jenisMotor->nopol ?? '-' }}</td>
                 <th class="extra-column">Jas Hujan</th>
-                <td>{{ $transaksi->jas_hujan ?? '_______' }} Buah</td>
+                <td>{{ $transaksi->jashujan ?? '_______' }} Buah</td>
             </tr>
         </table>
     </div>

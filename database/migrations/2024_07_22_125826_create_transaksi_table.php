@@ -18,6 +18,8 @@ class CreateTransaksiTable extends Migration
             $table->string('wa3')->nullable();
             $table->dateTime('tgl_sewa');
             $table->dateTime('tgl_kembali');
+            $table->integer('helm');
+            $table->integer('jashujan');
             $table->decimal('total', 10, 2);
             $table->timestamps();
         });

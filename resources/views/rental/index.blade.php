@@ -24,7 +24,7 @@
                     @csrf
                     <div class="mb-4 flex items-center gap-4">
                         <label for="nama_penyewa" class="w-1/3 text-sm font-medium text-gray-700">Nama Penyewa</label>
-                        <input type="text" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" id="nama_penyewa" name="nama_penyewa" placeholder="John Doe" required>
+                        <input type="text" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" id="nama_penyewa" name="nama_penyewa" placeholder="RosantiBike" required>
                     </div>
 
                     <div class="mb-4 flex items-center gap-4">
@@ -56,6 +56,15 @@
                                 <label for="tgl_kembali" class="w-1/3 text-sm font-medium text-gray-700">Tanggal Kembali</label>
                                 <input type="date" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 tgl_kembali" name="rentals[0][tgl_kembali]" required>
                             </div>
+                            <div class="mb-4 flex items-center gap-4">
+                                <label for="helm" class="w-1/3 text-sm font-medium text-gray-700">Helm </label>
+                                <input type="number" id="helm" name="rentals[0][helm]" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
+                            </div>
+                            <div class="mb-4 flex items-center gap-4">
+                                <label for="jashujan" class="w-1/3 text-sm font-medium text-gray-700">Jas Hujan </label>
+                                <input type="number" id="jashujan" name="rentals[0][jashujan]" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
+                            </div>
+
 
                             <label for="jenis_motor" class="block text-sm font-medium text-gray-700">Pilih Jenis Motor</label>
                             <label for="jenis_motor" class="block text-xs font-medium text-red-700">(Motor yang ada dipilihan adalah motor yang sedang dalam kondisi terbaik!)</label>
