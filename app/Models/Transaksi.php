@@ -25,10 +25,11 @@ class Transaksi extends Model
     ];
 
     protected $casts = [
-        'tgl_sewa' => 'date',
-        'tgl_kembali' => 'date',
+        'tgl_sewa' => 'datetime',
+        'tgl_kembali' => 'datetime',
         'total' => 'decimal:2',
     ];
+
 
     // public function user()
     // {
