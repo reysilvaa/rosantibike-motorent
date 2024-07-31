@@ -21,7 +21,7 @@ Route::get('/', function () {
     return (new LandingController)->index();
 })->name('landing');
 
-// New route for motor-matic
+// Landing Component
 Route::get('/motor-matic', [LandingController::class, 'motorMatic'])->name('landing.motor-matic');
 
 // Authentication Routes
@@ -35,10 +35,10 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::post('/store', [TransaksiController::class, 'store'])->name('store');
     Route::get('invoice/{id}/preview', [InvoiceController::class, 'previewInvoice'])->name('invoice.preview');
     Route::get('invoice/{id}/download', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
+    Route::get('/check-booking-dates', [TransaksiController::class, 'checkBookingDates'])->name('checkBookingDates');
 });
 // In your web.php (or routes file)
 Route::post('/transaksi/available-stock', [TransaksiController::class, 'getAvailableStock']);
-
 
 // Admin Routes
 Route::middleware(['auth'])->group(function () {

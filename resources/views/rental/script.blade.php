@@ -7,33 +7,80 @@ document.addEventListener('DOMContentLoaded', function() {
     const grandTotalInput = document.getElementById('grand_total');
     let rentalCount = 1;
     let selectedMotors = {};
+    let bookedMotors = {};
 
-    function calculateTotal(rentalForm) {
+    function initializeMotorStatus() {
+        document.querySelectorAll('.rental-form').forEach(form => {
+            form.querySelectorAll('.kanban-item').forEach(item => {
+                const motorId = item.getAttribute('data-value');
+                const availableStock = parseInt(item.getAttribute('data-stock'));
+                selectedMotors[motorId] = selectedMotors[motorId] || 0;
+
+                updateMotorItemStatus(item, availableStock, selectedMotors[motorId]);
+            });
+        });
+    }
+
+    function updateMotorItemStatus(item, availableStock, selectedCount) {
+        const motorId = item.getAttribute('data-value');
+        const isBooked = bookedMotors[motorId];
+
+        if (availableStock === 0 || isBooked) {
+            item.classList.add('opacity-50', 'cursor-not-allowed');
+            item.classList.remove('hover:bg-blue-300');
+
+            let statusText = item.querySelector('.status-text');
+            if (!statusText) {
+                statusText = document.createElement('div');
+                statusText.classList.add('status-text', 'font-bold', 'mt-2', 'text-sm');
+                item.appendChild(statusText);
+            }
+
+            if (isBooked) {
+                statusText.textContent = '🔒 Sudah Dibooking';
+                statusText.classList.add('text-yellow-600');
+            } else {
+                statusText.textContent = '⚠️ Stok Habis';
+                statusText.classList.add('text-red-600');
+            }
+        } else {
+            item.classList.remove('opacity-50', 'cursor-not-allowed');
+            item.classList.add('hover:bg-blue-300');
+            item.querySelector('.status-text')?.remove();
+        }
+
+        const stockCountElement = item.querySelector('.stock-count');
+        if (stockCountElement) {
+            stockCountElement.textContent = `Tersedia: ${availableStock - selectedCount}`;
+        }
+    }
+
+    function hitungTotal(rentalForm) {
         const tglSewaInput = rentalForm.querySelector('.tgl_sewa');
         const tglKembaliInput = rentalForm.querySelector('.tgl_kembali');
-        const hargaPerHari = rentalForm.querySelector('.id_jenis').dataset.price;
+        const hargaPerHari = parseFloat(rentalForm.querySelector('.id_jenis').dataset.price);
         const formattedTotal = rentalForm.querySelector('.formatted_total');
         const totalInput = rentalForm.querySelector('.total');
 
         const tglSewa = new Date(tglSewaInput.value);
         const tglKembali = new Date(tglKembaliInput.value);
 
-        if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || !hargaPerHari) {
-            errorMessageDiv.textContent = 'Mohon Isi Form Dengan Benar.';
+        if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || isNaN(hargaPerHari)) {
+            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon isi semua form dengan benar.</span>';
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
         }
 
         if (tglSewa < new Date() && tglSewa.toDateString() !== new Date().toDateString()) {
-            errorMessageDiv.textContent = 'Tanggal Sewa tidak boleh kurang dari tanggal hari ini.';
+            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Tanggal sewa tidak boleh kurang dari tanggal hari ini.</span>';
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
         }
 
         if (tglKembali < tglSewa) {
-            errorMessageDiv.textContent = 'Tanggal Kembali tidak boleh kurang dari Tanggal Sewa.';
+            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Tanggal kembali tidak boleh kurang dari tanggal sewa.</span>';
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
@@ -45,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         formattedTotal.value = `Rp. ${total.toLocaleString('id-ID')}`;
         totalInput.value = total;
-        errorMessageDiv.textContent = '';
 
         return total;
     }
@@ -53,47 +99,74 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateGrandTotal() {
         let grandTotal = 0;
         document.querySelectorAll('.rental-form').forEach(form => {
-            grandTotal += calculateTotal(form);
+            grandTotal += hitungTotal(form);
         });
         grandTotalInput.value = `Rp. ${grandTotal.toLocaleString('id-ID')}`;
     }
 
+    function cekTanggalBooking(tglSewa, tglKembali, idJenis) {
+        return fetch(`/transaksi/check-booking-dates?tgl_sewa=${tglSewa}&tgl_kembali=${tglKembali}&id_jenis=${idJenis}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && typeof data.isBooked !== 'undefined') {
+                    return data.isBooked;
+                } else {
+                    console.error('Respons tidak memiliki properti isBooked yang diharapkan:', data);
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error dalam cekTanggalBooking:', error);
+                return false;
+            });
+    }
+
+    async function updateDateCheck(rentalForm) {
+        const tglSewaInput = rentalForm.querySelector('.tgl_sewa');
+        const tglKembaliInput = rentalForm.querySelector('.tgl_kembali');
+        const idJenisInput = rentalForm.querySelector('.id_jenis');
+
+        if (tglSewaInput.value && tglKembaliInput.value && idJenisInput.value) {
+            const isBooked = await cekTanggalBooking(tglSewaInput.value, tglKembaliInput.value, idJenisInput.value);
+
+            if (isBooked) {
+                errorMessageDiv.innerHTML = '<span class="text-yellow-600">🔒 Motor ini sudah dibooking untuk tanggal yang dipilih.</span>';
+                tglKembaliInput.classList.add('border-yellow-500');
+                bookedMotors[idJenisInput.value] = true;
+            } else {
+                errorMessageDiv.textContent = '';
+                tglKembaliInput.classList.remove('border-yellow-500');
+                bookedMotors[idJenisInput.value] = false;
+            }
+
+            updateMotorSelectionStatus();
+            updateGrandTotal();
+        }
+    }
+
     function addEventListeners(rentalForm) {
-        rentalForm.querySelector('.tgl_sewa').addEventListener('change', updateGrandTotal);
-        rentalForm.querySelector('.tgl_kembali').addEventListener('change', updateGrandTotal);
-        rentalForm.querySelectorAll('.kanban-item').forEach(item => {
-            item.addEventListener('click', updateGrandTotal);
-        });
+        const tglSewaInput = rentalForm.querySelector('.tgl_sewa');
+        const tglKembaliInput = rentalForm.querySelector('.tgl_kembali');
+        const idJenisInput = rentalForm.querySelector('.id_jenis');
+
+        tglSewaInput.addEventListener('change', () => updateDateCheck(rentalForm));
+        tglKembaliInput.addEventListener('change', () => updateDateCheck(rentalForm));
+        idJenisInput.addEventListener('change', () => updateDateCheck(rentalForm));
     }
 
     function updateMotorSelectionStatus() {
         document.querySelectorAll('.rental-form').forEach(form => {
             form.querySelectorAll('.kanban-item').forEach(item => {
                 const motorId = item.getAttribute('data-value');
-                const isSelected = item.classList.contains('selected');
                 const availableStock = parseInt(item.getAttribute('data-stock'));
                 const selectedCount = selectedMotors[motorId] || 0;
 
-                if (selectedCount >= availableStock && !isSelected) {
-                    item.classList.add('opacity-50', 'cursor-not-allowed');
-                    item.classList.remove('hover:bg-blue-300');
-                    if (!item.querySelector('.out-of-stock-text')) {
-                        const text = document.createElement('div');
-                        text.textContent = 'Stok Habis';
-                        text.classList.add('out-of-stock-text', 'text-red-600', 'font-bold', 'mt-2');
-                        item.appendChild(text);
-                    }
-                } else {
-                    item.classList.remove('opacity-50', 'cursor-not-allowed');
-                    item.classList.add('hover:bg-blue-300');
-                    item.querySelector('.out-of-stock-text')?.remove();
-                }
-
-                // Update stock count display
-                const stockCountElement = item.querySelector('.stock-count');
-                if (stockCountElement) {
-                    stockCountElement.textContent = availableStock - selectedCount;
-                }
+                updateMotorItemStatus(item, availableStock, selectedCount);
             });
         });
     }
@@ -103,22 +176,24 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.rental-form').forEach((form, formIndex) => {
             form.querySelectorAll('.kanban-item').forEach(item => {
                 item.addEventListener('click', function() {
+                    if (this.classList.contains('cursor-not-allowed')) {
+                        return; // Prevent selection of disabled items
+                    }
+
                     const motorId = this.getAttribute('data-value');
                     const availableStock = parseInt(this.getAttribute('data-stock'));
                     const allIds = JSON.parse(this.getAttribute('data-all-ids'));
                     const selectedCount = selectedMotors[motorId] || 0;
 
                     if (selectedCount >= availableStock && !this.classList.contains('selected')) {
-                        errorMessageDiv.textContent = 'Stok motor ini sudah habis';
+                        errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Maaf, stok motor ini sudah habis.</span>';
                         return;
                     }
 
-                    // Remove selection from all items in the current form
                     form.querySelectorAll('.kanban-item').forEach(i => {
                         if (i.classList.contains('selected')) {
                             const prevMotorId = i.getAttribute('data-value');
                             selectedMotors[prevMotorId]--;
-                            // Remove the previously selected id_jenis
                             selectedIdJenis.delete(parseInt(form.querySelector('.id_jenis').value));
                         }
                         i.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
@@ -126,14 +201,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         i.querySelector('.selected-text')?.remove();
                     });
 
-                    // Add selection to the clicked item
                     this.classList.add('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
                     this.classList.remove('bg-gray-100', 'border-gray-200');
 
-                    // Select an available id_jenis
-                    const availableIds = allIds.filter(id => !selectedIdJenis.has(id));
+                    const availableIds = allIds.filter(id => !selectedIdJenis.has(id) && !bookedMotors[id]);
                     if (availableIds.length === 0) {
-                        errorMessageDiv.textContent = 'Tidak ada motor tersedia untuk jenis ini';
+                        errorMessageDiv.innerHTML = '<span class="text-yellow-600">⚠️ Tidak ada motor tersedia untuk jenis ini saat ini.</span>';
                         return;
                     }
                     const selectedId = availableIds[Math.floor(Math.random() * availableIds.length)];
@@ -141,17 +214,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     form.querySelector('.id_jenis').value = selectedId;
                     form.querySelector('.id_jenis').dataset.price = this.getAttribute('data-price');
 
-                    // Update selected motors count
                     selectedMotors[motorId] = (selectedMotors[motorId] || 0) + 1;
 
-                    // Add "Selected" text
                     const selectedText = document.createElement('div');
-                    selectedText.textContent = 'Saya Pilih Ini!';
-                    selectedText.classList.add('selected-text', 'text-indigo-600', 'font-bold', 'mt-2');
+                    selectedText.innerHTML = '✅ Motor Terpilih!';
+                    selectedText.classList.add('selected-text', 'text-green-600', 'font-bold', 'mt-2', 'text-sm');
                     this.appendChild(selectedText);
 
                     errorMessageDiv.textContent = '';
-                    updateGrandTotal();
+                    updateDateCheck(form);
                     updateMotorSelectionStatus();
                 });
             });
@@ -161,11 +232,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetSelections() {
         selectedIdJenis.clear();
         selectedMotors = {};
+        bookedMotors = {};
         document.querySelectorAll('.rental-form').forEach(form => {
             form.querySelectorAll('.kanban-item').forEach(item => {
                 item.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
                 item.classList.add('bg-gray-100', 'border-gray-200');
                 item.querySelector('.selected-text')?.remove();
+                item.querySelector('.status-text')?.remove();
             });
             form.querySelector('.id_jenis').value = '';
         });
@@ -187,37 +260,33 @@ document.addEventListener('DOMContentLoaded', function() {
             item.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
             item.classList.add('bg-gray-100', 'border-gray-200');
             item.querySelector('.selected-text')?.remove();
-            item.querySelector('.out-of-stock-text')?.remove();
+            item.querySelector('.status-text')?.remove();
         });
         rentalForms.appendChild(newRentalForm);
-        // resetSelections();
         addEventListeners(newRentalForm);
         addKanbanSelectListeners();
         updateMotorSelectionStatus();
     });
 
-    // Initialize form
     addKanbanSelectListeners();
     addEventListeners(rentalForms.children[0]);
-    updateMotorSelectionStatus();
+    initializeMotorStatus();
+    updateGrandTotal();
 
-    // Form submission
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         e.preventDefault();
         let isValid = true;
 
-        // Check if all rental forms have a motor selected
         document.querySelectorAll('.rental-form').forEach(form => {
             if (!form.querySelector('.kanban-item.selected')) {
                 isValid = false;
-                errorMessageDiv.textContent = 'Mohon pilih motor untuk setiap rental.';
+                errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon pilih motor untuk setiap rental.</span>';
             }
         });
 
         if (isValid) {
-            // If everything is valid, you can submit the form
             this.submit();
         }
     });
 });
-</script>
+    </script>

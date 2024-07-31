@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\JenisMotor;
 use App\Models\Stok;
+use App\Models\Booking;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
@@ -64,61 +66,64 @@ class TransaksiController extends Controller
 
         try {
             foreach ($validated['rentals'] as $rental) {
-                $transaksi = Transaksi::create([
-                    'nama_penyewa' => $validated['nama_penyewa'],
-                    'wa1' => $validated['wa1'],
-                    'wa2' => $validated['wa2'],
-                    'wa3' => $validated['wa3'],
-                    'tgl_sewa' => $rental['tgl_sewa'],
-                    'tgl_kembali' => $rental['tgl_kembali'],
-                    'id_jenis' => $rental['id_jenis'],
-                    'total' => $rental['total'],
-                    'helm' => $rental['helm'],
-                    'jashujan' => $rental['jashujan'],
-                ]);
+                $tgl_sewa = Carbon::parse($rental['tgl_sewa']);
+                $tgl_kembali = Carbon::parse($rental['tgl_kembali']);
 
-                $jenis_motor = JenisMotor::find($rental['id_jenis']);
-                if ($jenis_motor) {
-                    $jenis_motor->update(['status' => 'disewa']);
+                $today = Carbon::today();
+                if ($tgl_sewa->gt($today->addDays(2))) {
+                    // Add to booking table
+                    Booking::create([
+                        'nama_penyewa' => $validated['nama_penyewa'],
+                        'wa1' => $validated['wa1'],
+                        'wa2' => $validated['wa2'],
+                        'wa3' => $validated['wa3'],
+                        'tgl_sewa' => $tgl_sewa,
+                        'tgl_kembali' => $tgl_kembali,
+                        'id_jenis' => $rental['id_jenis'],
+                        'total' => $rental['total'],
+                        'helm' => $rental['helm'],
+                        'jashujan' => $rental['jashujan'],
+                    ]);
+
+
+                    $jenis_motor = JenisMotor::find($rental['id_jenis']);
+                    if ($jenis_motor) {
+                        $jenis_motor->update(['status' => 'ready']);
+                    }
+                } else {
+                    // Add to transaksi table
+                    Transaksi::create([
+                        'nama_penyewa' => $validated['nama_penyewa'],
+                        'wa1' => $validated['wa1'],
+                        'wa2' => $validated['wa2'],
+                        'wa3' => $validated['wa3'],
+                        'tgl_sewa' => $tgl_sewa,
+                        'tgl_kembali' => $tgl_kembali,
+                        'id_jenis' => $rental['id_jenis'],
+                        'total' => $rental['total'],
+                        'helm' => $rental['helm'],
+                        'jashujan' => $rental['jashujan'],
+                    ]);
+
+                    $jenis_motor = JenisMotor::find($rental['id_jenis']);
+                    if ($jenis_motor) {
+                        $jenis_motor->update(['status' => 'disewa']);
+                    }
                 }
             }
 
             DB::commit();
-            return redirect()->route('transaksi.index')->with('success', 'Transactions created successfully.');
+            return redirect()->route('rental.preview')->with('success', 'Transactions created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'An error occurred while creating the transactions: ' . $e->getMessage());
         }
     }
+
     public function show(Transaksi $transaksi)
     {
         $transaksi->load('jenisMotor.stok');
         return view('transaksi.show', compact('transaksi'));
-    }
-
-    public function edit(Transaksi $transaksi)
-    {
-        $jenisMotor = JenisMotor::all(); // Get all jenis_motor for the dropdown
-        return view('transaksi.edit', compact('transaksi', 'jenisMotor'));
-    }
-
-    public function update(Request $request, Transaksi $transaksi)
-    {
-        $request->validate([
-            'id_jenis' => 'required|exists:jenis_motor,id',
-            'nama_penyewa' => 'required|string|max:255',
-            'wa1' => 'required|string|max:15',
-            'wa2' => 'nullable|string|max:15',
-            'wa3' => 'nullable|string|max:15',
-            'tgl_sewa' => 'required|date',
-            'tgl_kembali' => 'required|date|after_or_equal:tgl_sewa',
-            'total' => 'required|numeric',
-            'helm' => 'required|integer',
-            'jashujan' => 'required|integer',
-        ]);
-
-        $transaksi->update($request->all());
-        return redirect()->route('transaksi.index')->with('success', 'Transaction updated successfully.');
     }
 
     public function getAvailableStock(Request $request)
@@ -133,4 +138,32 @@ class TransaksiController extends Controller
         return response()->json(['available_stock' => $availableStock]);
     }
 
+    public function checkBookingDates(Request $request)
+    {
+        $tgl_kembali = $request->input('tgl_kembali');
+        $tgl_sewa = $request->input('tgl_sewa');
+        $id_jenis = $request->input('id_jenis');
+
+        $isBooked = Booking::where('id_jenis', $id_jenis)
+            ->where(function ($query) use ($tgl_sewa, $tgl_kembali) {
+                $query->whereBetween('tgl_sewa', [$tgl_sewa, $tgl_kembali])
+                    ->orWhereBetween('tgl_kembali', [$tgl_sewa, $tgl_kembali])
+                    ->orWhere(function ($q) use ($tgl_sewa, $tgl_kembali) {
+                        $q->where('tgl_sewa', '<=', $tgl_sewa)
+                        ->where('tgl_kembali', '>=', $tgl_kembali);
+                    });
+            })
+            ->exists();
+            $response = ['isBooked' => $isBooked];
+
+        return response()->json($response);
+    }
+
+
+    public function preview()
+    {
+        $transaksi = Transaksi::with('jenisMotor.stok')->get();
+        $booking = Booking::with('jenisMotor.stok')->get();
+        return view('rental.preview', compact('transaksi', 'booking'));
+    }
 }

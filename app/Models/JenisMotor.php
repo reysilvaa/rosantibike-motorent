@@ -28,4 +28,8 @@ class JenisMotor extends Model
     {
         return $this->hasMany(Transaksi::class, 'id_jenis', 'id');
     }
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'id_jenis', 'id');
+    }
 }
