@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('title', 'Invoice Preview')
-
 @section('content')
     <div class="container mx-auto px-4 py-6">
         <div class="bg-white shadow-md rounded-lg p-4 relative">

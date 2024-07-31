@@ -98,7 +98,7 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 11px;
             margin: 0;
             padding: 0;
@@ -400,12 +400,14 @@
         <div class="section-header">Biaya</div>
         <table class="table">
             <tr>
-                <th width="30%">Biaya Sewa</th>
-                <td>Rp. {{ number_format($transaksi->total, 0, ',', '.') }}</td>
+                <th width="20%">Biaya Sewa</th>
+                <td colspan="50%">Rp. {{ number_format($transaksi->total, 0, ',', '.') }}</td>
+                <th colspan="30%">Biaya Antar Jemput</th>
+                <td colspan="50%">Rp. {{'________________'}}</td>
             </tr>
             <tr>
-                <th>Biaya Antar Jemput</th>
-                <td>Rp. {{ number_format($transaksi->biaya_antar_jemput ?? 0, 0, ',', '.') }}</td>
+                <th width="20%">Total</th>
+                <td colspan="120rem">Rp. {{ number_format($transaksi->total, 0, ',', '.').' + Rp. ________________ (Antar Jemput) = Rp. _____________________'}}</td>
             </tr>
         </table>
     </div>
@@ -414,19 +416,19 @@
         <table class="table">
             <tr>
                 <td class="dokumen-jaminan">
-                    <label class="checkbox-item">
+                    <label class="checkbox-item" style="font-size: 0.7rem">
                         <input type="checkbox">
                         e-KTP
                     </label>
-                    <label class="checkbox-item">
+                    <label class="checkbox-item" style="font-size: 0.7rem">
                         <input type="checkbox">
                         SIM _____
                     </label>
-                    <label class="checkbox-item">
+                    <label class="checkbox-item" style="font-size: 0.7rem">
                         <input type="checkbox">
                         Kartu Nikah
                     </label>
-                    <label class="checkbox-item">
+                    <label class="checkbox-item" style="font-size: 0.7rem">
                         <input type="checkbox">
                         Lainnya ________________</span>
                     </label>

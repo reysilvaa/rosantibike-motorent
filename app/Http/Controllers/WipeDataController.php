@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Models\JenisMotor;
 use App\Models\Transaksi;
@@ -36,6 +37,10 @@ class WipeDataController extends Controller
 
                     case 'transaksi':
                         Transaksi::truncate();
+                        break;
+
+                    case 'booking':
+                        Booking::truncate();
                         break;
 
                     // No action needed for unknown models, just skip to the next iteration
