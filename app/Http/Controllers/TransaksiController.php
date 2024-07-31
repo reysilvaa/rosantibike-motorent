@@ -46,6 +46,7 @@ class TransaksiController extends Controller
 
     public function store(Request $request)
     {
+        // dd('Request Data: ', $request->all());
         // Validate the request data
         $validated = $request->validate([
             'nama_penyewa' => 'required|string|max:255',
@@ -53,8 +54,8 @@ class TransaksiController extends Controller
             'wa2' => 'nullable|string|max:20',
             'wa3' => 'nullable|string|max:20',
             'rentals' => 'required|array',
-            'rentals.*.tgl_sewa' => 'required|date_format:Y-m-d H:i:s',
-            'rentals.*.tgl_kembali' => 'required|date_format:Y-m-d H:i:s|after_or_equal:rentals.*.tgl_sewa',
+            'rentals.*.tgl_sewa' => 'required|date',
+            'rentals.*.tgl_kembali' => 'required|date|after_or_equal:rentals.*.tgl_sewa',
             'rentals.*.id_jenis' => 'required|exists:jenis_motor,id',
             'rentals.*.total' => 'required|numeric',
             'rentals.*.jashujan' => 'required|integer',
