@@ -36,6 +36,8 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::get('/', [TransaksiController::class, 'index'])->name('index');
     Route::post('/store', [TransaksiController::class, 'store'])->name('store');
     Route::get('/check-booking-dates', [TransaksiController::class, 'checkBookingDates'])->name('checkBookingDates');
+    Route::get('/get-available-stock', [TransaksiController::class, 'getAvailableStock'])->name('getAvailableStock');
+    // Route::get('/check-booking-dates', [TransaksiController::class, 'checkBookingDates'])->name('checkBookingDates');
 
     // Invoice Routes for Transaksi
     Route::prefix('invoice/transaksi')->name('invoice.')->group(function () {

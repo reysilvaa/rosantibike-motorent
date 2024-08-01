@@ -1,4 +1,3 @@
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const rentalForms = document.getElementById('rentalForms');
@@ -135,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isBooked = await cekTanggalBooking(tglSewaInput.value, tglKembaliInput.value, idJenisInput.value);
 
             if (isBooked) {
+                resetSelections();
                 errorMessageDiv.innerHTML = '<span class="text-yellow-600">🔒 Motor ini sudah dibooking untuk tanggal yang dipilih.</span>';
                 tglKembaliInput.classList.add('border-yellow-500');
                 bookedMotors[idJenisInput.value] = true;
@@ -146,6 +146,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             updateMotorSelectionStatus();
             updateGrandTotal();
+
+            // Fetch and update available stock
+            fetch(`/transaksi/get-available-stock?id_jenis=${idJenisInput.value}&tgl_sewa=${tglSewaInput.value}&tgl_kembali=${tglKembaliInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    const stockElement = rentalForm.querySelector(`.kanban-item[data-value="${idJenisInput.value}"] .stock-count`);
+                    if (stockElement) {
+                        stockElement.textContent = `Tersedia: ${data.available_stock}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching available stock:', error));
         }
     }
 
@@ -289,4 +300,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-    </script>
+</script>
