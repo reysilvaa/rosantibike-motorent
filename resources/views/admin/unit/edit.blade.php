@@ -110,6 +110,7 @@
                 </div>
             </div>
         </div>
+        <x-back-to-list-button route="{{ route('admin.jenisMotor.index') }}" />
     </div>
 </div>
 

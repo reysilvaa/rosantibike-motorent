@@ -107,6 +107,7 @@
         </button>
     </form>
 </div>
+<x-back-to-list-button route="{{ route('admin.transaksi.index') }}" />
 
 
 <script>

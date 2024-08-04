@@ -11,7 +11,7 @@
 
         {{-- Validation Modal --}}
         @include('admin.users.validation-modal')
-        
+
         <div class="my-2 flex sm:flex-row flex-col">
             <div class="flex flex-row mb-1 sm:mb-0">
                 <div class="relative">
@@ -77,6 +77,7 @@
                 </div>
             </div>
         </div>
+        <x-back-to-list-button route="{{ route('dashboard') }}" />
     </div>
 </div>
 @endsection

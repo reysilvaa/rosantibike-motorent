@@ -107,6 +107,8 @@
         </button>
     </form>
 </div>
+<x-back-to-list-button route="{{ route('admin.booking.index') }}" />
+
 
 
 <script>

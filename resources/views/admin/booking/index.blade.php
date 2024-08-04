@@ -42,6 +42,8 @@
         </div>
     </div>
 </div>
+<x-back-to-list-button route="{{ route('dashboard') }}" />
+
 @endsection
 
 @push('scripts')
