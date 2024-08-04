@@ -329,7 +329,7 @@
                 <td colspan="3">{{ $transaksi->nama_penyewa }}</td>
             </tr>
             <tr>
-                <th>Alamat</th>
+                <th>Address of Stay</th>
                 <td colspan="3">{{ $transaksi->alamat ?? '____________________________' }}</td>
             </tr>
             <tr>
