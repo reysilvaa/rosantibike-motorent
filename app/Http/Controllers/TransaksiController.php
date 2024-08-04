@@ -137,11 +137,11 @@ class TransaksiController extends Controller
                 $tgl_kembali = Carbon::parse($rental['tgl_kembali']);
                 $id_jenis = $rental['id_jenis'];
 
-                if (!$this->checkMotorAvailability($id_jenis, $tgl_sewa, $tgl_kembali)) {
+                // if (!$this->checkMotorAvailability($id_jenis, $tgl_sewa, $tgl_kembali)) {
 
-                    dd("Motor dengan ID {$id_jenis} tidak tersedia untuk periode sewa yang dipilih."); // buat pesan error
-                    // return back()->with('error', 'Terjadi kesalahan saat membuat transaksi: ');
-                }
+                //     dd("Motor dengan ID {$id_jenis} tidak tersedia untuk periode sewa yang dipilih."); // buat pesan error
+                //     // return back()->with('error', 'Terjadi kesalahan saat membuat transaksi: ');
+                // }
 
                 $isBooking = $tgl_sewa->gt($today->copy()->addDays(2));
 
