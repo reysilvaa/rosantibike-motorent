@@ -12,7 +12,7 @@ class CreateJenisMotorTable extends Migration
         Schema::create('jenis_motor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_stok')->constrained('stok');
-            $table->string('nopol');
+            $table->string('nopol', 10)->unique();
             $table->enum('status', ['ready','disewa', 'perpanjang'])->nullable();
 
         });

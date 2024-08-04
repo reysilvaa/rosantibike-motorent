@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Galeri;
 use App\Models\JenisMotor;
 use App\Models\Stok;
 use Illuminate\Http\Request;
@@ -11,7 +12,8 @@ class LandingController extends Controller
     public function index()
     {
         $armada = Stok::all();
-        return view('landing.landing', compact('armada'));
+        $galeris = Galeri::inRandomOrder()->get(); //random
+        return view('landing.landing', compact('armada', 'galeris'));
     }
     public function motorMatic()
     {
@@ -24,6 +26,7 @@ class LandingController extends Controller
     }
     public function galeri()
     {
-        return view('landing.assets.landing-content.galeri'); // Ensure you have this view file created
+        $galeris = Galeri::all();
+        return view('landing.assets.landing-content.galeri', compact('galeris')); // Ensure you have this view file created
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('stok', function (Blueprint $table) {
             $table->id();
-            $table->string('merk');
+            $table->string('merk', 50); // Limit merk to 50 characters
             $table->decimal('harga_perHari');
             $table->string('foto')->nullable();
             // $table->integer('stok')->nullable();

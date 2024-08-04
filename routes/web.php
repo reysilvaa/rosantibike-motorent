@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
@@ -66,7 +67,17 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminTransaksiController::class, 'index'])->name('dashboard');
 
-        // Booking routes
+        // Galeri resource routes
+        Route::prefix('galeri')->group(function () {
+            Route::get('/', [GaleriController::class, 'index'])->name('galeri.index');
+            Route::get('create', [GaleriController::class, 'create'])->name('galeri.create');
+            Route::post('/', [GaleriController::class, 'store'])->name('galeri.store');
+            Route::get('{galeri}', [GaleriController::class, 'show'])->name('galeri.show');
+            Route::get('{galeri}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
+            Route::put('{galeri}', [GaleriController::class, 'update'])->name('galeri.update');
+            Route::delete('{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+        });
+        
         Route::prefix('booking')->name('admin.booking.')->group(function () {
             // Data tables
             Route::get('/data', [AdminBookingController::class, 'getData'])->name('data');
