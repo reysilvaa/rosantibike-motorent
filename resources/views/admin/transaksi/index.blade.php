@@ -83,11 +83,18 @@ $(document).ready(function() {
         {data: 'action', name: 'action', orderable: false, searchable: false},
     ],
         drawCallback: function() {
+            // Add styling to pagination buttons
             $('.paginate_button').addClass('px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100');
             $('.paginate_button.current').addClass('bg-blue-600 text-white hover:bg-blue-700').removeClass('text-gray-700 bg-white hover:bg-gray-100');
             $('.dataTables_info').addClass('text-sm text-gray-700 px-3 py-2');
-            $('.dataTables_length select').addClass('mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm');
-            $('.dataTables_filter input').addClass('mt-1 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm');
+
+            // Align length and search filters horizontally
+            $('.dataTables_length').addClass('flex items-center space-x-4 mb-2');
+            $('.dataTables_filter').addClass('flex items-center space-x-4 mb-2');
+
+            // Style the select and input elements
+            $('.dataTables_length select').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
+            $('.dataTables_filter input').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
         }
     });
 
