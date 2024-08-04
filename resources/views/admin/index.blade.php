@@ -103,12 +103,12 @@ $(document).ready(function() {
     $.extend($.fn.dataTable.defaults, {
         language: {
             paginate: {
-                previous: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Previous</button>',
-                next: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Next</button>',
+                previous: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Sebelumnya</button>',
+                next: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Selanjutnya</button>',
             },
-            info: '<span class="text-sm text-gray-700 px-3 py-2">Showing _START_ to _END_ of _TOTAL_ entries</span>',
-            lengthMenu: '<span class="text-sm text-gray-700 px-3 py-2">Show _MENU_ entries</span>',
-            search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
+            info: '<span class="text-sm text-gray-700 px-3 py-2">Menampilkan _START_ hingga _END_ dari _TOTAL_ data</span>',
+            lengthMenu: '<span class="text-sm text-gray-700 px-3 py-2">Menampilkan _MENU_ Entri</span>',
+            search: '<span class="text-sm text-gray-700 px-3 py-2">Cari:</span>'
         }
     });
 

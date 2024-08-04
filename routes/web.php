@@ -45,6 +45,8 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::prefix('invoice/transaksi')->name('invoice.')->group(function () {
         Route::get('{id}/preview', [InvoiceController::class, 'previewInvoice'])->name('preview');
         Route::get('{id}/download', [InvoiceController::class, 'downloadInvoice'])->name('download');
+        Route::get('{id}/english/preview', [InvoiceController::class, 'previewInvoiceEnglish'])->name('EnglishPreview');
+        Route::get('{id}/english/download', [InvoiceController::class, 'downloadInvoiceEnglish'])->name('EnglishDownload');
     });
 
     // Invoice Routes for Booking
