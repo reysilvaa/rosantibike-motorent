@@ -1,7 +1,6 @@
 @include('landing.assets.navbar-no-scroll')
 <section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
     <div class="container mx-auto px-4">
-        <section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
             <div class="container mx-auto px-4">
                 <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-20 pt-10">
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
@@ -81,7 +80,7 @@
 
        <!-- Immersive Modal -->
        <div
-            x-show="modalOpen"
+            x-show="modalOpen && selectedItem.foto"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
@@ -114,61 +113,60 @@
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 
 <script>
-    function galleryData(galeris) {
-        return {
-            galeris: galeris,
-            categories: ['Semua', ...Array.from(new Set(galeris.map(item => capitalizeFirstLetter(item.kategori))))],
-            filter: 'Semua',
-            currentSlide: 0,
-            modalOpen: false,
-            selectedItem: null,
-            filteredItems: [],
-            init() {
+function galleryData(galeris) {
+    return {
+        galeris: galeris,
+        categories: ['Semua', ...Array.from(new Set(galeris.map(item => capitalizeFirstLetter(item.kategori))))],
+        filter: 'Semua',
+        currentSlide: 0,
+        modalOpen: false,
+        selectedItem: 0, // bug
+        filteredItems: [],
+        init() {
+            this.filteredItems = this.galeris;
+        },
+        setFilter(category) {
+            this.filter = category;
+            if (category === 'Semua') {
                 this.filteredItems = this.galeris;
-            },
-            setFilter(category) {
-                this.filter = category;
-                if (category === 'Semua') {
-                    this.filteredItems = this.galeris;
-                } else {
-                    this.filteredItems = this.galeris.filter(item => item.kategori.toLowerCase() === category.toLowerCase());
-                }
-            },
-            prevSlide() {
-                if (this.currentSlide > 0) {
-                    this.currentSlide--;
-                } else {
-                    this.currentSlide = this.galeris.length - 1;
-                }
-            },
-            nextSlide() {
-                if (this.currentSlide < this.galeris.length - 1) {
-                    this.currentSlide++;
-                } else {
-                    this.currentSlide = 0;
-                }
-            },
-            goToSlide(index) {
-                this.currentSlide = index;
-            },
-            openModal(item) {
-                this.selectedItem = item;
-                this.modalOpen = true;
-                document.body.style.overflow = 'hidden'; // Mencegah scroll pada body
-            },
-            closeModal() {
-                this.modalOpen = false;
-                this.selectedItem = null;
-                document.body.style.overflow = ''; // Mengembalikan scroll pada body
+            } else {
+                this.filteredItems = this.galeris.filter(item => item.kategori.toLowerCase() === category.toLowerCase());
             }
-
-        };
-    }
-
+        },
+        prevSlide() {
+            if (this.currentSlide > 0) {
+                this.currentSlide--;
+            } else {
+                this.currentSlide = this.galeris.length - 1;
+            }
+        },
+        nextSlide() {
+            if (this.currentSlide < this.galeris.length - 1) {
+                this.currentSlide++;
+            } else {
+                this.currentSlide = 0;
+            }
+        },
+        goToSlide(index) {
+            this.currentSlide = index;
+        },
+        openModal(item) {
+            this.selectedItem = item;
+            this.modalOpen = true;
+            document.body.style.overflow = 'hidden'; // Prevent scroll on body
+        },
+        closeModal() {
+            this.modalOpen = false;
+            this.selectedItem = {}; // Clear selected item
+            document.body.style.overflow = ''; // Restore scroll on body
+        }
+    };
+}
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
