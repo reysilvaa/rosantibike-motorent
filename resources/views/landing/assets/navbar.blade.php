@@ -51,7 +51,7 @@
                        class="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white">Motor Sport</a>
                 </div>
             </div>
-            <a href="#testimoni"
+            <a href="{{ route('landing.faqs') }}"
                :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">FAQ'S</a>
             <a href="#kontak"

@@ -7,8 +7,9 @@
                     @foreach($armada as $unit)
                         <div class="swiper-slide bg-white p-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:-translate-y-1">
                             <img
-                                src="{{ $unit->foto ? asset('storage/' . $unit->foto) : 'default-image.jpg' }}"
-                                alt="{{ $unit->merk }}"
+                                src="{{ $unit->foto ?
+                                    (filter_var($unit->foto, FILTER_VALIDATE_URL) ?
+                                    $unit->foto : asset('storage/' . $unit->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $unit->merk ?: 'Motor Image' }}"                                alt="{{ $unit->merk }}"
                                 class="w-full h-48 object-cover rounded-lg mb-6"
                                 loading="lazy"
                             >

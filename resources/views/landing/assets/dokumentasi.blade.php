@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="text-center mt-12">
-            <a href="#" class="inline-block bg-white text-blue-600 py-3 px-8 rounded-full text-lg font-semibold hover:bg-blue-100 transition duration-300 transform hover:-translate-y-1 hover:shadow-lg">Lihat Galeri Lengkap</a>
+            <a href="{{ route('landing.galeri') }}" class="inline-block bg-white text-blue-600 py-3 px-8 rounded-full text-lg font-semibold hover:bg-blue-100 transition duration-300 transform hover:-translate-y-1 hover:shadow-lg">Lihat Galeri Lengkap</a>
         </div>
     </div>
 </section>

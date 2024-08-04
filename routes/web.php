@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 // Landing Component
 Route::get('/motor-matic', [LandingController::class, 'motorMatic'])->name('landing.motor-matic');
+Route::get('/faq', [LandingController::class, 'faq'])->name('landing.faqs');
+Route::get('/petualangan', [LandingController::class, 'galeri'])->name('landing.galeri');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
