@@ -1,12 +1,14 @@
 @include('landing.assets.navbar-no-scroll')
 <section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
     <div class="container mx-auto px-4">
-        <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-12">
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                <span class="block mt-6">Jelajahi</span>
-                Pesona Malang
-            </span>
-        </h2>
+        <section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
+            <div class="container mx-auto px-4">
+                <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-20 pt-10">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                        Pesona Malang
+                    </span>
+                </h2>
+            </div>
 
         <!-- Attractive Carousel -->
         <div class="relative mb-20 overflow-hidden rounded-xl shadow-lg">
@@ -77,8 +79,8 @@
             </template>
         </div>
 
-        <!-- Immersive Modal -->
-        <div
+       <!-- Immersive Modal -->
+       <div
             x-show="modalOpen"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0"
@@ -91,7 +93,7 @@
             @keydown.escape.window="closeModal()"
         >
             <div
-                class="bg-white rounded-2xl overflow-hidden max-w-5xl w-full shadow-2xl"
+                class="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
                 x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -100,14 +102,14 @@
                 x-transition:leave-end="opacity-0 transform scale-90"
             >
                 <div class="relative">
-                    <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-96 object-cover">
+                    <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-56 object-cover sm:h-72 md:h-96">
                     <button @click="closeModal()" class="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
-                <div class="p-8">
-                    <h3 class="text-3xl font-bold mb-4" x-text="selectedItem.judul"></h3>
-                    <p class="text-gray-700 text-lg mb-4" x-text="selectedItem.full_description"></p>
+                <div class="p-4 sm:p-6 md:p-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-4" x-text="selectedItem.judul"></h3>
+                    <p class="text-gray-700 text-base sm:text-lg mb-4" x-text="selectedItem.full_description"></p>
                     <a :href="selectedItem.link_maps" target="_blank" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">View on Map</a>
                 </div>
             </div>
@@ -156,11 +158,14 @@
             openModal(item) {
                 this.selectedItem = item;
                 this.modalOpen = true;
+                document.body.style.overflow = 'hidden'; // Mencegah scroll pada body
             },
             closeModal() {
                 this.modalOpen = false;
                 this.selectedItem = null;
+                document.body.style.overflow = ''; // Mengembalikan scroll pada body
             }
+
         };
     }
 
