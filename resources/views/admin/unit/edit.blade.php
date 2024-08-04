@@ -33,8 +33,12 @@
                                 @foreach($stoks as $stok)
                                 <div class="relative">
                                     <input type="radio" id="merk_{{ $stok->id }}" name="id_stok" value="{{ $stok->id }}" class="sr-only" x-model="selectedMerk">
-                                    <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300" :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == {{ $stok->id }}, 'border-gray-300 hover:border-indigo-300': selectedMerk != {{ $stok->id }} }">
-                                        <span class="text-lg font-medium">{{ $stok->merk }}</span>
+                                    <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300" :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == '{{ $stok->id }}', 'border-gray-300': selectedMerk != '{{ $stok->id }}' }">
+                                        <div class="flex flex-col items-center">
+                                            <img src="{{ $stok->foto ? (filter_var($stok->foto, FILTER_VALIDATE_URL) ? $stok->foto : asset('storage/' . $stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $stok->merk }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
+                                            <span class="text-lg font-medium">{{ $stok->merk }}</span>
+                                            <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($stok->harga_perHari, 0, ',', '.') }}/hari</p>
+                                        </div>
                                     </label>
                                 </div>
                                 @endforeach
