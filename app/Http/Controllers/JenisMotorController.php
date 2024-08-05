@@ -46,8 +46,6 @@ class JenisMotorController extends Controller
                          ->with('success', 'Jenis Motor created successfully.');
     }
 
-
-
     // Display the specified resource.
     public function show($id)
     {
@@ -92,7 +90,7 @@ class JenisMotorController extends Controller
 
         // Redirect to the index page with a success message
         return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Jenis Motor deleted successfully, and stok incremented by 1.');
+                         ->with('success', 'Jenis Motor deleted successfully');
     }
 
 }

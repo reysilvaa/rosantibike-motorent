@@ -115,7 +115,7 @@ class StokController extends Controller
         // Update the record
         $stok->update($data);
 
-        return redirect()->route('admin.stok.index')
+        return redirect()->route('admin.unit.index')
                          ->with('success', 'Stok updated successfully.');
     }
 

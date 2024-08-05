@@ -23,6 +23,18 @@
 
                 <!-- Unit Motor Form -->
                 <div x-show="activeTab === 'unitMotor'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                    @if ($errors->any())
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Whoops!</strong>
+                            <span class="block sm:inline">Terdapat kesalahan pada inputan Anda.</span>
+                            <ul class="mt-2 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ route('admin.jenisMotor.update', $jenisMotor->id) }}" method="POST" class="space-y-8">
                         @csrf
                         @method('PUT')
@@ -33,7 +45,8 @@
                                 @foreach($stoks as $stok)
                                 <div class="relative">
                                     <input type="radio" id="merk_{{ $stok->id }}" name="id_stok" value="{{ $stok->id }}" class="sr-only" x-model="selectedMerk">
-                                    <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300" :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == '{{ $stok->id }}', 'border-gray-300': selectedMerk != '{{ $stok->id }}' }">
+                                    <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
+                                        :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == '{{ $stok->id }}', 'border-gray-300': selectedMerk != '{{ $stok->id }}' }">
                                         <div class="flex flex-col items-center">
                                             <img src="{{ $stok->foto ? (filter_var($stok->foto, FILTER_VALIDATE_URL) ? $stok->foto : asset('storage/' . $stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $stok->merk }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
                                             <span class="text-lg font-medium">{{ $stok->merk }}</span>
@@ -43,11 +56,19 @@
                                 </div>
                                 @endforeach
                             </div>
+                            @error('id_stok')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
                             <label for="nopol" class="block text-lg font-medium text-gray-700">Nopol</label>
-                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol', $jenisMotor->nopol) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol', $jenisMotor->nopol) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('nopol') border-red-500 @enderror">
+                            @error('nopol')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="flex justify-end">
@@ -60,13 +81,30 @@
 
                 <!-- Stok Motor Form -->
                 <div x-show="activeTab === 'stokMotor'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                    @if ($errors->any())
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Whoops!</strong>
+                            <span class="block sm:inline">There were some problems with your input.</span>
+                            <ul class="mt-2 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ route('admin.stok.update', $stok->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                         @csrf
                         @method('PUT')
 
                         <div class="space-y-4">
                             <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
-                            <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('merk') border-red-500 @enderror">
+                            @error('merk')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
@@ -75,64 +113,76 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-lg">Rp</span>
                                 </div>
-                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}" class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}"
+                                    class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                    @error('harga_perHari') border-red-500 @enderror">
+                                @error('harga_perHari')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="space-y-4">
                             <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
-                            <input type="text" name="judul" id="judul" value="{{ old('judul', $stok->judul )}}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="judul" id="judul" value="{{ old('judul', $stok->judul) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('judul') border-red-500 @enderror">
+                            @error('judul')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
                             <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
-                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1', $stok->deskripsi1) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1', $stok->deskripsi1) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('deskripsi1') border-red-500 @enderror">
+                            @error('deskripsi1')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
                             <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
-                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2', $stok->deskripsi2) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2', $stok->deskripsi2) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('deskripsi2') border-red-500 @enderror">
+                            @error('deskripsi2')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
                             <label for="deskripsi3" class="block text-lg font-medium text-gray-700">Deskripsi 3</label>
-                            <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3', $stok->deskripsi3) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                            <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3', $stok->deskripsi3) }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('deskripsi3') border-red-500 @enderror">
+                            @error('deskripsi3')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="space-y-4">
                             <label for="kategori" class="block text-lg font-medium text-gray-700">Kategori</label>
-                            <select name="kategori" id="kategori" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
-                                <option value="" disabled selected>Pilih Kategori</option>
+                            <select name="kategori" id="kategori" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('kategori') border-red-500 @enderror">
+                                <option value="" disabled>Select Kategori</option>
                                 <option value="manual" {{ old('kategori', $stok->kategori) == 'manual' ? 'selected' : '' }}>Manual</option>
                                 <option value="matic" {{ old('kategori', $stok->kategori) == 'matic' ? 'selected' : '' }}>Matic</option>
                             </select>
+                            @error('kategori')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
-
-                        <div x-data="{ photoPreview: '{{ $stok->foto_url ? $stok->foto_url : ($stok->foto ? asset('storage/' . $stok->foto) : '') }}', photoUrl: '' }" class="space-y-6">
-                            <label class="block text-lg font-medium text-gray-700">Foto Motor</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-8m36-8H36m4 0v-4a4 4 0 00-4-4h-4l-6-6H14a4 4 0 00-4 4v4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600">
-                                        <label for="foto" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                            <span>Upload a file</span>
-                                            <input id="foto" name="foto" type="file" class="sr-only" @change="photoPreview = URL.createObjectURL($event.target.files[0])">
-                                        </label>
-                                        <p class="pl-1">or drag and drop</p>
-                                    </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <label for="foto_url" class="block text-lg font-medium text-gray-700">Atau masukkan URL foto</label>
-                                <input type="text" name="foto_url" id="foto_url" x-model="photoUrl" value="{{ old('foto', $stok->foto) }}"  @input="photoPreview = photoUrl" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" placeholder="https://example.com/image.jpg">
-                            </div>
-                            <div x-show="photoPreview" class="mt-4">
-                                <img :src="photoPreview" alt="Preview" class="object-cover rounded-lg h-64 w-full">
-                            </div>
+                        <div class="space-y-4">
+                            <label for="foto" class="block text-lg font-medium text-gray-700">Foto</label>
+                            <input type="file" name="foto" id="foto"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg
+                                @error('foto') border-red-500 @enderror">
+                            @error('foto')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="flex justify-end">
@@ -144,9 +194,6 @@
                 </div>
             </div>
         </div>
-        <x-back-to-list-button route="{{ route('admin.jenisMotor.index') }}" />
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 @endsection
