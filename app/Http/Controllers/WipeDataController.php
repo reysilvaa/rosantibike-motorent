@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Galeri;
 use App\Models\JenisMotor;
+use App\Models\Rating;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -41,6 +43,14 @@ class WipeDataController extends Controller
 
                     case 'booking':
                         Booking::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                        break;
+
+                    case 'galeri':
+                        Galeri::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                        break;
+
+                    case 'rating':
+                        Rating::query()->delete(); // Menggunakan delete() alih-alih truncate()
                         break;
 
                     default:
