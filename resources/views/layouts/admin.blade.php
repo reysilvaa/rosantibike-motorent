@@ -6,6 +6,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>@yield('title', 'Dashboard') - RosantiBike</title>
+    
 
     <!-- Preload Fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap" as="style">

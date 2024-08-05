@@ -12,7 +12,10 @@
     base-uri 'self';
     ">
     <meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">    <meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <title>@yield('title', 'Motor Matic - Rental Motor Rosanti')</title>
 </head>
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
