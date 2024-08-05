@@ -1,12 +1,8 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Motor Rosanti</title>
-    @vite('resources/css/app.css')
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-</head>
+@include('landing.assets.link.link')
+<title>
+    @yield('title', 'Rental Motor Rosanti')
+</title>
+
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
 <header class="bg-white shadow-md py-1 fixed w-full z-50">
     <nav class="container mx-auto px-6 flex justify-between items-center">
@@ -31,7 +27,7 @@
                     <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-500 hover:text-white">Motor Sport</a>
                 </div>
             </div>
-            <a href="{{ route('landing') }}#testimoni" class="text-gray-800 hover:text-blue-500 transition duration-300">Testimoni</a>
+            <a href="{{ route('landing.faqs') }}" class="text-gray-800 hover:text-blue-500 transition duration-300">FAQ'S</a>
             <a href="{{ route('landing') }}#kontak" class="text-gray-800 hover:text-blue-500 transition duration-300">Kontak</a>
         </div>
 
@@ -48,7 +44,7 @@
             <!-- Mobile Menu -->
             <div x-show="isOpen" class="absolute top-full left-0 right-0 bg-white shadow-md mt-2 py-2" @click.away="isOpen = false">
                 <a href="{{ route('landing') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
-                <a href="{{ route('landing') }}#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Layanan</a>
+                <a href="{{ route('landing') }}#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Dokumentasi</a>
                 <a href="{{ route('landing.motor-matic') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Motor Matic</a>
                 <a href="{{ route('landing') }}#testimoni" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Testimoni</a>
                 <a href="{{ route('landing') }}#kontak" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Kontak</a>

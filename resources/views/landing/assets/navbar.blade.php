@@ -1,11 +1,6 @@
+@include('landing.assets.link.link')
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Motor Rosanti</title>
-    @vite('resources/css/app.css')
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <title>@yield('title', 'Rental Motor Rosanti')</title>
 </head>
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
 <!-- Header -->
@@ -29,7 +24,7 @@
                class="hover:text-blue-500 transition duration-300 ease-in-out">Beranda</a>
             <a href="#layanan"
                :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
-               class="hover:text-blue-500 transition duration-300 ease-in-out">Layanan</a>
+               class="hover:text-blue-500 transition duration-300 ease-in-out">Dokumentasi</a>
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open"
                         :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
@@ -74,7 +69,7 @@
     <!-- Mobile Menu -->
     <div class="md:hidden" x-show="isOpen" @click.away="isOpen = false">
         <a href="#beranda" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
-        <a href="#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Layanan</a>
+        <a href="#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Dokumentasi</a>
         <a href="#armada" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Armada</a>
         <a href="#testimoni" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">FAQ'S</a>
         <a href="#kontak" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Kontak</a>

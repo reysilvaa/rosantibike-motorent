@@ -77,25 +77,9 @@
     </script>
 </body>
 </html> --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor Matic - Rental Motor Rosanti</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <style>
-        .motor-card {
-            transition: transform 0.3s ease-in-out;
-        }
-        .motor-card:hover {
-            transform: translateY(-10px);
-        }
-    </style>
-</head>
+<title>
+    @yield('title', 'Motor Matic - Rental Motor Rosanti')
+</title>
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
     @include('landing.assets.navbar-no-scroll')
 

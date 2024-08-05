@@ -1,5 +1,8 @@
 <!-- FAQ Section -->
 @include('landing.assets.navbar-no-scroll')
+<title>
+    @yield('title', 'FAQ&rsquo;s - Rental Motor Rosanti')
+</title>
 <section id="faq" class="py-20 bg-gray-100">
     <div class="container mx-auto px-6">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-12 mt-16">Pertanyaan yang Sering Diajukan</h2>
