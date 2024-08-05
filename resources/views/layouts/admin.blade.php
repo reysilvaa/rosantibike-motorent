@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,6 +6,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>@yield('title', 'Dashboard') - RosantiBike</title>
+
 
     <!-- Preload Fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap" as="style">
@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
-    <!-- Vite CSS -->
     @vite('resources/css/app.css')
-
+    {{-- DOnt delete the jquery --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @include('layouts.styles')
 
     <style>
@@ -51,9 +51,11 @@
             </button>
 
             <!-- Navbar Brand -->
+            <!-- Navbar Brand -->
             <a class="text-black font-latin font-extrabold flex items-center no-underline hover:text-gray-600 transition duration-300 ease-in-out" href="{{ route('dashboard') }}">
                 <img src="https://i.ibb.co.com/k6sDTzz/Upscale-Image-1-20240729-removebg.png" alt="Upscale-Image-1-20240729" class="logo-image max-w-[200px] h-auto">
             </a>
+
 
             <!-- User Dropdown -->
             <div class="relative">
@@ -106,7 +108,7 @@
         </main>
     @endauth
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userDropdownToggle = document.getElementById('userDropdownToggle');

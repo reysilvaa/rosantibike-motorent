@@ -60,48 +60,45 @@ $(document).ready(function() {
             search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
         }
     });
+
+
     var table = $('#data-table').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: "{{ route('admin.booking.data') }}",
-    fixedHeader: true,
-    paging: true,
-    searching: true,
-    ordering: true,
-    columns: [
-        {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-        {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-        {data: 'nama_penyewa', name: 'nama_penyewa'},
-        {data: 'merk_motor', name: 'merk_motor'},
-        {data: 'tgl_sewa', name: 'tgl_sewa'},
-        {data: 'tgl_kembali', name: 'tgl_kembali'},
-        {data: 'status', name: 'status'},
-        {data: 'total', name: 'total'},
-        {data: 'action', name: 'action', orderable: false, searchable: false},
-    ],
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('admin.booking.data') }}",
+        fixedHeader: true,
+        paging: true,
+        searching: true,
+        ordering: true,
+        columns: [
+            {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'nama_penyewa', name: 'nama_penyewa', searchable: true},
+            {data: 'merk_motor', name: 'merk_motor'},
+            {data: 'tgl_sewa', name: 'tgl_sewa'},
+            {data: 'tgl_kembali', name: 'tgl_kembali'},
+            {data: 'status', name: 'status'},
+            {data: 'total', name: 'total'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ],
         drawCallback: function() {
-            // Add styling to pagination buttons
             $('.paginate_button').addClass('px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100');
             $('.paginate_button.current').addClass('bg-blue-600 text-white hover:bg-blue-700').removeClass('text-gray-700 bg-white hover:bg-gray-100');
             $('.dataTables_info').addClass('text-sm text-gray-700 px-3 py-2');
 
-            // Align length and search filters horizontally
             $('.dataTables_length').addClass('flex items-center space-x-4 mb-2');
             $('.dataTables_filter').addClass('flex items-center space-x-4 mb-2');
 
-            // Style the select and input elements
             $('.dataTables_length select').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
             $('.dataTables_filter input').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
         }
     });
 
-    // Handle click on "Select all" control
     $('#select_all_checkbox').on('click', function(){
         var rows = table.rows({ 'search': 'applied' }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
 
-    // Handle click on checkbox to set state of "Select all" control
     $('#data-table tbody').on('change', 'input[type="checkbox"]', function(){
         if(!this.checked){
             var el = $('#select_all_checkbox').get(0);
@@ -111,7 +108,6 @@ $(document).ready(function() {
         }
     });
 
-    // Handle form submission event
     $('#bulk-delete').on('click', function(e){
         var ids = [];
         $('.booking_checkbox:checked').each(function(){
@@ -139,7 +135,6 @@ $(document).ready(function() {
         }
     });
 
-    // Handle delete button
     $('#data-table').on('click', '.delete', function(){
         var id = $(this).data('id');
         if(confirm("Are you sure you want to delete this transaksi?")){

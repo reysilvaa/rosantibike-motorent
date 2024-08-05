@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use Illuminate\Http\Request;
 use App\Models\JenisMotor;
 use App\Models\Transaksi;
+use Illuminate\Http\Request;
 
 class WipeDataController extends Controller
 {
@@ -32,19 +32,19 @@ class WipeDataController extends Controller
             foreach ($models as $model) {
                 switch ($model) {
                     case 'jenis_motor':
-                        JenisMotor::truncate();
+                        JenisMotor::query()->delete(); // Menggunakan delete() alih-alih truncate()
                         break;
 
                     case 'transaksi':
-                        Transaksi::truncate();
+                        Transaksi::query()->delete(); // Menggunakan delete() alih-alih truncate()
                         break;
 
                     case 'booking':
-                        Booking::truncate();
+                        Booking::query()->delete(); // Menggunakan delete() alih-alih truncate()
                         break;
 
-                    // No action needed for unknown models, just skip to the next iteration
                     default:
+                        // Optionally, log or handle unknown models here
                         break;
                 }
             }
