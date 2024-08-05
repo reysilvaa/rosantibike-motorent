@@ -23,8 +23,6 @@ class JenisMotorController extends Controller
     {
         $jenisMotors = JenisMotor::with('stok')->distinct('id_stok')->get();
         $stoks = Stok::all(); // Retrieve all stok records
-
-
         return view('admin.unit.create', compact('jenisMotors', 'stoks'));
     }
 
@@ -61,8 +59,7 @@ class JenisMotorController extends Controller
     public function edit($id)
     {
         $jenisMotor = JenisMotor::findOrFail($id);
-        $stoks = Stok::all(); // Retrieve all stok records
-
+        $stoks = Stok::all();
         return view('admin.unit.edit', compact('jenisMotor', 'stoks'));
     }
 

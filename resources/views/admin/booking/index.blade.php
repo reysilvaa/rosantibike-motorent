@@ -47,10 +47,6 @@
 @endsection
 
 @push('styles')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-
 <script type="text/javascript">
 $(document).ready(function() {
     $.extend($.fn.dataTable.defaults, {

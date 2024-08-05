@@ -15,9 +15,13 @@ return new class extends Migration
         Schema::create('stok', function (Blueprint $table) {
             $table->id();
             $table->string('merk', 50); // Limit merk to 50 characters
+            $table->string('judul', 100)->nullable();
+            $table->string('deskripsi1', 100)->nullable();
+            $table->string('deskripsi2', 100)->nullable();
+            $table->string('deskripsi3', 100)->nullable();
+            $table->enum('kategori', ['matic','manual']);
             $table->decimal('harga_perHari');
             $table->string('foto')->nullable();
-            // $table->integer('stok')->nullable();
         });
 
 

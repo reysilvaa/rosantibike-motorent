@@ -14,6 +14,11 @@ class Stok extends Model
         'merk',
         'harga_perHari',
         'foto',
+        'judul',
+        'deskripsi1',
+        'deskripsi2',
+        'deskripsi3',
+        'kategori',
     ];
     public $timestamps = false;
 

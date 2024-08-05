@@ -21,12 +21,32 @@
             <div class="md:w-1/2 p-6 md:p-8">
                 <div class="mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $stok->merk }}</h2>
-                    <p class="text-sm text-gray-600">Banyak Unit: {{ $stok->stok }}</p>
+                    <p class="text-sm text-gray-600">Banyak Unit: {{ $qty }}</p>
                 </div>
 
                 <div class="mb-8">
                     <h3 class="text-lg font-medium text-gray-700 mb-2">Harga per Hari</h3>
                     <p class="text-3xl font-bold text-indigo-600">Rp {{ number_format($stok->harga_perHari, 0, ',', '.') }}</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Deskripsi 1</h3>
+                    <p class="text-3xl font-bold text-indigo-600"> {{ $stok->deskripsi1 }}</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Deskripsi 2</h3>
+                    <p class="text-3xl font-bold text-indigo-600"> {{ $stok->deskripsi2 }}</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Deskripsi 3</h3>
+                    <p class="text-3xl font-bold text-indigo-600"> {{ $stok->deskripsi3 }}</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Kategori</h3>
+                    <p class="text-3xl font-bold text-indigo-600"> {{ $stok->kategori }}</p>
                 </div>
 
                 <div class="flex space-x-4">

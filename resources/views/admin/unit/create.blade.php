@@ -78,6 +78,35 @@
                             </div>
                         </div>
 
+                        <div class="space-y-4">
+                            <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
+                            <input type="text" name="judul" id="judul" value="{{ old('judul') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
+                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('merk') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
+                            <input type="text" name="deskripsi2" id="merk" value="{{ old('deskripsi2') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi3" class="block text-lg font-medium text-gray-700">Deskripsi 3</label>
+                            <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="kategori" class="block text-lg font-medium text-gray-700">Kategori</label>
+                            <select name="kategori" id="kategori" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="manual" {{ old('kategori') == 'manual' ? 'selected' : '' }}>Manual</option>
+                                <option value="matic" {{ old('kategori') == 'matic' ? 'selected' : '' }}>Matic</option>
+                            </select>
+                        </div>
+
                         <div x-data="{ photoPreview: null, photoUrl: '' }" class="space-y-6">
                             <label class="block text-lg font-medium text-gray-700">Foto Motor</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">

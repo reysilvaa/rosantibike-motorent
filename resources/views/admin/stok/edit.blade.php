@@ -95,5 +95,5 @@
         </form>
     </div>
 </div>
-@include('admin.unit.script')
+{{-- @include('admin.unit.script') --}}
 @endsection

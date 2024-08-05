@@ -47,7 +47,7 @@
 
                         <div class="space-y-4">
                             <label for="nopol" class="block text-lg font-medium text-gray-700">Nopol</label>
-                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol', $jenisMotor->nopol) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol', $jenisMotor->nopol) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
                         </div>
 
                         <div class="flex justify-end">
@@ -66,7 +66,7 @@
 
                         <div class="space-y-4">
                             <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
-                            <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
                         </div>
 
                         <div class="space-y-4">
@@ -75,9 +75,39 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-lg">Rp</span>
                                 </div>
-                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}" class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}" class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
                             </div>
                         </div>
+
+                        <div class="space-y-4">
+                            <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
+                            <input type="text" name="judul" id="judul" value="{{ old('judul', $stok->judul )}}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
+                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1', $stok->deskripsi1) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
+                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2', $stok->deskripsi2) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="deskripsi3" class="block text-lg font-medium text-gray-700">Deskripsi 3</label>
+                            <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3', $stok->deskripsi3) }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                        </div>
+
+                        <div class="space-y-4">
+                            <label for="kategori" class="block text-lg font-medium text-gray-700">Kategori</label>
+                            <select name="kategori" id="kategori" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg">
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="manual" {{ old('kategori', $stok->kategori) == 'manual' ? 'selected' : '' }}>Manual</option>
+                                <option value="matic" {{ old('kategori', $stok->kategori) == 'matic' ? 'selected' : '' }}>Matic</option>
+                            </select>
+                        </div>
+
 
                         <div x-data="{ photoPreview: '{{ $stok->foto_url ? $stok->foto_url : ($stok->foto ? asset('storage/' . $stok->foto) : '') }}', photoUrl: '' }" class="space-y-6">
                             <label class="block text-lg font-medium text-gray-700">Foto Motor</label>
@@ -98,7 +128,7 @@
                             </div>
                             <div class="mt-4">
                                 <label for="foto_url" class="block text-lg font-medium text-gray-700">Atau masukkan URL foto</label>
-                                <input type="text" name="foto_url" id="foto_url" x-model="photoUrl" @input="photoPreview = photoUrl" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" placeholder="https://example.com/image.jpg">
+                                <input type="text" name="foto_url" id="foto_url" x-model="photoUrl" value="{{ old('foto', $stok->foto) }}"  @input="photoPreview = photoUrl" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" placeholder="https://example.com/image.jpg">
                             </div>
                             <div x-show="photoPreview" class="mt-4">
                                 <img :src="photoPreview" alt="Preview" class="object-cover rounded-lg h-64 w-full">

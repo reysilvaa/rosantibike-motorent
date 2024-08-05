@@ -19,7 +19,6 @@ class StokController extends Controller
     public function create()
     {
         $stoks = Stok::all();
-
         return view('admin.stok.create', compact('stoks'));
     }
 
@@ -29,13 +28,18 @@ class StokController extends Controller
         // Validate the request inputs
         $request->validate([
             'merk' => 'required|string|max:255',
+            'judul' => 'string|max:100',
+            'deskripsi1' => 'string|max:100',
+            'deskripsi2' => 'string|max:100',
+            'deskripsi3' => 'string|max:100',
+            'kategori' => 'required|in:manual,matic',
             'harga_perHari' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional, for file uploads
             'foto_url' => 'nullable|url', // Optional, for URL
         ]);
 
         // Prepare the data for creation
-        $data = $request->only(['merk', 'harga_perHari', 'stok']);
+        $data = $request->only(['merk', 'harga_perHari', 'stok', 'deskripsi1','deskripsi2', 'deskripsi3', 'kategori', 'judul']);
 
         if ($request->filled('foto_url')) {
             // If a URL is provided, store the URL in the foto column
@@ -57,7 +61,8 @@ class StokController extends Controller
     public function show($id)
     {
         $stok = Stok::findOrFail($id);
-        return view('admin.stok.show', compact('stok'));
+        $qty = JenisMotor::findOrFail($id)->where('id_stok', $id)->count();
+        return view('admin.stok.show', compact('stok', 'qty'));
     }
 
     // Show the form for editing the specified resource.
@@ -72,6 +77,11 @@ class StokController extends Controller
         // Validate the request inputs
         $request->validate([
             'merk' => 'required|string|max:255',
+            'judul' => 'string|max:100',
+            'deskripsi1' => 'string|max:100',
+            'deskripsi2' => 'string|max:100',
+            'deskripsi3' => 'string|max:100',
+            'kategori' => 'required|in:manual,matic',
             'harga_perHari' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_url' => 'nullable|url',
@@ -81,7 +91,7 @@ class StokController extends Controller
         $stok = Stok::findOrFail($id);
 
         // Prepare the data to update
-        $data = $request->only(['merk', 'harga_perHari', 'stok']);
+        $data = $request->only(['merk', 'harga_perHari', 'stok', 'deskripsi1','deskripsi2', 'deskripsi3', 'kategori', 'judul']);
 
         if ($request->filled('foto_url')) {
             // If a URL is provided, store the URL in the foto column
