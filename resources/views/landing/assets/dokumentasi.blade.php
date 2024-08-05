@@ -4,14 +4,14 @@
         <h2 class="text-4xl font-bold text-center mb-12 text-white">Jelajahi Petualangan Kami</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @php
-                $mainImage = $galeris->first();
+                $mainImage = $galeris->first() ?? (object)[ 'foto' => 'path/to/default/image.jpg', 'judul' => 'Default Title', 'deskripsi' => 'Default Description' ];
             @endphp
             <div class="col-span-2">
                 <div class="relative overflow-hidden rounded-lg shadow-2xl group cursor-pointer" id="mainImage">
-                    <img src="{{ $mainImage->foto }}" alt="Dokumentasi Utama" class="w-full h-96 object-cover transition duration-500 transform group-hover:scale-110">
+                    <img src="{{ $mainImage->foto ?? 'path/to/default/image.jpg' }}" alt="Dokumentasi Utama" class="w-full h-96 object-cover transition duration-500 transform group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-75 transition duration-300 flex flex-col justify-end p-6">
-                        <h3 class="text-white text-2xl font-bold mb-2 transform translate-y-10 group-hover:translate-y-0 transition duration-300">{{ $mainImage->judul }}</h3>
-                        <p class="text-white opacity-0 group-hover:opacity-100 transition duration-300 delay-100">{{ $mainImage->deskripsi }}</p>
+                        <h3 class="text-white text-2xl font-bold mb-2 transform translate-y-10 group-hover:translate-y-0 transition duration-300">{{ $mainImage->judul ?? 'Default Title' }}</h3>
+                        <p class="text-white opacity-0 group-hover:opacity-100 transition duration-300 delay-100">{{ $mainImage->deskripsi ?? 'Default Description' }}</p>
                     </div>
                 </div>
             </div>
@@ -19,9 +19,9 @@
                 @foreach($galeris as $galeri)
                     @if($galeri !== $mainImage)
                         <div class="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onclick="changeMainImage(this)">
-                            <img src="{{ $galeri->foto }}" alt="Dokumentasi" class="w-full h-44 object-cover transition duration-300 transform hover:scale-110">
+                            <img src="{{ $galeri->foto ?? 'path/to/default/image.jpg' }}" alt="Dokumentasi" class="w-full h-44 object-cover transition duration-300 transform hover:scale-110">
                             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-                                <p class="text-white text-lg font-semibold">{{ $galeri->judul }}</p>
+                                <p class="text-white text-lg font-semibold">{{ $galeri->judul ?? 'Default Title' }}</p>
                             </div>
                         </div>
                     @endif
@@ -40,8 +40,8 @@ function changeMainImage(element) {
     const mainTitle = document.querySelector('#mainImage h3');
     const mainDesc = document.querySelector('#mainImage p');
 
-    mainImage.src = element.querySelector('img').src;
-    mainTitle.textContent = element.querySelector('p').textContent;
-    mainDesc.textContent = "Jelajahi " + element.querySelector('p').textContent + " dengan motor sewaan kami";
+    mainImage.src = element.querySelector('img').src || 'path/to/default/image.jpg';
+    mainTitle.textContent = element.querySelector('p').textContent || 'Default Title';
+    mainDesc.textContent = "Jelajahi " + (element.querySelector('p').textContent || 'Default Title') + " dengan motor sewaan kami";
 }
 </script>
