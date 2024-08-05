@@ -3,6 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .form-input {
+    @apply block w-full rounded-xl border-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-xl py-4 px-4;
+  }
+
+  .form-input-error {
+    @apply border-red-500;
+  }
+}
+
+
 .steam-input {
     background: linear-gradient(to right, #2b2d30, #1c1e22);
     border: 1px solid #000;

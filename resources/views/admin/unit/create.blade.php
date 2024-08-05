@@ -26,7 +26,7 @@
                     <form action="{{ route('admin.jenisMotor.store') }}" method="POST" class="space-y-8">
                         @csrf
                         <div class="space-y-6">
-                            <label for="id_stok" class="block text-lg font-medium text-gray-700">Merk</label>
+                            <label for="id_stok" class="block text-lg font-medium text-gray-700">Pilih Merk Kendaraan :</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" x-data="{ selectedMerk: '' }">
                                 @foreach($stoks as $stok)
                                 <div class="relative">
@@ -51,9 +51,12 @@
 
 
                         <div class="space-y-4">
-                            <label for="nopol" class="block text-lg font-medium text-gray-700">Nopol</label>
-                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <label for="nopol" class="block text-lg font-semibold text-gray-800">Nopol</label>
+                            <input type="text" name="nopol" id="nopol" value="{{ old('nopol') }}"
+                                class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                                required>
                         </div>
+
                         <!-- Display Errors -->
                         @if ($errors->has('nopol'))
                             <div class="text-red-500 text-sm mb-4">
@@ -76,15 +79,17 @@
 
                         <div class="space-y-4">
                             <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
-                            <input type="text" name="merk" id="merk" value="{{ old('merk') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="merk" id="merk" value="{{ old('merk') }}"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
-                                                <!-- Display Errors -->
-                                                @if ($errors->has('merk'))
-                                                    <div class="text-red-500 text-sm mb-4">
-                                                        {{ $errors->first('merk') }}
-                                                    </div>
-                                                @endif
+                        <!-- Display Errors -->
+                        @if ($errors->has('merk'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('merk') }}
+                            </div>
+                        @endif
 
 
                         <div class="space-y-4">
@@ -93,7 +98,9 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-lg">Rp</span>
                                 </div>
-                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari') }}" class="pl-12 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari') }}"
+                                class="pl-12 block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                                required>
                             </div>
                         </div>
                         <!-- Display Errors -->
@@ -105,20 +112,24 @@
 
                         <div class="space-y-4">
                             <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
-                            <input type="text" name="judul" id="judul" value="{{ old('judul') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="judul" id="judul" value="{{ old('judul') }}"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
-                                                <!-- Display Errors -->
-                                                @if ($errors->has('judul'))
-                                                    <div class="text-red-500 text-sm mb-4">
-                                                        {{ $errors->first('judul') }}
-                                                    </div>
-                                                @endif
+                        <!-- Display Errors -->
+                        @if ($errors->has('judul'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('judul') }}
+                            </div>
+                        @endif
 
 
                         <div class="space-y-4">
                             <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
-                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1') }}"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
                         <!-- Display Errors -->
@@ -130,7 +141,9 @@
 
                         <div class="space-y-4">
                             <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
-                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2') }}" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg" required>
+                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2') }}"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
                         <!-- Display Errors -->
@@ -142,7 +155,9 @@
 
                         <div class="space-y-4">
                             <label for="foto" class="block text-lg font-medium text-gray-700">Foto</label>
-                            <input type="file" name="foto" id="foto" class="block w-full text-gray-800 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300">
+                            <input type="file" name="foto" id="foto"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
                         <!-- Display Errors -->
                         @if ($errors->has('foto'))
