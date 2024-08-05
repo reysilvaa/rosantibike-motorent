@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use App\Models\JenisMotor;
+use App\Models\Rating;
 use App\Models\Stok;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class LandingController extends Controller
     {
         $armada = Stok::all();
         $galeris = Galeri::inRandomOrder()->get(); //random
-        return view('landing.landing', compact('armada', 'galeris'));
+        $reviews = Rating::all(); // Fetch all reviews
+        return view('landing.landing', compact('armada', 'galeris', 'reviews'));
     }
     public function motorMatic()
     {
@@ -28,5 +30,10 @@ class LandingController extends Controller
     {
         $galeris = Galeri::all();
         return view('landing.assets.landing-content.galeri', compact('galeris')); // Ensure you have this view file created
+    }
+    public function testimoni(){
+
+    $reviews = Rating::all(); // Fetch all reviews
+    return view('landing.assets.landing-content.testimoni', compact('reviews'));
     }
 }

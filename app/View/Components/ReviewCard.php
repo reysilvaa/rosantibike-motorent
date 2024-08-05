@@ -1,25 +1,17 @@
 <?php
+
 namespace App\View\Components;
 
+use App\Models\Rating;
 use Illuminate\View\Component;
 
 class ReviewCard extends Component
 {
-    public $avatar;
-    public $name;
-    public $role;
     public $review;
-    public $rating;
-    public $timeAgo;
 
-    public function __construct($avatar, $name, $role, $review, $rating, $timeAgo)
+    public function __construct($reviewId)
     {
-        $this->avatar = $avatar;
-        $this->name = $name;
-        $this->role = $role;
-        $this->review = $review;
-        $this->rating = $rating;
-        $this->timeAgo = $timeAgo;
+        $this->review = Rating::find($reviewId);
     }
 
     public function render()

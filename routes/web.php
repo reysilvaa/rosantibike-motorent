@@ -7,6 +7,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,7 @@ Route::get('/', function () {
 Route::get('/motor-matic', [LandingController::class, 'motorMatic'])->name('landing.motor-matic');
 Route::get('/faq', [LandingController::class, 'faq'])->name('landing.faqs');
 Route::get('/petualangan', [LandingController::class, 'galeri'])->name('landing.galeri');
+Route::get('/testimoni', [LandingController::class, 'testimoni'])->name('landing.testimoni');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -67,17 +69,27 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminTransaksiController::class, 'index'])->name('dashboard');
 
-        // Galeri resource routes
-        Route::prefix('galeri')->group(function () {
-            Route::get('/', [GaleriController::class, 'index'])->name('galeri.index');
-            Route::get('create', [GaleriController::class, 'create'])->name('galeri.create');
-            Route::post('/', [GaleriController::class, 'store'])->name('galeri.store');
-            Route::get('{galeri}', [GaleriController::class, 'show'])->name('galeri.show');
-            Route::get('{galeri}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
-            Route::put('{galeri}', [GaleriController::class, 'update'])->name('galeri.update');
-            Route::delete('{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+        // Rating Routes
+        Route::prefix('rating')->name('admin.rating.')->group(function () {
+            Route::get('/', [RatingController::class, 'index'])->name('index');
+            Route::get('create', [RatingController::class, 'create'])->name('create');
+            Route::post('/', [RatingController::class, 'store'])->name('store');
+            Route::get('{id}', [RatingController::class, 'show'])->name('show');
+            Route::get('{id}/edit', [RatingController::class, 'edit'])->name('edit');
+            Route::put('{id}', [RatingController::class, 'update'])->name('update');
+            Route::delete('{id}', [RatingController::class, 'destroy'])->name('destroy');
         });
-        
+        // Galeri resource routes
+        Route::prefix('galeri')->name('admin.galeri.')->group(function () {
+            Route::get('/', [GaleriController::class, 'index'])->name('index');
+            Route::get('create', [GaleriController::class, 'create'])->name('create');
+            Route::post('/', [GaleriController::class, 'store'])->name('store');
+            Route::get('{galeri}', [GaleriController::class, 'show'])->name('show');
+            Route::get('{galeri}/edit', [GaleriController::class, 'edit'])->name('edit');
+            Route::put('{galeri}', [GaleriController::class, 'update'])->name('update');
+            Route::delete('{galeri}', [GaleriController::class, 'destroy'])->name('destroy');
+        });
+
         Route::prefix('booking')->name('admin.booking.')->group(function () {
             // Data tables
             Route::get('/data', [AdminBookingController::class, 'getData'])->name('data');

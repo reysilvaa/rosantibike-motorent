@@ -37,7 +37,7 @@
             <p class="mt-1"><a href="{{ $galeri->link_maps }}" target="_blank" class="text-blue-500 hover:underline">{{ $galeri->link_maps }}</a></p>
         </div>
 
-        <a href="{{ route('galeri.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back to List</a>
+        <a href="{{ route('admin.galeri.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back to List</a>
     </div>
 </div>
 @endsection

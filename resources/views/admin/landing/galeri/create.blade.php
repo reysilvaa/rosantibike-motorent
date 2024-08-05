@@ -4,7 +4,7 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-semibold mb-4">Create Galeri</h1>
 
-    <form action="{{ route('galeri.store') }}" method="POST" class="bg-white p-6 border border-gray-200 rounded-lg shadow-md">
+    <form action="{{ route('admin.galeri.store') }}" method="POST" class="bg-white p-6 border border-gray-200 rounded-lg shadow-md">
         @csrf
 
         <div class="mb-4">

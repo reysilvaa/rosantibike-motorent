@@ -40,7 +40,7 @@ class GaleriController extends Controller
             'link_maps' => $request->link_maps,
         ]);
 
-        return redirect()->route('galeri.index')->with('success', 'Galeri created successfully.');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri created successfully.');
     }
 
     public function show(Galeri $galeri)
@@ -73,12 +73,12 @@ class GaleriController extends Controller
             'link_maps' => $request->link_maps,
         ]);
 
-        return redirect()->route('galeri.index')->with('success', 'Galeri updated successfully.');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri updated successfully.');
     }
 
     public function destroy(Galeri $galeri)
     {
         $galeri->delete();
-        return redirect()->route('galeri.index')->with('success', 'Galeri deleted successfully.');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri deleted successfully.');
     }
 }

@@ -47,14 +47,24 @@
                     </div>
                 </a>
                 <!-- Card 4 -->
-                <a href="{{ route('admin.wipe.index') }}" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
-                    <div class="p-4 flex-1 text-lg font-semibold">Kontrol Tampilan Website</div>
-                    <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
+                <a href="{{ route('admin.galeri.index') }}" class="block bg-cyan-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">Kontrol Galeri Website</div>
+                    <div class="bg-cyan-700 p-4 flex items-center justify-between rounded-b-lg">
                         <span>View Details</span>
                         <i class="fas fa-angle-right"></i>
                     </div>
                 </a>
+
                 <!-- Card 5 -->
+                <a href="{{ route('admin.rating.index') }}" class="block bg-purple-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
+                    <div class="p-4 flex-1 text-lg font-semibold">Input Review Kostumer</div>
+                    <div class="bg-purple-700 p-4 flex items-center justify-between rounded-b-lg">
+                        <span>View Details</span>
+                        <i class="fas fa-angle-right"></i>
+                    </div>
+                </a>
+
+                <!-- Card 6 -->
                 <a href="{{ route('admin.wipe.index') }}" class="block bg-red-600 text-white rounded-lg shadow-lg flex flex-col h-[200px] sm:h-[250px] lg:h-[300px] transition-transform transform hover:scale-105 no-underline">
                     <div class="p-4 flex-1 text-lg font-semibold">Hapus Semua Data</div>
                     <div class="bg-red-700 p-4 flex items-center justify-between rounded-b-lg">
