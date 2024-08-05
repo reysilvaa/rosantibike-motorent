@@ -54,19 +54,34 @@ class RatingController extends Controller
     // Update the specified rating in storage.
     public function update(Request $request, $id)
     {
+        // Validasi data
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
             'tanggal' => 'required|date',
         ]);
 
-        $rating = Rating::findOrFail($id);
-        $rating->update($request->all());
+        // Temukan rating yang akan diupdate
+        $rating = Rating::find($id);
 
-        return redirect()->route('admin.rating.index')
-                         ->with('success', 'Rating updated successfully.');
+        if (!$rating) {
+            return redirect()->back()->with('error', 'Rating not found.');
+        }
+
+        // Update data rating
+        $rating->nama = $request->input('name');
+        $rating->role = $request->input('role');
+        $rating->deskripsi = $request->input('deskripsi');
+        $rating->rating = $request->input('rating');
+        $rating->tanggal = $request->input('tanggal');
+
+        // Simpan data
+        $rating->save();
+
+        // Redirect atau response
+        return redirect()->route('admin.rating.index')->with('success', 'Rating updated successfully.');
     }
 
     // Remove the specified rating from storage.
