@@ -21,15 +21,15 @@
                     @endforeach
                 </div>
 
-                <div class="swiper-pagination mt-8"></div>
+                <div class="swiper-pagination mb-0 mt-16"></div>
             </div>
             <div class="hidden md:block">
-                <button class="swiper-button-prev w-10 h-10 bg-white rounded-full shadow-md text-blue-600 transition duration-300 hover:bg-blue-50 focus:outline-none absolute top-1/2 -left-5 transform -translate-y-1/2">
+                <button class="swiper-button-prev w-10 h-10 bg-white rounded-full shadow-md text-blue-600 transition duration-300 hover:bg-blue-50 focus:outline-none absolute top-1/2 -left-0 transform -translate-y-1/2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 mx-auto">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <button class="swiper-button-next w-10 h-10 bg-white rounded-full shadow-md text-blue-600 transition duration-300 hover:bg-blue-50 focus:outline-none absolute top-1/2 -right-5 transform -translate-y-1/2">
+                <button class="swiper-button-next w-10 h-10 bg-white rounded-full shadow-md text-blue-600 transition duration-300 hover:bg-blue-50 focus:outline-none absolute top-1/2 -right-0 transform -translate-y-1/2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 mx-auto">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>

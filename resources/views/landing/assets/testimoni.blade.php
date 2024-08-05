@@ -39,11 +39,11 @@
                 timeAgo="1 bulan yang lalu"
                 />
                 </div>
+                <div class="swiper-pagination mt-12"></div>
             </div>
-            <div class="swiper-button-next absolute top-1/2 -right-12 transform -translate-y-1/2 bg-white rounded-full shadow-md p-4 focus:outline-none"></div>
-            <div class="swiper-button-prev absolute top-1/2 -left-12 transform -translate-y-1/2 bg-white rounded-full shadow-md p-4 focus:outline-none"></div>
+            <div class="swiper-button-next absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white rounded-full shadow-md p-4 focus:outline-none"></div>
+            <div class="swiper-button-prev absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full shadow-md p-4 focus:outline-none"></div>
         </div>
-        <div class="swiper-pagination mt-12"></div>
     </div>
 </section>
 
