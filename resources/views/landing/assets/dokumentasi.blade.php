@@ -21,7 +21,7 @@
                         <div class="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onclick="changeMainImage(this)">
                             <img src="{{ $galeri->foto }}" alt="Dokumentasi" class="w-full h-44 object-cover transition duration-300 transform hover:scale-110">
                             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-                                <p class="text-white text-lg font-semibold">{{ $galeri->deskripsi }}</p>
+                                <p class="text-white text-lg font-semibold">{{ $galeri->judul }}</p>
                             </div>
                         </div>
                     @endif
