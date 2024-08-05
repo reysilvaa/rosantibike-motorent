@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    @vite('resources/css/app.css')
-    @include('layouts.styles')
+     @include('layouts.styles')
     <link href="https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="font-motiva-sans bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 flex items-center justify-center min-h-screen p-4">
