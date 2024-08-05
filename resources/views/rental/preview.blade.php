@@ -7,7 +7,7 @@
     <div class="bg-white shadow-lg rounded-lg p-6 relative">
         <!-- PDF Preview -->
         <div class="relative mb-6" style="height: 600px;">
-            <iframe src="data:application/pdf;base64,{{ base64_encode($pdf) }}" class="w-full h-full" frameborder="0"></iframe>
+            <iframe id="pdfIframe" class="w-full h-full" frameborder="0"></iframe>
         </div>
 
         <!-- Action Buttons -->
@@ -40,4 +40,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var pdfData = @json(base64_encode($pdf));
+        var pdfBlob = new Blob([Uint8Array.from(atob(pdfData), c => c.charCodeAt(0))], { type: 'application/pdf' });
+        var pdfUrl = URL.createObjectURL(pdfBlob);
+        document.getElementById('pdfIframe').src = pdfUrl;
+    });
+</script>
 @endsection

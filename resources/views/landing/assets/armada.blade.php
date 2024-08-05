@@ -1,15 +1,16 @@
 <section id="armada" class="py-24 bg-gray-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
         <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Armada Kami</h2>
-        <div class="relative">
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
+        <div class="relative overflow-hidden">
+            <div class="swiper-container overflow-hidden">
+                <div class="swiper-wrapper flex">
                     @foreach($armada as $unit)
-                        <div class="swiper-slide bg-white p-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:-translate-y-1">
+                        <div class="swiper-slide bg-white p-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:-translate-y-1 flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
                             <img
                                 src="{{ $unit->foto ?
                                     (filter_var($unit->foto, FILTER_VALIDATE_URL) ?
-                                    $unit->foto : asset('storage/' . $unit->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $unit->merk ?: 'Motor Image' }}"                                alt="{{ $unit->merk }}"
+                                    $unit->foto : asset('storage/' . $unit->foto)) : 'https://via.placeholder.com/600x400' }}"
+                                alt="{{ $unit->merk ?: 'Motor Image' }}"
                                 class="w-full h-48 object-cover rounded-lg mb-6"
                                 loading="lazy"
                             >
@@ -37,3 +38,43 @@
         </div>
     </div>
 </section>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof Swiper !== 'undefined') {
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto', // Menyesuaikan lebar slide secara otomatis
+                spaceBetween: 20, // Jarak antar slide
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 40,
+                    },
+                },
+            });
+        } else {
+            console.error('Swiper is not defined');
+        }
+    });
+</script>

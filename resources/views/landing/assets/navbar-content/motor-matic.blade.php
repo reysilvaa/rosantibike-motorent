@@ -77,9 +77,7 @@
     </script>
 </body>
 </html> --}}
-<title>
-    @yield('title', 'Motor Matic - Rental Motor Rosanti')
-</title>
+<title>@yield('title', 'List Harga Rental Motor Matic - Rental Motor Rosanti')</title>
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
     @include('landing.assets.navbar-no-scroll')
 
@@ -98,10 +96,10 @@
                         <ul class="text-sm text-gray-600 mb-4">
                             <li class="flex items-center mb-1"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>{{ $motor->deskripsi1 }}</li>
                             <li class="flex items-center mb-1"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>{{ $motor->deskripsi2 }}</li>
-                            <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>{{ $motor->deskripsi3 }}</li>
+                            <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>{{ $motor->deskripsi1 }}</li>
                         </ul>
                         <p class="text-2xl font-bold text-blue-600 mb-4">Rp {{ number_format($motor->harga_perHari, 0, ',', '.') }} / hari</p>
-                        <a href="https://wa.me/082331044747?text=Saya%20tertarik%20untuk%20menyewa%20{{ urlencode($motor->merk) }}.%20Apakah%20ready?" class="block w-full bg-blue-600 text-white text-center py-2 rounded-full hover:bg-blue-700 transition duration-300" target="_blank">Sewa Sekarang</a>
+                        <a href="https://wa.me/+628113535122?text=Saya%20tertarik%20untuk%20menyewa%20{{ urlencode($motor->merk) }}.%20Apakah%20ready?" class="block w-full bg-blue-600 text-white text-center py-2 rounded-full hover:bg-blue-700 transition duration-300" target="_blank">Sewa Sekarang</a>
                     </div>
                 </div>
                 @endforeach

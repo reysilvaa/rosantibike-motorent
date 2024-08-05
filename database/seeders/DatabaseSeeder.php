@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
 
         // Create stock data
-        // Stok::factory(10)->create()->each(function ($stok) {
+        Stok::factory(10)->create()->each(function ($stok) {
         //     // Create related motor types
-        //     JenisMotor::factory(5)->create(['id_stok' => $stok->id])->each(function ($jenisMotor) {
+            JenisMotor::factory(5)->create(['id_stok' => $stok->id])->each(function ($jenisMotor) {
         //         // Create related transactions
         //         // Transaksi::factory(3)->create(['id_jenis' => $jenisMotor->id]);
-        //     });
-        // });
+            });
+        });
     }
 }

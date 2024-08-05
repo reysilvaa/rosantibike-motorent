@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id" class="overflow-x-hidden">
 <head>
+
     {{-- Navbar --}}
     @include('landing.assets.navbar')
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
@@ -75,7 +76,7 @@
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-4xl font-bold mb-4">Siap untuk Petualangan Anda?</h2>
             <p class="text-xl mb-8 max-w-2xl mx-auto">Jangan tunggu lebih lama! Segera sewa motor berkualitas dan nikmati perjalanan Anda di Malang.</p>
-            <a href="https://wa.me/628113535122?text=[message-url-encoded]" id="pesan-now" class="bg-white text-blue-600 py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-blue-50 transition transform duration-300 ease-in-out" target="_blank" x-data="{ bounce: false }" @mouseenter="bounce = true" @animationend="bounce = false" :class="{ 'animate-bounce': bounce }">
+            <a href="https://wa.me/628113535122?text=Halo%20kak!%20Saya%20tertarik%20untuk%20sewa%20" id="pesan-now" class="bg-white text-blue-600 py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-blue-50 transition transform duration-300 ease-in-out" target="_blank" x-data="{ bounce: false }" @mouseenter="bounce = true" @animationend="bounce = false" :class="{ 'animate-bounce': bounce }">
                 Pesan Sekarang
             </a>
         </div>
@@ -87,41 +88,7 @@
     <!-- Footer -->
     @include('landing.assets.footer')
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 2,
-                        spaceBetween: 20,
-                    },
-                    768: {
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                    },
-                    1024: {
-                        slidesPerView: 4,
-                        spaceBetween: 40,
-                    },
-                },
-            });
-
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -156,7 +123,6 @@
             lazyBgElements.forEach(element => {
                 observer.observe(element);
             });
-        });
     </script>
 </body>
 </html>

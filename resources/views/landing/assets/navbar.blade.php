@@ -1,6 +1,19 @@
 @include('landing.assets.link.link')
 <head>
-    <title>@yield('title', 'Rental Motor Rosanti')</title>
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
+    img-src 'self' data: https:;
+    connect-src 'self' https:;
+    font-src 'self' data: https:;
+    frame-src 'self' https://www.google.com;
+    object-src 'none';
+    base-uri 'self';
+    ">
+    <meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">    <meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
+
+    <title>@yield('title', 'Motor Matic - Rental Motor Rosanti')</title>
 </head>
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
 <!-- Header -->

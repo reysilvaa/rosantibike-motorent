@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
      @include('layouts.styles')
-    <link href="https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="font-motiva-sans bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 flex items-center justify-center min-h-screen p-4">
     <div class="flex flex-col md:flex-row w-full max-w-screen-lg bg-white rounded-lg shadow-lg overflow-hidden">
