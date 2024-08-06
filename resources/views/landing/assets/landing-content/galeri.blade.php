@@ -201,3 +201,4 @@ function galleryData(galeris) {
         background: #555;
     }
 </style>
+@include('landing.assets.footer')
