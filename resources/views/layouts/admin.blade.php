@@ -6,6 +6,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>@yield('title', 'Dashboard') - RosantiBike</title>
+    @notifyCss
 
 
     <!-- Preload Fonts -->
@@ -16,6 +17,8 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+
 
     @vite('resources/css/app.css')
     {{-- DOnt delete the jquery --}}
@@ -39,13 +42,17 @@
         #jenisMotorKanban > div:hover {
             transform: translateY(-5px);
         }
+        .inset-0 {
+            top: auto!important;
+        }
     </style>
 </head>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
     @auth
+    <x-notify::notify />
         <!-- Navbar -->
-        <nav class="bg-white py-4 px-6 flex items-center justify-between shadow-lg fixed top-0 left-0 right-0 z-50">
+        <nav class="bg-white py-2 px-6 flex items-center justify-between shadow-lg fixed top-0 left-0 right-0 z-50">
             <!-- Sidebar Toggle -->
             <button class="text-gray-600 text-2xl px-4 py-2 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-transform transform hover:scale-105" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
@@ -97,6 +104,7 @@
             <main>
                 <div class="container mx-auto px-4 py-6">
                     @yield('content')
+                    @notifyJs
                 </div>
             </main>
             @include('layouts.footer')

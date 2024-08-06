@@ -7,7 +7,9 @@ export default {
     ],
     theme: {
       extend: {
-
+        zIndex: {
+            '9999': '9999',
+          },
       },
     },
     plugins: [],

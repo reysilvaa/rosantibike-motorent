@@ -31,14 +31,18 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'uname' => 'required|unique:users',
-            'pass' => 'required|min:6',
+            'pass' => 'required|min:6|confirmed',
         ], $messages);
 
-        $validated['pass'] = Hash::make($validated['pass']);
+        User::create([
+            'uname' => $validated['uname'],
+            'pass' => Hash::make($validated['pass']),
+        ]);
 
-        User::create($validated);
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Pengguna berhasil dibuat']);
 
-        return redirect()->route('admin.users.index')->with('success', 'User created successfully');
+        return redirect()->route('admin.users.index');
     }
 
     public function show(User $user)
@@ -65,22 +69,29 @@ class UserController extends Controller
             'pass' => 'nullable|confirmed|min:6',
         ];
 
-        $request->validate($rules, $messages);
+        $validated = $request->validate($rules, $messages);
 
-        $user->uname = $request->uname;
+        $user->uname = $validated['uname'];
 
         if ($request->filled('pass')) {
-            $user->pass = Hash::make($request->pass);
+            $user->pass = Hash::make($validated['pass']);
         }
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Pengguna berhasil diperbarui']);
+
+        return redirect()->route('admin.users.index');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+
+        // Using error preset
+        notify()->preset('error', ['title' => 'Hapus Pengguna', 'message' => 'Pengguna berhasil dihapus']);
+
+        return redirect()->route('admin.users.index');
     }
 }
