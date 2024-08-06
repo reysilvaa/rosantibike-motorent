@@ -2,32 +2,32 @@
 <section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
     <div class="container mx-auto px-4">
             <div class="container mx-auto px-4">
-                <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-20 pt-10">
+                <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-7 pt-10">
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                         Pesona Malang
                     </span>
                 </h2>
             </div>
 
-        <!-- Attractive Carousel -->
-        <div class="relative mb-20 overflow-hidden rounded-xl shadow-lg">
-            <div class="carousel-container" x-ref="carousel">
-                <div class="carousel-track flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${currentSlide * 100}%)`">
-                    <template x-for="(item, index) in galeris" :key="index">
-                        <div class="carousel-slide flex-shrink-0 w-full">
-                            <div class="relative aspect-video overflow-hidden">
-                                <img :src="item.foto" :alt="item.judul" class="w-full h-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-105">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <h3 class="text-2xl font-bold mb-2" x-text="item.judul"></h3>
-                                    <p class="text-sm" x-text="item.deskripsi"></p>
+            <!-- Adjusted Carousel -->
+            <div class="relative mb-20 overflow-hidden rounded-3xl shadow-lg max-w-8xl mx-auto"> <!-- Increased width -->
+                <div class="carousel-container" x-ref="carousel">
+                    <div class="carousel-track flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${currentSlide * 100}%)`">
+                        <template x-for="(item, index) in galeris" :key="index">
+                            <div class="carousel-slide flex-shrink-0 w-full" style="height: 490px;"> <!-- Example height -->
+                                <div class="relative h-full overflow-hidden">
+                                    <img :src="item.foto" :alt="item.judul" class="w-full h-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-105">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                                        <h3 class="text-lg font-bold mb-2" x-text="item.judul"></h3>
+                                        <p class="text-sm" x-text="item.deskripsi"></p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
                 </div>
-            </div>
-            <button @click="prevSlide" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <button @click="prevSlide" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             <button @click="nextSlide" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Interactive Category Filters -->
-        <div class="flex justify-center mb-12 space-x-2 sm:space-x-4 flex-wrap">
+        <div class="flex justify-center mb-12 space-x-2 sm:space-x-4 flex-wrap -mt-10"> <!-- Added negative margin-top -->
             <template x-for="cat in categories" :key="cat">
                 <button
                     @click="setFilter(cat)"
