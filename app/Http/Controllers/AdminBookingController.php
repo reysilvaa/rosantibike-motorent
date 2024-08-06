@@ -6,6 +6,7 @@ use App\Models\JenisMotor;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Hash;
 
 class AdminBookingController extends Controller
 {
@@ -55,104 +56,94 @@ class AdminBookingController extends Controller
 
     public function edit($id)
     {
-        // Temukan booking yang akan diedit
         $booking = Booking::findOrFail($id);
-
-        // Ambil daftar jenis motor yang sedang tidak disewa, tetapi pastikan jenis motor yang sedang diedit tetap ada
         $jenisMotorList = JenisMotor::where(function($query) use ($booking) {
             $query->whereDoesntHave('booking', function($query) {
                 $query->whereIn('status', ['disewa', 'perpanjang']);
             });
         })->orWhere('id', $booking->id_jenis)->get();
 
-        // Tampilkan view edit dengan data booking dan daftar jenis motor
         return view('admin.booking.edit', compact('booking', 'jenisMotorList'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi input
         $validated = $request->validate([
             'tgl_kembali' => 'required|date|after_or_equal:today',
             'id_jenis' => 'required|exists:jenis_motor,id',
         ]);
 
-        // Temukan booking yang akan diperbarui
         $booking = Booking::findOrFail($id);
-
-        // Simpan total awal sebelum update
         $originalTotal = $booking->total;
-
-        // Simpan tanggal kembali yang asli
         $originalTglKembali = $booking->tgl_kembali;
-
-        // Ambil data jenis motor terbaru
         $jenisMotor = JenisMotor::findOrFail($validated['id_jenis']);
 
-        // Hitung jumlah hari perpanjangan dari tanggal kembali yang asli
         $tglSewa = $booking->tgl_sewa;
         $tglKembali = $validated['tgl_kembali'];
 
-        // Jika tanggal kembali baru lebih awal dari tanggal kembali asli, tidak perlu perpanjangan
         if ($tglKembali <= $originalTglKembali) {
+            notify()->preset('error', [
+                'title' => 'Gagal Memperbarui Booking',
+                'message' => 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.'
+            ]);
             return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
         }
 
-        // Hitung jumlah hari perpanjangan
         $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
-
-        // Hitung total harga perpanjangan
         $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotor->harga_perHari;
-
-        // Tambahkan total perpanjangan ke total yang sudah ada
         $totalHargaBaru = $originalTotal + $totalHargaPerpanjangan;
 
-        // Perbarui data booking
         $booking->tgl_kembali = $validated['tgl_kembali'];
         $booking->id_jenis = $validated['id_jenis'];
         $booking->total = $totalHargaBaru;
-        $booking->jenisMotor->status = 'perpanjang'; // Atau status sesuai kebutuhan
+        $booking->jenisMotor->status = 'perpanjang';
         $booking->save();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('admin.booking.edit', ['booking' => $id])->with('success', 'Booking berhasil diperbarui.');
+        notify()->preset('success', [
+            'title' => 'Booking Berhasil Diperbarui',
+            'message' => 'Booking berhasil diperbarui dengan total baru.'
+        ]);
+
+        return redirect()->route('admin.booking.edit', ['booking' => $id]);
     }
 
     public function destroy(Booking $booking)
     {
         $jenisMotor = JenisMotor::find($booking->id_jenis);
 
-        // Check if JenisMotor exists
         if ($jenisMotor) {
-            // Update the status to 'ready'
             $jenisMotor->update(['status' => 'ready']);
         }
 
-        // Delete the booking record
         $booking->delete();
-        return response()->json(['success'=>'Booking deleted successfully.']);
+
+        notify()->preset('success', [
+            'title' => 'Booking Berhasil Dihapus',
+            'message' => 'Booking berhasil dihapus.'
+        ]);
+
+        return response()->json(['success' => 'Booking deleted successfully.']);
     }
 
     public function bulkDelete(Request $request)
     {
-        // Get the IDs from the request
         $ids = $request->ids;
 
-        // Delete the bookings with the specified IDs
         Booking::whereIn('id', $ids)->each(function ($booking) {
-            // Find the JenisMotor associated with the current booking
             $jenisMotor = JenisMotor::find($booking->id_jenis);
 
-            // Check if JenisMotor exists and update its status
             if ($jenisMotor) {
                 $jenisMotor->update(['status' => 'ready']);
             }
         });
 
-        // Delete the bookings after updating JenisMotor statuses
         Booking::whereIn('id', $ids)->delete();
 
-        // Return a success response
-        return response()->json(['success' => "Bookings deleted successfully."]);
+        notify()->preset('success', [
+            'title' => 'Bulk Delete Berhasil',
+            'message' => 'Bookings berhasil dihapus.'
+        ]);
+
+        return response()->json(['success' => 'Bookings deleted successfully.']);
     }
 }
