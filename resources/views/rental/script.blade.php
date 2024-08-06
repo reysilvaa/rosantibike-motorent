@@ -296,8 +296,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (isValid) {
-            this.submit();
+            Swal.fire({
+                title: 'Success!',
+                text: 'Formulir berhasil dikirimkan.',
+                icon: 'success',
+                confirmButtonText: 'Siap',
+                customClass: {
+                    confirmButton: 'bg-indigo-600 text-white'
+                }
+            }).then(() => {
+                this.submit();
+            });
         }
+
     });
+
 });
 </script>
+<style>
+    .bg-indigo-600 {
+        background-color: #4f46e5;
+    }
+
+    .text-white {
+        color: #ffffff;
+    }
+</style>
