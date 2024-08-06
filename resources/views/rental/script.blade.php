@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (isValid) {
             Swal.fire({
-                title: 'Success!',
+                title: 'Berhasil!',
                 text: 'Formulir berhasil dikirimkan.',
                 icon: 'success',
                 confirmButtonText: 'Siap',
