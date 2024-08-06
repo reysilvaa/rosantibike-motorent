@@ -1,10 +1,7 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import Alpine from 'alpinejs';
 import '../css/app.css';
 import './bootstrap';
-window.Alpine = Alpine;
-Alpine.start();
 
 document.addEventListener('DOMContentLoaded', function() {
     const spinner = document.getElementById('loading-spinner');

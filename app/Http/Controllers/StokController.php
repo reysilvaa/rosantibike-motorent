@@ -8,56 +8,70 @@ use Illuminate\Support\Facades\Storage;
 
 class StokController extends Controller
 {
-    // Display a listing of the resource.
     public function index()
     {
         $stok = Stok::all();
         return view('admin.stok.index', compact('stok'));
     }
 
-    // Show the form for creating a new resource.
     public function create()
     {
         $stoks = Stok::all();
         return view('admin.stok.create', compact('stoks'));
     }
 
-    // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        // Validate the request inputs
+        $messages = [
+            'merk.required' => 'Merk wajib diisi.',
+            'merk.string' => 'Merk harus berupa teks.',
+            'merk.max' => 'Merk maksimal 255 karakter.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul maksimal 100 karakter.',
+            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
+            'deskripsi1.max' => 'Deskripsi 1 maksimal 100 karakter.',
+            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
+            'deskripsi2.max' => 'Deskripsi 2 maksimal 100 karakter.',
+            'deskripsi3.string' => 'Deskripsi 3 harus berupa teks.',
+            'deskripsi3.max' => 'Deskripsi 3 maksimal 100 karakter.',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'kategori.in' => 'Kategori harus salah satu dari: manual, matic.',
+            'harga_perHari.required' => 'Harga per hari wajib diisi.',
+            'harga_perHari.numeric' => 'Harga per hari harus berupa angka.',
+            'foto.image' => 'Foto harus berupa gambar.',
+            'foto.mimes' => 'Foto harus berformat jpeg, png, jpg, gif, atau svg.',
+            'foto.max' => 'Foto maksimal 2MB.',
+            'foto_url.url' => 'URL foto harus valid.',
+        ];
+
         $request->validate([
             'merk' => 'required|string|max:255',
-            'judul' => 'string|max:100',
-            'deskripsi1' => 'string|max:100',
-            'deskripsi2' => 'string|max:100',
-            'deskripsi3' => 'string|max:100',
+            'judul' => 'nullable|string|max:100',
+            'deskripsi1' => 'nullable|string|max:100',
+            'deskripsi2' => 'nullable|string|max:100',
+            'deskripsi3' => 'nullable|string|max:100',
             'kategori' => 'required|in:manual,matic',
             'harga_perHari' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional, for file uploads
-            'foto_url' => 'nullable|url', // Optional, for URL
-        ]);
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_url' => 'nullable|url',
+        ], $messages);
 
-        // Prepare the data for creation
-        $data = $request->only(['merk', 'harga_perHari', 'stok', 'deskripsi1','deskripsi2', 'deskripsi3', 'kategori', 'judul']);
+        $data = $request->only(['merk', 'harga_perHari', 'deskripsi1', 'deskripsi2', 'deskripsi3', 'kategori', 'judul']);
 
         if ($request->filled('foto_url')) {
-            // If a URL is provided, store the URL in the foto column
             $data['foto'] = $request->input('foto_url');
         } elseif ($request->hasFile('foto')) {
-            // If a file is uploaded, handle it
             $fotoPath = $request->file('foto')->store('photos', 'public');
             $data['foto'] = $fotoPath;
         }
 
-        // Create a new Stok record
         Stok::create($data);
 
         return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Stok created successfully.');
+                        ->with('success', 'Stok berhasil dibuat.');
     }
 
-    // Display the specified resource.
+
     public function show($id)
     {
         $stok = Stok::findOrFail($id);
@@ -65,7 +79,6 @@ class StokController extends Controller
         return view('admin.stok.show', compact('stok', 'qty'));
     }
 
-    // Show the form for editing the specified resource.
     public function edit($id)
     {
         $stok = Stok::findOrFail($id);
@@ -74,65 +87,75 @@ class StokController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the request inputs
+        $messages = [
+            'merk.required' => 'Merk wajib diisi.',
+            'merk.string' => 'Merk harus berupa teks.',
+            'merk.max' => 'Merk maksimal 255 karakter.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul maksimal 100 karakter.',
+            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
+            'deskripsi1.max' => 'Deskripsi 1 maksimal 100 karakter.',
+            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
+            'deskripsi2.max' => 'Deskripsi 2 maksimal 100 karakter.',
+            'deskripsi3.string' => 'Deskripsi 3 harus berupa teks.',
+            'deskripsi3.max' => 'Deskripsi 3 maksimal 100 karakter.',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'kategori.in' => 'Kategori harus salah satu dari: manual, matic.',
+            'harga_perHari.required' => 'Harga per hari wajib diisi.',
+            'harga_perHari.numeric' => 'Harga per hari harus berupa angka.',
+            'foto.image' => 'Foto harus berupa gambar.',
+            'foto.mimes' => 'Foto harus berformat jpeg, png, jpg, gif, atau svg.',
+            'foto.max' => 'Foto maksimal 2MB.',
+            'foto_url.url' => 'URL foto harus valid.',
+        ];
+
         $request->validate([
             'merk' => 'required|string|max:255',
-            'judul' => 'string|max:100',
-            'deskripsi1' => 'string|max:100',
-            'deskripsi2' => 'string|max:100',
-            'deskripsi3' => 'string|max:100',
+            'judul' => 'nullable|string|max:100',
+            'deskripsi1' => 'nullable|string|max:100',
+            'deskripsi2' => 'nullable|string|max:100',
+            'deskripsi3' => 'nullable|string|max:100',
             'kategori' => 'required|in:manual,matic',
             'harga_perHari' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_url' => 'nullable|url',
-        ]);
+        ], $messages);
 
-        // Find the existing record
         $stok = Stok::findOrFail($id);
 
-        // Prepare the data to update
-        $data = $request->only(['merk', 'harga_perHari', 'stok', 'deskripsi1','deskripsi2', 'deskripsi3', 'kategori', 'judul']);
+        $data = $request->only(['merk', 'harga_perHari', 'deskripsi1', 'deskripsi2', 'deskripsi3', 'kategori', 'judul']);
 
         if ($request->filled('foto_url')) {
-            // If a URL is provided, store the URL in the foto column
             $data['foto'] = $request->input('foto_url');
-            // Optionally delete the old photo file
             if ($stok->foto && Storage::exists('public/' . $stok->foto)) {
                 Storage::delete('public/' . $stok->foto);
             }
         } elseif ($request->hasFile('foto')) {
-            // If a file is uploaded, handle it
             if ($stok->foto && Storage::exists('public/' . $stok->foto)) {
                 Storage::delete('public/' . $stok->foto);
             }
             $fotoPath = $request->file('foto')->store('photos', 'public');
             $data['foto'] = $fotoPath;
         } else {
-            // If no new photo is provided, keep the existing one
             $data['foto'] = $stok->foto;
         }
 
-        // Update the record
         $stok->update($data);
 
         return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Stok updated successfully.');
+                        ->with('success', 'Stok berhasil diperbarui.');
     }
 
-    // Remove the specified resource from storage.
     public function destroy($id)
     {
         $stok = Stok::findOrFail($id);
 
-        // Optionally delete the photo file
         if ($stok->foto && Storage::exists('public/' . $stok->foto)) {
             Storage::delete('public/' . $stok->foto);
         }
 
-        // Delete the record
         $stok->delete();
 
-        // Redirect to the index page with a success message
         return redirect()->route('admin.stok.index')
                          ->with('success', 'Stok deleted successfully.');
     }

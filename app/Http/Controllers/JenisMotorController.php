@@ -29,11 +29,19 @@ class JenisMotorController extends Controller
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        // Validate the request inputs
+        $messages = [
+            'nopol.required' => 'Nomor Polisi wajib diisi.',
+            'nopol.string' => 'Nomor Polisi harus berupa teks.',
+            'nopol.max' => 'Nomor polisi maksimal 9 karakter.',
+            'id_stok.required' => 'Pilihan Merk Motor wajib diisi.',
+            'id_stok.exists' => 'Pilihan Merk Motor tidak valid.',
+        ];
+
+        // Validate the request inputs with custom messages
         $request->validate([
-            'nopol' => 'required|string|max:255',
-            'id_stok' => 'required|exists:stok,id', // Ensure id_stok exists in stok table
-        ]);
+            'nopol' => 'required|string|max:10',
+            'id_stok' => 'required|exists:stok,id',
+        ], $messages);
 
         // Prepare the data for creation
         $data = $request->only(['nopol', 'id_stok']);
@@ -43,8 +51,9 @@ class JenisMotorController extends Controller
         JenisMotor::create($data);
 
         return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Jenis Motor created successfully.');
+                         ->with('success', 'Jenis Motor berhasil dibuat.');
     }
+
 
     // Display the specified resource.
     public function show($id)
@@ -63,11 +72,19 @@ class JenisMotorController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the request inputs
+        $messages = [
+            'nopol.required' => 'Nomor Polisi wajib diisi.',
+            'nopol.string' => 'Nomor Polisi harus berupa teks.',
+            'nopol.max' => 'Nomor polisi maksimal 9 karakter.',
+            'id_stok.required' => 'Pilihan Merk Motor wajib diisi.',
+            'id_stok.exists' => 'Pilihan Merk Motor tidak valid.',
+        ];
+
+        // Validate the request inputs with custom messages
         $request->validate([
             'nopol' => 'required|string|max:255',
-            'id_stok' => 'required|exists:stok,id', // Ensure id_stok exists in stok table
-        ]);
+            'id_stok' => 'required|exists:stok,id',
+        ], $messages);
 
         // Find the JenisMotor record
         $jenisMotor = JenisMotor::findOrFail($id);
@@ -76,8 +93,9 @@ class JenisMotorController extends Controller
         $jenisMotor->update($request->only(['nopol', 'id_stok']));
 
         return redirect()->route('admin.jenisMotor.index')
-                        ->with('success', 'Jenis Motor updated successfully.');
+                         ->with('success', 'Jenis Motor berhasil diperbarui.');
     }
+
 
 
     // Remove the specified resource from storage.

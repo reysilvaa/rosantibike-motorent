@@ -112,6 +112,21 @@ class TransaksiController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'nama_penyewa.required' => 'Nama penyewa harus diisi.',
+            'wa1.required' => 'Nomor WA 1 harus diisi.',
+            'rentals.required' => 'Data rental harus diisi.',
+            'rentals.*.tgl_sewa.required' => 'Tanggal sewa harus diisi.',
+            'rentals.*.tgl_kembali.required' => 'Tanggal kembali harus diisi.',
+            'rentals.*.tgl_kembali.after_or_equal' => 'Tanggal kembali harus sama atau setelah tanggal sewa.',
+            'rentals.*.id_jenis.required' => 'Jenis motor harus dipilih.',
+            'rentals.*.id_jenis.exists' => 'Jenis motor yang dipilih tidak valid.',
+            'rentals.*.total.required' => 'Total harus diisi.',
+            'rentals.*.jashujan.required' => 'Jumlah jas hujan harus diisi.',
+            'rentals.*.helm.required' => 'Jumlah helm harus diisi.',
+            'agreement.accepted' => 'Persetujuan harus diterima.',
+        ];
+
         $validated = $request->validate([
             'nama_penyewa' => 'required|string|max:255',
             'wa1' => 'required|string|max:20',
@@ -125,7 +140,7 @@ class TransaksiController extends Controller
             'rentals.*.jashujan' => 'required|integer',
             'rentals.*.helm' => 'required|integer',
             'agreement' => 'accepted',
-        ]);
+        ], $messages);
 
         DB::beginTransaction();
 
@@ -137,10 +152,9 @@ class TransaksiController extends Controller
                 $tgl_kembali = Carbon::parse($rental['tgl_kembali']);
                 $id_jenis = $rental['id_jenis'];
 
+                // Cek ketersediaan motor
                 // if (!$this->checkMotorAvailability($id_jenis, $tgl_sewa, $tgl_kembali)) {
-
-                //     dd("Motor dengan ID {$id_jenis} tidak tersedia untuk periode sewa yang dipilih."); // buat pesan error
-                //     // return back()->with('error', 'Terjadi kesalahan saat membuat transaksi: ');
+                //     return back()->with('error', 'Motor dengan ID ' . $id_jenis . ' tidak tersedia untuk periode sewa yang dipilih.');
                 // }
 
                 $isBooking = $tgl_sewa->gt($today->copy()->addDays(2));
@@ -176,6 +190,7 @@ class TransaksiController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
         }
     }
+
     private function checkMotorAvailability($id_jenis, $tgl_sewa, $tgl_kembali)
     {
         $jenis_motor = JenisMotor::find($id_jenis);
@@ -183,7 +198,6 @@ class TransaksiController extends Controller
             return false;
         }
 
-        // Check if this specific motor is booked or rented
         $isBooked = Booking::where('id_jenis', $id_jenis)
             ->where(function ($query) use ($tgl_sewa, $tgl_kembali) {
                 $query->whereBetween('tgl_sewa', [$tgl_sewa, $tgl_kembali])
