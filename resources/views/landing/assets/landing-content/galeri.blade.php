@@ -54,8 +54,8 @@
             </template>
         </div>
 
-        <!-- Uniform Grid Gallery with Masonry-like effect -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        <!-- Uniform Grid Gallery with fixed-size items and hover vignette effect -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <template x-for="item in filteredItems" :key="item.id">
                 <div
                     x-show="filter === 'Semua' || item.kategori.toLowerCase() === filter.toLowerCase()"
@@ -65,55 +65,69 @@
                     x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 transform scale-100"
                     x-transition:leave-end="opacity-0 transform scale-90"
-                    class="relative rounded-xl overflow-hidden shadow-lg cursor-pointer group"
+                    class="relative rounded-xl overflow-hidden shadow-lg cursor-pointer group h-64 w-full"
                     @click="openModal(item)"
                 >
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
-                    <img :src="item.foto" :alt="item.judul" class="w-full h-full object-cover transition duration-300 ease-in-out transform group-hover:scale-110">
-                    <div class="absolute inset-0 flex flex-col justify-end p-6">
-                        <h3 class="text-xl text-white font-bold mb-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300" x-text="item.judul"></h3>
-                        <p class="text-sm text-gray-200 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300" x-text="item.deskripsi"></p>
+                    <div class="h-full w-full overflow-hidden">
+                        <img :src="item.foto" :alt="item.judul" class="w-full h-full object-cover object-center transition duration-300 ease-in-out transform group-hover:scale-110">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-4">
+                        <h3 class="text-lg text-white font-bold mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300" x-text="item.judul"></h3>
+                        <p class="text-xs text-gray-200 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 line-clamp-3" x-text="item.deskripsi"></p>
                     </div>
                 </div>
             </template>
         </div>
 
-       <!-- Immersive Modal -->
-       <div
-            x-show="modalOpen && selectedItem.foto"
+        <!-- Immersive Modal -->
+        <div
+        x-show="modalOpen && selectedItem.foto"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90"
+        @click.away="closeModal()"
+        @keydown.escape.window="closeModal()"
+    >
+        <div
+            class="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-lg sm:max-w-xl"
             x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
             x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90"
-            @click.away="closeModal()"
-            @keydown.escape.window="closeModal()"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
         >
-            <div
-                class="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-300"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-            >
-                <div class="relative">
-                    <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-56 object-cover sm:h-72 md:h-96">
-                    <button @click="closeModal()" class="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+            <div class="relative">
+                <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-48 sm:h-56 object-cover">
+                <button @click="closeModal()" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-75 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4">
+                <h3 class="text-xl sm:text-2xl font-bold mb-2" x-text="selectedItem.judul"></h3>
+                <div class="text-gray-700 text-sm sm:text-base mb-4 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
+                    <p x-text="selectedItem.full_description"></p>
                 </div>
-                <div class="p-4 sm:p-6 md:p-8">
-                    <h3 class="text-2xl sm:text-3xl font-bold mb-4" x-text="selectedItem.judul"></h3>
-                    <p class="text-gray-700 text-base sm:text-lg mb-4" x-text="selectedItem.full_description"></p>
-                    <a :href="selectedItem.link_maps" target="_blank" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">View on Map</a>
+                <div class="flex justify-end">
+                    <a
+                        :href="selectedItem.link_maps"
+                        target="_blank"
+                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105"
+                    >
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                        </svg>
+                        View on Map
+                    </a>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -171,3 +185,19 @@ function galleryData(galeris) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
 </script>
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>

@@ -1,7 +1,5 @@
 @include('landing.assets.link.link')
-<title>
-    <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net;
     style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
     img-src 'self' data: https:;
