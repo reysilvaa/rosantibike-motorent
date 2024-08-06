@@ -11,7 +11,8 @@
     object-src 'none';
     base-uri 'self';
     ">
-    <meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">    <meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
+    <meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">
+    <meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
@@ -24,15 +25,17 @@
         x-data="{ isOpen: false, isScrolled: false }"
         @scroll.window="isScrolled = (window.pageYOffset > 20) ? true : false"
         :class="{
-            'bg-white shadow-md py-5': isScrolled,
-            'bg-transparent py-5': !isScrolled
+            'bg-white shadow-md py-4': isScrolled,
+            'bg-transparent py-4': !isScrolled
         }">
-    <nav class="container mx-auto px-6 flex justify-between items-center">
+    <nav class="container mx-auto px-10 flex justify-between items-center">
         <!-- Brand -->
-        <div class="text-2xl font-bold tracking-wide transition duration-300 ease-in-out"
-            :class="{'text-blue-600': isScrolled, 'text-white': !isScrolled}">
-            Rental Motor Rosanti
+        <div class="flex items-center ml-[-10px]"> <!-- Sesuaikan margin-left jika perlu -->
+            <img :src="isScrolled ? '{{asset('logo2.png')}}' : '{{asset('logo1.png')}}'"
+                 alt="RosantiBike Motorent - Rental Motor Malang"
+                 class="logo-image max-w-[180px] max-h-[100px] object-contain"> <!-- Mengatur ukuran maksimum -->
         </div>
+
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-6 font-medium">
             <a href="#beranda"

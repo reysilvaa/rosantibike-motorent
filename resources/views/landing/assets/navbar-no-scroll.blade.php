@@ -15,12 +15,14 @@
     <title>@yield('title', 'Motor Matic - Rental Motor Rosanti')</title>
 
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
-<header class="bg-white shadow-md py-1 fixed w-full z-50">
+<header class="bg-white shadow-md py-4 fixed w-full z-50">
     <nav class="container mx-auto px-6 flex justify-between items-center">
         <!-- Brand -->
-        <a href="{{ route('landing') }}" class="text-2xl font-bold text-blue-600">
-            <img src="https://i.ibb.co.com/k6sDTzz/Upscale-Image-1-20240729-removebg.png" alt="Upscale-Image-1-20240729" class="logo-image max-w-[250px] h-auto">
+        <a href="{{ route('landing') }}" class="flex items-center">
+            <img src="{{asset('logo2.png')}}" alt="RosantiBike Motorent - Rental Motor Malang"
+                 class="logo-image max-w-[180px] h-auto object-contain"> <!-- Mengatur ukuran logo -->
         </a>
+
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-6 font-medium">
             <a href="{{ route('landing') }}" class="text-gray-800 hover:text-blue-500 transition duration-300">Beranda</a>

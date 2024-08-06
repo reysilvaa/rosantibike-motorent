@@ -45,7 +45,7 @@
 <body class="bg-gray-100 flex flex-col min-h-screen">
     @auth
         <!-- Navbar -->
-        <nav class="bg-white py-2 px-6 flex items-center justify-between shadow-lg fixed top-0 left-0 right-0 z-50">
+        <nav class="bg-white py-4 px-6 flex items-center justify-between shadow-lg fixed top-0 left-0 right-0 z-50">
             <!-- Sidebar Toggle -->
             <button class="text-gray-600 text-2xl px-4 py-2 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-transform transform hover:scale-105" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
@@ -54,7 +54,7 @@
             <!-- Navbar Brand -->
             <!-- Navbar Brand -->
             <a class="text-black font-latin font-extrabold flex items-center no-underline hover:text-gray-600 transition duration-300 ease-in-out" href="{{ route('dashboard') }}">
-                <img src="https://i.ibb.co.com/k6sDTzz/Upscale-Image-1-20240729-removebg.png" alt="Upscale-Image-1-20240729" class="logo-image max-w-[200px] h-auto">
+                <img src="{{asset('logo2.png')}}" alt="RosantiBike Motorent" class="logo-image max-w-[150px] h-auto">
             </a>
 
 
