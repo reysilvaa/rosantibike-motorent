@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisMotorController;
@@ -63,7 +64,7 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
 Route::post('/transaksi/available-stock', [TransaksiController::class, 'getAvailableStock']);
 
 // Admin Routes
-
+Route::get('/send-reminder/{id}', [EmailController::class, 'sendReminder'])->name('send.reminder');
 Route::middleware(['auth'])->group(function () {
     // Admin dashboard
     Route::prefix('admin')->group(function () {
