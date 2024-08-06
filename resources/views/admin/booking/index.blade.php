@@ -46,7 +46,7 @@
 
 @endsection
 
-@push('styles')
+@push('scripts')
 <script type="text/javascript">
 $(document).ready(function() {
     $.extend($.fn.dataTable.defaults, {
@@ -60,7 +60,6 @@ $(document).ready(function() {
             search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
         }
     });
-
 
     var table = $('#data-table').DataTable({
         processing: true,
@@ -124,6 +123,12 @@ $(document).ready(function() {
                     },
                     success: function(response){
                         table.draw();
+                        // Menampilkan notifikasi sukses
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bulk Delete Berhasil',
+                            text: 'Bookings berhasil dihapus.'
+                        });
                     },
                     error: function(xhr) {
                         alert('An error occurred while trying to delete the selected transactions.');
@@ -146,6 +151,12 @@ $(document).ready(function() {
                 },
                 success: function(response){
                     table.draw();
+                    // Menampilkan notifikasi sukses
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Booking Berhasil Dihapus',
+                        text: 'Booking berhasil dihapus.'
+                    });
                 },
                 error: function(xhr) {
                     alert('An error occurred while trying to delete the transaction.');
@@ -156,3 +167,4 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+
