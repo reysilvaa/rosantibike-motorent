@@ -10,6 +10,7 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style">
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" as="script">
 
+
     <!-- Include Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +23,6 @@
 </head>
 <body>
     <!-- Your content here -->
-
-    <!-- Include AlpineJS -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <!-- Include FontAwesome (JS) -->
     <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous" defer></script>
