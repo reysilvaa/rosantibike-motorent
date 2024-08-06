@@ -109,8 +109,8 @@
                     @notifyJs
                 </div>
             </main>
-            @include('layouts.footer')
         </div>
+        @include('layouts.footer')
     @else
         <main class="flex-1">
             <div class="container mx-auto px-4 py-6">

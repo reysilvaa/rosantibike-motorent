@@ -1,4 +1,4 @@
-<footer class="bg-gradient-to-r from-gray-50 to-white text-gray-600 py-12 shadow-lg rounded-t-lg">
+<footer class="bg-gradient-to-r from-gray-50 to-white text-gray-600 py-12 shadow-lg rounded-t-lg mt-auto">
     <div class="container mx-auto px-4">
         <div class="flex flex-col items-center justify-center">
             <div class="text-lg font-semibold text-gray-800 mb-4">
