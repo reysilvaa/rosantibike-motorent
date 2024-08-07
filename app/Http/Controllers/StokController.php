@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -67,15 +68,16 @@ class StokController extends Controller
 
         Stok::create($data);
 
-        return redirect()->route('admin.jenisMotor.index')
-                        ->with('success', 'Stok berhasil dibuat.');
-    }
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil dibuat']);
 
+        return redirect()->route('admin.jenisMotor.index');
+    }
 
     public function show($id)
     {
         $stok = Stok::findOrFail($id);
-        $qty = JenisMotor::findOrFail($id)->where('id_stok', $id)->count();
+        $qty = JenisMotor::where('id_stok', $id)->count();
         return view('admin.stok.show', compact('stok', 'qty'));
     }
 
@@ -142,8 +144,10 @@ class StokController extends Controller
 
         $stok->update($data);
 
-        return redirect()->route('admin.jenisMotor.index')
-                        ->with('success', 'Stok berhasil diperbarui.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil diperbarui']);
+
+        return redirect()->route('admin.jenisMotor.index');
     }
 
     public function destroy($id)
@@ -156,7 +160,9 @@ class StokController extends Controller
 
         $stok->delete();
 
-        return redirect()->route('admin.stok.index')
-                         ->with('success', 'Stok deleted successfully.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil dihapus']);
+
+        return redirect()->route('admin.stok.index');
     }
 }

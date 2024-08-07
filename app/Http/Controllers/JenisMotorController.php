@@ -38,22 +38,23 @@ class JenisMotorController extends Controller
         ];
 
         // Validate the request inputs with custom messages
-        $request->validate([
+        $validated = $request->validate([
             'nopol' => 'required|string|max:10',
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
 
         // Prepare the data for creation
-        $data = $request->only(['nopol', 'id_stok']);
+        $data = $validated;
         $data['status'] = 'ready'; // Set the status to 'ready'
 
         // Create a new JenisMotor record
         JenisMotor::create($data);
 
-        return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Jenis Motor berhasil dibuat.');
-    }
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Jenis Motor berhasil dibuat']);
 
+        return redirect()->route('admin.jenisMotor.index');
+    }
 
     // Display the specified resource.
     public function show($id)
@@ -81,7 +82,7 @@ class JenisMotorController extends Controller
         ];
 
         // Validate the request inputs with custom messages
-        $request->validate([
+        $validated = $request->validate([
             'nopol' => 'required|string|max:255',
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
@@ -90,13 +91,13 @@ class JenisMotorController extends Controller
         $jenisMotor = JenisMotor::findOrFail($id);
 
         // Update the JenisMotor record
-        $jenisMotor->update($request->only(['nopol', 'id_stok']));
+        $jenisMotor->update($validated);
 
-        return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Jenis Motor berhasil diperbarui.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Jenis Motor berhasil diperbarui']);
+
+        return redirect()->route('admin.jenisMotor.index');
     }
-
-
 
     // Remove the specified resource from storage.
     public function destroy($id)
@@ -106,9 +107,9 @@ class JenisMotorController extends Controller
         // Delete the JenisMotor record
         $jenisMotor->delete();
 
-        // Redirect to the index page with a success message
-        return redirect()->route('admin.jenisMotor.index')
-                         ->with('success', 'Jenis Motor deleted successfully');
-    }
+        // Using success preset
+        notify()->preset('error', ['title' => 'Sukses', 'message' => 'Jenis Motor berhasil dihapus']);
 
+        return redirect()->route('admin.jenisMotor.index');
+    }
 }
