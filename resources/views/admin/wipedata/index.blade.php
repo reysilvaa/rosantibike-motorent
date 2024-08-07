@@ -8,6 +8,17 @@
     <form id="wipeForm" action="{{ route('admin.wipe.wipe') }}" method="POST">
         @csrf
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Kartu Stok Merk Motor -->
+
+            <div class="w-full">
+                <div class="bg-white p-4 rounded-lg shadow-md border border-gray-300 transition-transform transform hover:scale-105">
+                    <h2 class="text-lg font-semibold mb-2">Merk Motor</h2>
+                    <p class="text-gray-600 mb-2">Hapus semua catatan terkait Merk Motor (ini juga menghapus data dari jenis motor).</p>
+                    <input type="checkbox" name="models[]" value="stok" id="stok" class="form-checkbox h-5 w-5 text-blue-600">
+                    <label for="stok" class="ml-2 text-gray-700">Pilih untuk menghapus</label>
+                </div>
+            </div>
+
             <!-- Kartu Jenis Motor -->
             <div class="w-full">
                 <div class="bg-white p-4 rounded-lg shadow-md border border-gray-300 transition-transform transform hover:scale-105">

@@ -97,6 +97,43 @@
                                 class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
+                        @if ($errors->has('merk'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('merk') }}
+                            </div>
+                        @endif
+
+                        <div x-data="{ selectedKategori: '{{ old('kategori') }}' }" class="space-y-4">
+                            <label class="block text-lg font-medium text-gray-700">Jenis Motor</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                <div class="relative">
+                                    <input type="radio" id="kategori_matic" name="kategori" value="matic" x-model="selectedKategori" class="sr-only">
+                                    <label for="kategori_matic" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
+                                        :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'matic', 'border-gray-300': selectedKategori !== 'matic' }">
+                                        <div class="flex flex-col items-center">
+                                            <div class="text-lg font-semibold text-gray-800">Matic</div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="relative">
+                                    <input type="radio" id="kategori_manual" name="kategori" value="manual" x-model="selectedKategori" class="sr-only">
+                                    <label for="kategori_manual" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
+                                        :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'manual', 'border-gray-300': selectedKategori !== 'manual' }">
+                                        <div class="flex flex-col items-center">
+                                            <div class="text-lg font-semibold text-gray-800">Manual</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Display Errors -->
+                            @if ($errors->has('kategori'))
+                                <div class="text-red-500 text-sm mb-4">
+                                    {{ $errors->first('kategori') }}
+                                </div>
+                            @endif
+                        </div>
+
                         <div>
                             <label for="harga_perHari" class="block text-sm font-medium text-gray-700">Harga per Hari</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
@@ -107,6 +144,12 @@
                                     class="pl-10 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
                         </div>
+                         <!-- Display Errors -->
+                         @if ($errors->has('harga_perHari'))
+                         <div class="text-red-500 text-sm mb-4">
+                             {{ $errors->first('harga_perHari') }}
+                         </div>
+                     @endif
 
                         <div>
                             <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
@@ -114,11 +157,23 @@
                                 class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
+                         <!-- Display Errors -->
+                         @if ($errors->has('judul'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('judul') }}
+                            </div>
+                         @endif
+
                         <div>
                             <label for="deskripsi1" class="block text-sm font-medium text-gray-700">Deskripsi 1</label>
                             <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1', $stok->deskripsi1) }}"
                                 class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
+                        @if ($errors->has('deskripsi1'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('deskripsi1') }}
+                            </div>
+                        @endif
 
                         <div>
                             <label for="deskripsi2" class="block text-sm font-medium text-gray-700">Deskripsi 2</label>
@@ -126,21 +181,24 @@
                                 class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
+                        @if ($errors->has('deskripsi2'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('deskripsi2') }}
+                            </div>
+                        @endif
+
+
                         <div>
                             <label for="deskripsi3" class="block text-sm font-medium text-gray-700">Deskripsi 3</label>
                             <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3', $stok->deskripsi3) }}"
                                 class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
-                        <div>
-                            <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
-                            <select name="kategori" id="kategori" class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                <option value="" disabled>Pilih Kategori</option>
-                                <option value="matic" {{ old('kategori', $stok->kategori) === 'matic' ? 'selected' : '' }}>Matic</option>
-                                <option value="manual" {{ old('kategori', $stok->kategori) === 'manual' ? 'selected' : '' }}>Manual</option>
-                                <!-- Add other options as needed -->
-                            </select>
-                        </div>
+                        @if ($errors->has('deskripsi3'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('deskripsi3') }}
+                            </div>
+                        @endif
 
                         <div>
                             <label for="foto" class="block text-sm font-medium text-gray-700">Foto</label>
@@ -152,6 +210,12 @@
                                 file:bg-indigo-50 file:text-indigo-700
                                 hover:file:bg-indigo-100">
                         </div>
+
+                        @if ($errors->has('foto'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('foto') }}
+                            </div>
+                        @endif
 
                         <div class="flex justify-between items-center">
                             <x-back-to-list-button route="{{ route('admin.jenisMotor.index') }}" class="bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500" />

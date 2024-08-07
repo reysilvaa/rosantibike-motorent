@@ -71,7 +71,7 @@ class StokController extends Controller
         // Using success preset
         notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil dibuat']);
 
-        return redirect()->route('admin.jenisMotor.index');
+        return redirect()->route('admin.jenisMotor.index')->with('success', 'Stok berhasil dibuat');
     }
 
     public function show($id)
@@ -145,9 +145,9 @@ class StokController extends Controller
         $stok->update($data);
 
         // Using success preset
-        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil diperbarui']);
+        // notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil diperbarui']);
 
-        return redirect()->route('admin.jenisMotor.index');
+        return redirect()->route('admin.jenisMotor.index')->with('success', 'Stok berhasil diperbarui');
     }
 
     public function destroy($id)

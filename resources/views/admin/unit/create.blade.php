@@ -3,9 +3,9 @@
 @section('content')
 <div x-data="{ activeTab: '{{ $errors->has('merk') || $errors->has('harga_perHari') || $errors->has('judul') || $errors->has('deskripsi1') || $errors->has('deskripsi2') || $errors->has('foto') ? 'stokMotor' : 'unitMotor' }}' }" class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto">
-        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-8">
-                <h1 class="text-4xl font-bold text-white text-center">
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white text-center">
                     Manajemen Unit Motor
                 </h1>
             </div>
@@ -13,10 +13,10 @@
             <div class="p-8">
                 <!-- Tab Navigation -->
                 <div class="mb-8 flex justify-center space-x-6">
-                    <button @click="activeTab = 'unitMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'unitMotor', 'bg-gray-200 text-gray-700': activeTab !== 'unitMotor' }" class="px-6 py-3 rounded-full text-lg font-medium transition-all duration-300">
+                    <button @click="activeTab = 'unitMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'unitMotor', 'bg-gray-200 text-gray-700': activeTab !== 'unitMotor' }" class="px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300">
                         Unit Motor
                     </button>
-                    <button @click="activeTab = 'stokMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'stokMotor', 'bg-gray-200 text-gray-700': activeTab !== 'stokMotor' }" class="px-6 py-3 rounded-full text-lg font-medium transition-all duration-300">
+                    <button @click="activeTab = 'stokMotor'" :class="{ 'bg-indigo-600 text-white': activeTab === 'stokMotor', 'bg-gray-200 text-gray-700': activeTab !== 'stokMotor' }" class="px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300">
                         Stok Motor
                     </button>
                 </div>
@@ -34,7 +34,7 @@
                                     <label for="merk_{{ $stok->id }}" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300" :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedMerk == '{{ $stok->id }}', 'border-gray-300': selectedMerk != '{{ $stok->id }}' }">
                                         <div class="flex flex-col items-center">
                                             <img src="{{ $stok->foto ? (filter_var($stok->foto, FILTER_VALIDATE_URL) ? $stok->foto : asset('storage/' . $stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $stok->merk }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
-                                            <span class="text-lg font-medium">{{ $stok->merk }}</span>
+                                            <span class="text-lg font-semibold text-gray-800">{{ $stok->merk }}</span>
                                             <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($stok->harga_perHari, 0, ',', '.') }}/hari</p>
                                         </div>
                                     </label>
@@ -48,7 +48,6 @@
                                 <strong>Terjadi kesalahan:</strong> {{ $errors->first('id_stok') }}
                             </div>
                         @endif
-
 
                         <div class="space-y-4">
                             <label for="nopol" class="block text-lg font-semibold text-gray-800">Nopol</label>
@@ -65,7 +64,7 @@
                         @endif
 
                         <div class="flex justify-end">
-                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
+                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
                                 Tambah Unit Motor
                             </button>
                         </div>
@@ -90,7 +89,37 @@
                                 {{ $errors->first('merk') }}
                             </div>
                         @endif
+                        
+                        <div x-data="{ selectedKategori: '{{ old('kategori') }}' }" class="space-y-4">
+                            <label class="block text-lg font-medium text-gray-700">Jenis Motor</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                <div class="relative">
+                                    <input type="radio" id="kategori_matic" name="kategori" value="matic" x-model="selectedKategori" class="sr-only">
+                                    <label for="kategori_matic" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
+                                        :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'matic', 'border-gray-300': selectedKategori !== 'matic' }">
+                                        <div class="flex flex-col items-center">
+                                            <div class="text-lg font-semibold text-gray-800">Matic</div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="relative">
+                                    <input type="radio" id="kategori_manual" name="kategori" value="manual" x-model="selectedKategori" class="sr-only">
+                                    <label for="kategori_manual" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
+                                        :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'manual', 'border-gray-300': selectedKategori !== 'manual' }">
+                                        <div class="flex flex-col items-center">
+                                            <div class="text-lg font-semibold text-gray-800">Manual</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
 
+                            <!-- Display Errors -->
+                            @if ($errors->has('kategori'))
+                                <div class="text-red-500 text-sm mb-4">
+                                    {{ $errors->first('kategori') }}
+                                </div>
+                            @endif
+                        </div>
 
                         <div class="space-y-4">
                             <label for="harga_perHari" class="block text-lg font-medium text-gray-700">Harga per Hari</label>
@@ -124,12 +153,10 @@
                             </div>
                         @endif
 
-
                         <div class="space-y-4">
                             <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
-                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1') }}"
-                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
-                            required>
+                            <textarea name="deskripsi1" id="deskripsi1" rows="4"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4">{{ old('deskripsi1') }}</textarea>
                         </div>
 
                         <!-- Display Errors -->
@@ -141,9 +168,8 @@
 
                         <div class="space-y-4">
                             <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
-                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2') }}"
-                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
-                            required>
+                            <textarea name="deskripsi2" id="deskripsi2" rows="4"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4">{{ old('deskripsi2') }}</textarea>
                         </div>
 
                         <!-- Display Errors -->
@@ -154,11 +180,11 @@
                         @endif
 
                         <div class="space-y-4">
-                            <label for="foto" class="block text-lg font-medium text-gray-700">Foto</label>
-                            <input type="file" name="foto" id="foto"
-                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
-                            required>
+                            <label for="foto" class="block text-lg font-medium text-gray-700">Foto Motor</label>
+                            <input type="file" name="foto" id="foto" accept="image/*"
+                            class="block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-full file:text-sm file:font-semibold file:bg-gray-100 hover:file:bg-gray-200 focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300">
                         </div>
+
                         <!-- Display Errors -->
                         @if ($errors->has('foto'))
                             <div class="text-red-500 text-sm mb-4">
@@ -166,9 +192,8 @@
                             </div>
                         @endif
 
-
                         <div class="flex justify-end">
-                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
+                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
                                 Tambah Stok Motor
                             </button>
                         </div>
