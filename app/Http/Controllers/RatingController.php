@@ -38,7 +38,7 @@ class RatingController extends Controller
             'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
         ];
 
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string|max:255',
             'role' => 'required|string|max:255',
@@ -46,12 +46,13 @@ class RatingController extends Controller
             'tanggal' => 'required|date',
         ], $messages);
 
-        Rating::create($request->all());
+        Rating::create($validated);
 
-        return redirect()->route('admin.rating.index')
-                        ->with('success', 'Rating berhasil dibuat.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Rating berhasil dibuat']);
+
+        return redirect()->route('admin.rating.index');
     }
-
 
     public function edit($id)
     {
@@ -62,9 +63,9 @@ class RatingController extends Controller
     public function update(Request $request, $id)
     {
         $messages = [
-            'name.required' => 'Nama wajib diisi.',
-            'name.string' => 'Nama harus berupa teks.',
-            'name.max' => 'Nama maksimal 255 karakter.',
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.string' => 'Nama harus berupa teks.',
+            'nama.max' => 'Nama maksimal 255 karakter.',
             'role.required' => 'Role wajib diisi.',
             'role.string' => 'Role harus berupa teks.',
             'role.max' => 'Role maksimal 255 karakter.',
@@ -78,8 +79,8 @@ class RatingController extends Controller
             'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
         ];
 
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
@@ -89,26 +90,27 @@ class RatingController extends Controller
         $rating = Rating::find($id);
 
         if (!$rating) {
-            return redirect()->back()->with('error', 'Rating tidak ditemukan.');
+            // Using error preset
+            notify()->preset('error', ['title' => 'Error', 'message' => 'Rating tidak ditemukan.']);
+            return redirect()->back();
         }
 
-        $rating->nama = $request->input('name');
-        $rating->role = $request->input('role');
-        $rating->deskripsi = $request->input('deskripsi');
-        $rating->rating = $request->input('rating');
-        $rating->tanggal = $request->input('tanggal');
-        $rating->save();
+        $rating->update($validated);
 
-        return redirect()->route('admin.rating.index')->with('success', 'Rating berhasil diperbarui.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Rating berhasil diperbarui']);
+
+        return redirect()->route('admin.rating.index');
     }
-
 
     public function destroy($id)
     {
         $rating = Rating::findOrFail($id);
         $rating->delete();
 
-        return redirect()->route('admin.rating.index')
-                         ->with('success', 'Rating deleted successfully.');
+        // Using success preset
+        notify()->preset('error', ['title' => 'Sukses', 'message' => 'Rating berhasil dihapus']);
+
+        return redirect()->route('admin.rating.index');
     }
 }
