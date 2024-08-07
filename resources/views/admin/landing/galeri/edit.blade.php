@@ -52,9 +52,13 @@
             </div>
 
 
-            <div class="flex justify-between mt-8">
-                <x-back-to-list-button route="{{ route('admin.galeri.index') }}" />
-                <button type="submit" class="bg-indigo-600 text-white rounded-lg px-5 py-2 font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Create</button>
+            <div class="flex justify-between mt-6">
+                <a href="{{ route('admin.galeri.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    Kembali
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:border-indigo-700 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    Ubah
+                </button>
             </div>
         </div>
     </form>

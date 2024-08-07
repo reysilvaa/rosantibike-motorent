@@ -54,9 +54,15 @@
             @enderror
         </div>
 
-        <div class="flex justify-end space-x-4">
-            <a href="{{ route('admin.rating.index') }}" class="text-gray-500 hover:text-gray-700 transition duration-200">Cancel</a>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">Save</button>
+        <div class="flex justify-between items-center space-x-4">
+            <div class="flex">
+                <x-back-to-list-button route="{{ route('admin.rating.index') }}" />
+            </div>
+            <div class="flex">
+                <button type="submit" class="bg-blue-500 text-white px-10 py-2 rounded-md hover:bg-blue-600 transition duration-200">
+                    Save
+                </button>
+            </div>
         </div>
     </form>
 </div>
