@@ -20,59 +20,61 @@ class StokController extends Controller
         $stoks = Stok::all();
         return view('admin.stok.create', compact('stoks'));
     }
-
     public function store(Request $request)
     {
         $messages = [
-            'merk.required' => 'Merk wajib diisi.',
-            'merk.string' => 'Merk harus berupa teks.',
-            'merk.max' => 'Merk maksimal 255 karakter.',
-            'judul.string' => 'Judul harus berupa teks.',
-            'judul.max' => 'Judul maksimal 100 karakter.',
-            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
-            'deskripsi1.max' => 'Deskripsi 1 maksimal 100 karakter.',
-            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
-            'deskripsi2.max' => 'Deskripsi 2 maksimal 100 karakter.',
-            'deskripsi3.string' => 'Deskripsi 3 harus berupa teks.',
-            'deskripsi3.max' => 'Deskripsi 3 maksimal 100 karakter.',
-            'kategori.required' => 'Kategori wajib diisi.',
-            'kategori.in' => 'Kategori harus salah satu dari: manual, matic.',
+            'merk.required' => 'Merk motor wajib diisi.',
+            'merk.string' => 'Merk motor harus berupa teks.',
+            'merk.max' => 'Merk motor maksimal 255 karakter.',
+            'kategori.required' => 'Kategori motor wajib dipilih.',
+            'kategori.in' => 'Kategori motor tidak valid.',
             'harga_perHari.required' => 'Harga per hari wajib diisi.',
             'harga_perHari.numeric' => 'Harga per hari harus berupa angka.',
-            'foto.image' => 'Foto harus berupa gambar.',
-            'foto.mimes' => 'Foto harus berformat jpeg, png, jpg, gif, atau svg.',
-            'foto.max' => 'Foto maksimal 2MB.',
-            'foto_url.url' => 'URL foto harus valid.',
+            'harga_perHari.min' => 'Harga per hari minimal 0.',
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul maksimal 255 karakter.',
+            'deskripsi1.required' => 'Deskripsi 1 wajib diisi.',
+            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
+            'deskripsi2.required' => 'Deskripsi 2 wajib diisi.',
+            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
+            'image_source.required' => 'Sumber gambar wajib dipilih.',
+            'image_source.in' => 'Sumber gambar tidak valid.',
+            'foto.required_if' => 'Foto wajib diunggah jika memilih upload gambar.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
+            'foto_url.required_if' => 'URL foto wajib diisi jika memilih gunakan URL.',
+            'foto_url.url' => 'URL foto tidak valid.',
         ];
 
-        $request->validate([
+        $validated = $request->validate([
             'merk' => 'required|string|max:255',
-            'judul' => 'nullable|string|max:100',
-            'deskripsi1' => 'nullable|string|max:100',
-            'deskripsi2' => 'nullable|string|max:100',
-            'deskripsi3' => 'nullable|string|max:100',
-            'kategori' => 'required|in:manual,matic',
-            'harga_perHari' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'kategori' => 'required|in:matic,manual',
+            'harga_perHari' => 'required|numeric|min:0',
+            'judul' => 'required|string|max:255',
+            'deskripsi1' => 'required|string',
+            'deskripsi2' => 'required|string',
+            'image_source' => 'required|in:upload,url',
+            'foto' => 'required_if:image_source,upload|image|max:2048',
             'foto_url' => 'nullable|url',
         ], $messages);
 
-        $data = $request->only(['merk', 'harga_perHari', 'deskripsi1', 'deskripsi2', 'deskripsi3', 'kategori', 'judul']);
+        $data = $validated;
 
-        if ($request->filled('foto_url')) {
-            $data['foto'] = $request->input('foto_url');
-        } elseif ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('photos', 'public');
-            $data['foto'] = $fotoPath;
+        if ($request->image_source === 'upload') {
+            $path = $request->file('foto')->store('motors', 'public');
+            $data['foto'] = $path;
+        } else {
+            $data['foto'] = $request->foto_url;
         }
 
         Stok::create($data);
 
-        // Using success preset
-        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil dibuat']);
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok Motor berhasil ditambahkan']);
 
-        return redirect()->route('admin.jenisMotor.index')->with('success', 'Stok berhasil dibuat');
+        return redirect()->route('admin.jenisMotor.index');
     }
+
 
     public function show($id)
     {
@@ -90,64 +92,62 @@ class StokController extends Controller
     public function update(Request $request, $id)
     {
         $messages = [
-            'merk.required' => 'Merk wajib diisi.',
-            'merk.string' => 'Merk harus berupa teks.',
-            'merk.max' => 'Merk maksimal 255 karakter.',
-            'judul.string' => 'Judul harus berupa teks.',
-            'judul.max' => 'Judul maksimal 100 karakter.',
-            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
-            'deskripsi1.max' => 'Deskripsi 1 maksimal 100 karakter.',
-            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
-            'deskripsi2.max' => 'Deskripsi 2 maksimal 100 karakter.',
-            'deskripsi3.string' => 'Deskripsi 3 harus berupa teks.',
-            'deskripsi3.max' => 'Deskripsi 3 maksimal 100 karakter.',
-            'kategori.required' => 'Kategori wajib diisi.',
-            'kategori.in' => 'Kategori harus salah satu dari: manual, matic.',
+            'merk.required' => 'Merk motor wajib diisi.',
+            'merk.string' => 'Merk motor harus berupa teks.',
+            'merk.max' => 'Merk motor maksimal 255 karakter.',
+            'kategori.required' => 'Kategori motor wajib dipilih.',
+            'kategori.in' => 'Kategori motor tidak valid.',
             'harga_perHari.required' => 'Harga per hari wajib diisi.',
             'harga_perHari.numeric' => 'Harga per hari harus berupa angka.',
-            'foto.image' => 'Foto harus berupa gambar.',
-            'foto.mimes' => 'Foto harus berformat jpeg, png, jpg, gif, atau svg.',
-            'foto.max' => 'Foto maksimal 2MB.',
-            'foto_url.url' => 'URL foto harus valid.',
+            'harga_perHari.min' => 'Harga per hari minimal 0.',
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul maksimal 255 karakter.',
+            'deskripsi1.required' => 'Deskripsi 1 wajib diisi.',
+            'deskripsi1.string' => 'Deskripsi 1 harus berupa teks.',
+            'deskripsi2.required' => 'Deskripsi 2 wajib diisi.',
+            'deskripsi2.string' => 'Deskripsi 2 harus berupa teks.',
+            'image_source.required' => 'Sumber gambar wajib dipilih.',
+            'image_source.in' => 'Sumber gambar tidak valid.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
+            'foto_url.url' => 'URL foto tidak valid.',
         ];
 
-        $request->validate([
+        $validated = $request->validate([
             'merk' => 'required|string|max:255',
-            'judul' => 'nullable|string|max:100',
-            'deskripsi1' => 'nullable|string|max:100',
-            'deskripsi2' => 'nullable|string|max:100',
-            'deskripsi3' => 'nullable|string|max:100',
-            'kategori' => 'required|in:manual,matic',
-            'harga_perHari' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'kategori' => 'required|in:matic,manual',
+            'harga_perHari' => 'required|numeric|min:0',
+            'judul' => 'required|string|max:255',
+            'deskripsi1' => 'required|string',
+            'deskripsi2' => 'required|string',
+            'image_source' => 'required|in:upload,url,unchanged',
+            'foto' => 'nullable|image|max:2048',
             'foto_url' => 'nullable|url',
         ], $messages);
 
         $stok = Stok::findOrFail($id);
+        $data = $validated;
 
-        $data = $request->only(['merk', 'harga_perHari', 'deskripsi1', 'deskripsi2', 'deskripsi3', 'kategori', 'judul']);
-
-        if ($request->filled('foto_url')) {
-            $data['foto'] = $request->input('foto_url');
-            if ($stok->foto && Storage::exists('public/' . $stok->foto)) {
-                Storage::delete('public/' . $stok->foto);
+        if ($request->image_source === 'upload' && $request->hasFile('foto')) {
+            // Delete old image if it exists
+            if ($stok->foto && Storage::disk('public')->exists($stok->foto)) {
+                Storage::disk('public')->delete($stok->foto);
             }
-        } elseif ($request->hasFile('foto')) {
-            if ($stok->foto && Storage::exists('public/' . $stok->foto)) {
-                Storage::delete('public/' . $stok->foto);
-            }
-            $fotoPath = $request->file('foto')->store('photos', 'public');
-            $data['foto'] = $fotoPath;
+            $path = $request->file('foto')->store('motors', 'public');
+            $data['foto'] = $path;
+        } elseif ($request->image_source === 'url') {
+            $data['foto'] = $request->foto_url;
         } else {
+            // Keep the existing photo
             $data['foto'] = $stok->foto;
         }
 
         $stok->update($data);
 
-        // Using success preset
-        // notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok berhasil diperbarui']);
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Stok Motor berhasil diperbarui']);
 
-        return redirect()->route('admin.jenisMotor.index')->with('success', 'Stok berhasil diperbarui');
+        return redirect()->route('admin.jenisMotor.index');
     }
 
     public function destroy($id)

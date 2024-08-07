@@ -91,10 +91,11 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
-                            <label for="merk" class="block text-sm font-medium text-gray-700">Merk</label>
+                        <div class="space-y-4">
+                            <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
                             <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}"
-                                class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
                         @if ($errors->has('merk'))
@@ -103,7 +104,7 @@
                             </div>
                         @endif
 
-                        <div x-data="{ selectedKategori: '{{ old('kategori') }}' }" class="space-y-4">
+                        <div x-data="{ selectedKategori: '{{ old('kategori', $stok->kategori) }}' }" class="space-y-4">
                             <label class="block text-lg font-medium text-gray-700">Jenis Motor</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                 <div class="relative">
@@ -126,7 +127,6 @@
                                 </div>
                             </div>
 
-                            <!-- Display Errors -->
                             @if ($errors->has('kategori'))
                                 <div class="text-red-500 text-sm mb-4">
                                     {{ $errors->first('kategori') }}
@@ -134,51 +134,53 @@
                             @endif
                         </div>
 
-                        <div>
-                            <label for="harga_perHari" class="block text-sm font-medium text-gray-700">Harga per Hari</label>
+                        <div class="space-y-4">
+                            <label for="harga_perHari" class="block text-lg font-medium text-gray-700">Harga per Hari</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm">Rp</span>
+                                    <span class="text-gray-500 sm:text-lg">Rp</span>
                                 </div>
                                 <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}"
-                                    class="pl-10 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                class="pl-12 block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                                required>
                             </div>
                         </div>
-                         <!-- Display Errors -->
-                         @if ($errors->has('harga_perHari'))
-                         <div class="text-red-500 text-sm mb-4">
-                             {{ $errors->first('harga_perHari') }}
-                         </div>
-                     @endif
-
-                        <div>
-                            <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
+                        @if ($errors->has('harga_perHari'))
+                            <div class="text-red-500 text-sm mb-4">
+                                {{ $errors->first('harga_perHari') }}
+                            </div>
+                        @endif
+                        <div class="space-y-4">
+                            <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
                             <input type="text" name="judul" id="judul" value="{{ old('judul', $stok->judul) }}"
-                                class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>
                         </div>
 
-                         <!-- Display Errors -->
-                         @if ($errors->has('judul'))
+                        @if ($errors->has('judul'))
                             <div class="text-red-500 text-sm mb-4">
                                 {{ $errors->first('judul') }}
                             </div>
-                         @endif
+                        @endif
 
-                        <div>
-                            <label for="deskripsi1" class="block text-sm font-medium text-gray-700">Deskripsi 1</label>
-                            <input type="text" name="deskripsi1" id="deskripsi1" value="{{ old('deskripsi1', $stok->deskripsi1) }}"
-                                class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <div class="space-y-4">
+                            <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
+                            <textarea name="deskripsi1" id="deskripsi1" rows="4"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>{{ old('deskripsi1', $stok->deskripsi1) }}</textarea>
                         </div>
+
                         @if ($errors->has('deskripsi1'))
                             <div class="text-red-500 text-sm mb-4">
                                 {{ $errors->first('deskripsi1') }}
                             </div>
                         @endif
 
-                        <div>
-                            <label for="deskripsi2" class="block text-sm font-medium text-gray-700">Deskripsi 2</label>
-                            <input type="text" name="deskripsi2" id="deskripsi2" value="{{ old('deskripsi2', $stok->deskripsi2) }}"
-                                class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <div class="space-y-4">
+                            <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
+                            <textarea name="deskripsi2" id="deskripsi2" rows="4"
+                            class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
+                            required>{{ old('deskripsi2', $stok->deskripsi2) }}</textarea>
                         </div>
 
                         @if ($errors->has('deskripsi2'))
@@ -187,42 +189,114 @@
                             </div>
                         @endif
 
+                        <div x-data="{
+                            imagePreview: '{{ old('image_source') === 'url' ? old('foto_url') : old('foto', $stok->foto) }}',
+                            imageSource: '{{ old('image_source', 'upload') }}',
+                            fileName: '',
+                            isDragging: false,
+                            handleFileChange(event) {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    this.fileName = file.name;
+                                    this.imagePreview = URL.createObjectURL(file);
+                                }
+                            },
+                            handleFileDrop(event) {
+                                const file = event.dataTransfer.files[0];
+                                if (file) {
+                                    this.fileName = file.name;
+                                    this.imagePreview = URL.createObjectURL(file);
+                                    this.$refs.fileInput.files = event.dataTransfer.files;
+                                }
+                            }
+                        }" class="space-y-8 bg-white p-6 rounded-lg shadow-md">
+                            <h2 class="text-3xl font-bold text-gray-800 mb-6">Foto Motor</h2>
 
-                        <div>
-                            <label for="deskripsi3" class="block text-sm font-medium text-gray-700">Deskripsi 3</label>
-                            <input type="text" name="deskripsi3" id="deskripsi3" value="{{ old('deskripsi3', $stok->deskripsi3) }}"
-                                class="mt-1 block w-full border-2 rounded-md border-gray-300 shadow-sm py-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <div class="flex space-x-6 mb-8">
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="radio" name="image_source" value="upload" x-model="imageSource"
+                                        class="form-radio h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <span class="text-xl text-gray-700 group-hover:text-indigo-600 transition duration-200">Upload Gambar</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer group">
+                                    <input type="radio" name="image_source" value="url" x-model="imageSource"
+                                        class="form-radio h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <span class="text-xl text-gray-700 group-hover:text-indigo-600 transition duration-200">Gunakan URL</span>
+                                </label>
+                            </div>
+
+                            <div x-show="imageSource === 'upload'"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-95"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-95"
+                                @dragover.prevent="isDragging = true"
+                                @dragleave.prevent="isDragging = false"
+                                @drop.prevent="isDragging = false; handleFileDrop($event)"
+                                @click="$refs.fileInput.click()"
+                                class="space-y-4 cursor-pointer">
+                                <div class="w-full h-64 border-2 border-dashed rounded-lg flex items-center justify-center bg-gray-50 transition duration-300 ease-in-out"
+                                    :class="{ 'border-indigo-600 bg-indigo-50': isDragging, 'border-gray-300 hover:bg-gray-100': !isDragging }">
+                                    <div class="text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <p class="mt-1 text-sm text-gray-600">
+                                            <span class="font-medium text-indigo-600 hover:text-indigo-500">
+                                                Klik untuk upload
+                                            </span>
+                                            atau drag and drop
+                                        </p>
+                                        <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                    </div>
+                                </div>
+                                <input x-ref="fileInput" type="file" name="foto" id="foto" accept="image/*" class="hidden" @change="handleFileChange($event)">
+                                <p x-show="fileName" x-text="fileName" class="mt-2 text-sm text-gray-500"></p>
+                            </div>
+
+                            <div x-show="imageSource === 'url'"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-95"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-95"
+                                class="space-y-4">
+                                <label for="foto_url" class="block text-lg font-medium text-gray-700">URL Gambar:</label>
+                                <div class="relative">
+                                    <input type="url" name="foto_url" id="foto_url" placeholder="https://example.com/image.jpg"
+                                        @input="imagePreview = $event.target.value"
+                                        class="block w-full pr-10 text-gray-700 py-3 px-4 border-2 border-gray-300 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 placeholder-gray-400">
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 005.656 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div x-show="imagePreview"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-95"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                class="mt-8">
+                                <h3 class="text-lg font-medium text-gray-700 mb-2">Preview:</h3>
+                                <img :src="imagePreview" alt="Preview" class="max-w-full h-auto max-h-80 rounded-lg shadow-lg border-2 border-gray-300 object-cover">
+                            </div>
                         </div>
 
-                        @if ($errors->has('deskripsi3'))
-                            <div class="text-red-500 text-sm mb-4">
-                                {{ $errors->first('deskripsi3') }}
-                            </div>
-                        @endif
-
-                        <div>
-                            <label for="foto" class="block text-sm font-medium text-gray-700">Foto</label>
-                            <input type="file" name="foto" id="foto"
-                                class="mt-1 block w-full text-sm text-gray-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-md file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-indigo-50 file:text-indigo-700
-                                hover:file:bg-indigo-100">
+                        @if ($errors->has('foto') || $errors->has('foto_url'))
+                        <div class="text-red-500 text-sm mb-4">
+                            {{ $errors->first('foto') ?? $errors->first('foto_url') }}
                         </div>
-
-                        @if ($errors->has('foto'))
-                            <div class="text-red-500 text-sm mb-4">
-                                {{ $errors->first('foto') }}
-                            </div>
                         @endif
 
-                        <div class="flex justify-between items-center">
-                            <x-back-to-list-button route="{{ route('admin.jenisMotor.index') }}" class="bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500" />
-                            <button type="submit"
-                                    class="inline-flex justify-center py-2 px-4 mb-0 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <div class="flex justify-end">
+                            <button type="submit" class="inline-flex items-center px-8 py-3 bg-indigo-600 border border-transparent rounded-full text-lg font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
                                 Update Stok Motor
                             </button>
+                        </div>
                         </div>
                     </form>
                 </div>
