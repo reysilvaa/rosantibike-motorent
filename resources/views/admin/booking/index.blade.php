@@ -112,33 +112,56 @@ $(document).ready(function() {
         $('.booking_checkbox:checked').each(function(){
             ids.push($(this).val());
         });
+
         if(ids.length > 0){
-            if(confirm("Are you sure you want to delete selected booking?")){
-                $.ajax({
-                    url: "{{ route('admin.booking.bulkDelete') }}",
-                    method: 'POST',
-                    data: {
-                        ids: ids,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response){
-                        table.draw();
-                        // Menampilkan notifikasi sukses
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Bulk Delete Berhasil',
-                            text: 'Bookings berhasil dihapus.'
-                        });
-                    },
-                    error: function(xhr) {
-                        alert('An error occurred while trying to delete the selected transactions.');
-                    }
-                });
-            }
+            Swal.fire({
+                icon: 'question',
+                title: 'Apakah Anda yakin?',
+                text: 'Anda ingin menghapus booking yang dipilih?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#4c51bf',  // Warna indigo-600
+                cancelButtonColor: '#38a169',  // Warna hijau
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.booking.bulkDelete') }}",
+                        method: 'POST',
+                        data: {
+                            ids: ids,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response){
+                            table.draw();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Bulk Delete Berhasil',
+                                text: 'Bookings berhasil dihapus.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Kesalahan',
+                                text: 'Terjadi kesalahan saat mencoba menghapus booking yang dipilih.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        }
+                    });
+                }
+            });
         } else {
-            alert("Please select at least one transaksi");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Booking Terpilih',
+                text: 'Silakan pilih setidaknya satu booking untuk dihapus.',
+                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+            });
         }
     });
+
 
     $('#data-table').on('click', '.delete', function(){
         var id = $(this).data('id');

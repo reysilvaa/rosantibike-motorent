@@ -110,52 +110,101 @@ $(document).ready(function() {
         }
     });
 
-    // Handle form submission event
     $('#bulk-delete').on('click', function(e){
         var ids = [];
         $('.transaksi_checkbox:checked').each(function(){
             ids.push($(this).val());
         });
+
         if(ids.length > 0){
-            if(confirm("Are you sure you want to delete selected transaksi?")){
-                $.ajax({
-                    url: "{{ route('admin.transaksi.bulkDelete') }}",
-                    method: 'POST',
-                    data: {
-                        ids: ids,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response){
-                        table.draw();
-                    },
-                    error: function(xhr) {
-                        alert('An error occurred while trying to delete the selected transactions.');
-                    }
-                });
-            }
+            Swal.fire({
+                icon: 'question',
+                title: 'Apakah Anda yakin?',
+                text: 'Anda ingin menghapus transaksi yang dipilih?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#4c51bf',  // Warna indigo-600
+                cancelButtonColor: '#38a169',  // Warna hijau
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.transaksi.bulkDelete') }}",
+                        method: 'POST',
+                        data: {
+                            ids: ids,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response){
+                            table.draw();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Transaksi Berhasil Dihapus',
+                                text: 'Transaksi yang dipilih berhasil dihapus.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Kesalahan',
+                                text: 'Terjadi kesalahan saat mencoba menghapus transaksi yang dipilih.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        }
+                    });
+                }
+            });
         } else {
-            alert("Please select at least one transaksi");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Transaksi Terpilih',
+                text: 'Silakan pilih setidaknya satu transaksi untuk dihapus.',
+                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+            });
         }
     });
+
 
     // Handle delete button
     $('#data-table').on('click', '.delete', function(){
         var id = $(this).data('id');
-        if(confirm("Are you sure you want to delete this transaksi?")){
-            $.ajax({
-                url: "/admin/transaksi/" + id,
-                method: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response){
-                    table.draw();
-                },
-                error: function(xhr) {
-                    alert('An error occurred while trying to delete the transaction.');
-                }
-            });
-        }
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Apakah Anda yakin?',
+            text: 'Anda ingin menghapus booking ini?',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#4c51bf',  // Warna indigo-600
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/admin/transaksi/" + id,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response){
+                        table.draw();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Booking Berhasil Dihapus',
+                            text: 'Booking berhasil dihapus.'
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: 'Terjadi kesalahan saat mencoba menghapus booking.'
+                        });
+                    }
+                });
+            }
+        });
     });
 });
 </script>
