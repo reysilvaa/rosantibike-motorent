@@ -2,8 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Booking;
+use App\Models\Galeri;
 use Illuminate\Console\Command;
 use App\Models\JenisMotor;
+use App\Models\Rating;
+use App\Models\Stok;
 use App\Models\Transaksi;
 
 class WipeData extends Command
@@ -28,13 +32,33 @@ class WipeData extends Command
         foreach ($models as $model) {
             switch ($model) {
                 case 'jenis_motor':
-                    JenisMotor::truncate();
+                    JenisMotor::query()->delete(); // Menggunakan delete() alih-alih truncate()
                     $this->info('Wiped data from jenis_motor.');
                     break;
 
+                case 'stok':
+                    Stok::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                    $this->info('Wiped data from stok.');
+                    break;
+
                 case 'transaksi':
-                    Transaksi::truncate();
+                    Transaksi::query()->delete(); // Menggunakan delete() alih-alih truncate()
                     $this->info('Wiped data from transaksi.');
+                    break;
+
+                case 'booking':
+                    Booking::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                    $this->info('Wiped data from booking.');
+                    break;
+
+                case 'galeri':
+                    Galeri::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                    $this->info('Wiped data from galeri.');
+                    break;
+
+                case 'rating':
+                    Rating::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                    $this->info('Wiped data from rating.');
                     break;
 
                 default:
@@ -42,6 +66,7 @@ class WipeData extends Command
                     break;
             }
         }
+
 
         return 0;
     }

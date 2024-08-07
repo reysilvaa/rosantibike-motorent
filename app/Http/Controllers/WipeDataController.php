@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Galeri;
 use App\Models\JenisMotor;
 use App\Models\Rating;
+use App\Models\Stok;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,10 @@ class WipeDataController extends Controller
                 switch ($model) {
                     case 'jenis_motor':
                         JenisMotor::query()->delete(); // Menggunakan delete() alih-alih truncate()
+                        break;
+
+                    case 'stok':
+                        Stok::query()->delete(); // Menggunakan delete() alih-alih truncate()
                         break;
 
                     case 'transaksi':
