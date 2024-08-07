@@ -67,7 +67,6 @@ class WipeData extends Command
             }
         }
 
-
         return 0;
     }
 }
