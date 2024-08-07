@@ -19,9 +19,16 @@ class LandingController extends Controller
     }
     public function motorMatic()
     {
-        $motors = Stok::all(); // Fetch all Stok records
+        $motors = Stok::where('kategori', 'matic')->get(); // Fetch all Stok records
         return view('landing.assets.navbar-content.motor-matic', compact('motors')); // Ensure you have this view file created
     }
+
+    public function motorManual()
+    {
+        $motors = Stok::where('kategori', 'manual')->get(); // Fetch all Stok records
+        return view('landing.assets.navbar-content.motor-manual', compact('motors')); // Ensure you have this view file created
+    }
+
     public function faq()
     {
         return view('landing.assets.navbar-content.faq'); // Ensure you have this view file created

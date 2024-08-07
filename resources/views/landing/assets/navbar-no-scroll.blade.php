@@ -34,8 +34,7 @@
                 </button>
                 <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                     <a href="{{ route('landing.motor-matic') }}" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-500 hover:text-white">Motor Matic</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-500 hover:text-white">Motor Manual</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-500 hover:text-white">Motor Sport</a>
+                    <a href="{{ route('landing.motor-manual') }}" class="block px-4 py-2 text-sm text-gray-800 hover:bg-blue-500 hover:text-white">Motor Manual</a>
                 </div>
             </div>
             <a href="{{ route('landing.faqs') }}" class="text-gray-800 hover:text-blue-500 transition duration-300">FAQ'S</a>
