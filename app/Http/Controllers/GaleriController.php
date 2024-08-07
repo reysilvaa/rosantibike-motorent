@@ -37,7 +37,7 @@ class GaleriController extends Controller
             'link_maps.string' => 'Link Maps harus berupa teks.',
         ];
 
-        $request->validate([
+        $validated = $request->validate([
             'judul' => 'required|string|max:20',
             'deskripsi' => 'required|string|max:30',
             'full_description' => 'required',
@@ -48,15 +48,18 @@ class GaleriController extends Controller
 
         Galeri::create([
             'id_user' => Auth::user()->id,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'full_description' => $request->full_description,
-            'foto' => $request->foto,
-            'kategori' => $request->kategori,
-            'link_maps' => $request->link_maps,
+            'judul' => $validated['judul'],
+            'deskripsi' => $validated['deskripsi'],
+            'full_description' => $validated['full_description'],
+            'foto' => $validated['foto'],
+            'kategori' => $validated['kategori'],
+            'link_maps' => $validated['link_maps'],
         ]);
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil dibuat.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Galeri berhasil dibuat']);
+
+        return redirect()->route('admin.galeri.index');
     }
 
     public function show(Galeri $galeri)
@@ -85,30 +88,39 @@ class GaleriController extends Controller
             'link_maps.string' => 'Link Maps harus berupa teks.',
         ];
 
-        $request->validate([
+        $rules = [
             'judul' => 'required|string',
             'deskripsi' => 'required|string',
             'full_description' => 'required',
             'foto' => 'required|string',
             'kategori' => 'required|in:alam,sejarah,kuliner,budaya',
             'link_maps' => 'required|string',
-        ], $messages);
+        ];
+
+        $validated = $request->validate($rules, $messages);
 
         $galeri->update([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'full_description' => $request->full_description,
-            'foto' => $request->foto,
-            'kategori' => $request->kategori,
-            'link_maps' => $request->link_maps,
+            'judul' => $validated['judul'],
+            'deskripsi' => $validated['deskripsi'],
+            'full_description' => $validated['full_description'],
+            'foto' => $validated['foto'],
+            'kategori' => $validated['kategori'],
+            'link_maps' => $validated['link_maps'],
         ]);
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil diperbarui.');
+        // Using success preset
+        notify()->preset('success', ['title' => 'Sukses', 'message' => 'Galeri berhasil diperbarui']);
+
+        return redirect()->route('admin.galeri.index');
     }
 
     public function destroy(Galeri $galeri)
     {
         $galeri->delete();
-        return redirect()->route('admin.galeri.index')->with('success', 'Galeri deleted successfully.');
+
+        // Using error preset
+        notify()->preset('error', ['title' => 'Hapus Galeri', 'message' => 'Galeri berhasil dihapus']);
+
+        return redirect()->route('admin.galeri.index');
     }
 }
