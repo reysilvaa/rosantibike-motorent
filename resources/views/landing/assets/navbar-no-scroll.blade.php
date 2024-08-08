@@ -24,7 +24,7 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-6 font-medium">
             <a href="{{ route('landing') }}" class="text-gray-800 hover:text-blue-500 transition duration-300">Beranda</a>
-            <a href="{{ route('landing') }}#layanan" class="text-gray-800 hover:text-blue-500 transition duration-300">Layanan</a>
+            <a href="{{ route('landing.galeri') }}" class="text-gray-800 hover:text-blue-500 transition duration-300">Rekomendasi</a>
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open" class="text-gray-800 hover:text-blue-500 transition duration-300 flex items-center">
                     Armada
@@ -54,7 +54,7 @@
             <!-- Mobile Menu -->
             <div x-show="isOpen" class="absolute top-full left-0 right-0 bg-white shadow-md mt-2 py-2" @click.away="isOpen = false">
                 <a href="{{ route('landing') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
-                <a href="{{ route('landing') }}#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Dokumentasi</a>
+                <a href="{{ route('landing.galeri') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Rekomendasi</a>
                 <a href="{{ route('landing.motor-matic') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Motor Matic</a>
                 <a href="{{ route('landing') }}#testimoni" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Testimoni</a>
                 <a href="{{ route('landing') }}#kontak" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Kontak</a>
