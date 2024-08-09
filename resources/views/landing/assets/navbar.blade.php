@@ -41,9 +41,9 @@
             <a href="#beranda"
                :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
                class="hover:text-blue-500 transition duration-300 ease-in-out">Beranda</a>
-            <a href="#layanan"
+            <a href="{{ route('landing.galeri') }}"
                :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
-               class="hover:text-blue-500 transition duration-300 ease-in-out">Dokumentasi</a>
+               class="hover:text-blue-500 transition duration-300 ease-in-out">Rekomendasi</a>
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open"
                         :class="{'text-black': isScrolled, 'text-white': !isScrolled}"
@@ -85,9 +85,9 @@
     <!-- Mobile Menu -->
     <div class="md:hidden" x-show="isOpen" @click.away="isOpen = false">
         <a href="#beranda" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
-        <a href="#layanan" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Dokumentasi</a>
+        <a href="{{ route('landing.galeri') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Rekomendasi</a>
         <a href="#armada" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Armada</a>
-        <a href="#testimoni" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">FAQ'S</a>
+        <a href="{{ route('landing.faqs') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">FAQ'S</a>
         <a href="#kontak" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Kontak</a>
     </div>
 </header>

@@ -12,8 +12,8 @@
                 <div class="flex flex-col md:flex-row items-center">
                     <div class="flex-1 order-1 md:order-2 md:pl-16">
                         <div class="bg-white text-gray-800 rounded-lg shadow-xl p-6 transform transition duration-500 hover:scale-105">
-                            <h3 class="text-2xl font-semibold mb-3">1. Pilih Motor Impian Anda</h3>
-                            <p>Jelajahi koleksi motor kami dan pilih yang sesuai dengan petualangan Anda.</p>
+                            <h3 class="text-2xl font-semibold mb-3">1. Pilih Motor yang sedang tersedia</h3>
+                            <p>Jelajahi koleksi motor kami dan pilih yang sesuai dengan Anda.</p>
                         </div>
                     </div>
                     <div class="md:flex-1 flex justify-center md:justify-end order-2 md:order-1 mt-6 md:mt-0">
@@ -27,7 +27,7 @@
                 <div class="flex flex-col md:flex-row items-center">
                     <div class="flex-1 md:pr-16">
                         <div class="bg-white text-gray-800 rounded-lg shadow-xl p-6 transform transition duration-500 hover:scale-105">
-                            <h3 class="text-2xl font-semibold mb-3">2. Hubungi Tim Kami</h3>
+                            <h3 class="text-2xl font-semibold mb-3">2. Hubungi Admin Kami</h3>
                             <p>Konfirmasikan pesanan Anda melalui WhatsApp atau telepon untuk proses cepat.</p>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                     <div class="flex-1 order-1 md:order-2 md:pl-16">
                         <div class="bg-white text-gray-800 rounded-lg shadow-xl p-6 transform transition duration-500 hover:scale-105">
                             <h3 class="text-2xl font-semibold mb-3">3. Siapkan Dokumen</h3>
-                            <p>Sediakan KTP dan SIM yang valid untuk proses sewa yang lancar.</p>
+                            <p>Sediakan KTP dan SIM yang valid sebagai jaminan nantinya.</p>
                         </div>
                     </div>
                     <div class="md:flex-1 flex justify-center md:justify-end order-2 md:order-1 mt-6 md:mt-0">
@@ -57,7 +57,7 @@
                 <div class="flex flex-col md:flex-row items-center">
                     <div class="flex-1 md:pr-16">
                         <div class="bg-white text-gray-800 rounded-lg shadow-xl p-6 transform transition duration-500 hover:scale-105">
-                            <h3 class="text-2xl font-semibold mb-3">4. Mulai Petualangan Anda</h3>
+                            <h3 class="text-2xl font-semibold mb-3">4. Mulai Perjalanan Anda</h3>
                             <p>Ambil motor di lokasi kami atau minta antar ke tempat Anda, dan nikmati perjalanan!</p>
                         </div>
                     </div>
