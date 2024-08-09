@@ -1,83 +1,82 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto p-10 bg-gray-100 rounded-lg shadow-lg">
-    <h2 class="text-4xl font-bold mb-10 text-gray-800 text-center">Edit Transaksi</h2>
+<div class="container mx-auto p-4 sm:p-6 lg:p-10 bg-gray-100 rounded-lg shadow-lg">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-gray-800 text-center">Edit Transaksi</h2>
 
     @if(session('success'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-8 rounded-lg shadow-sm" role="alert">
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-lg shadow-sm" role="alert">
             <p class="font-bold">Success</p>
             <p>{{ session('success') }}</p>
         </div>
     @elseif(session('error'))
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-8 rounded-lg shadow-sm" role="alert">
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg shadow-sm" role="alert">
             <p class="font-bold">Error</p>
             <p>{{ session('error') }}</p>
         </div>
     @endif
 
-    <form action="{{ route('admin.transaksi.update', $transaksi->id) }}" method="POST" class="bg-white p-8 rounded-lg shadow-lg space-y-8" id="editTransaksiForm">
+    <form action="{{ route('admin.transaksi.update', $transaksi->id) }}" method="POST" class="bg-white p-6 sm:p-8 rounded-lg shadow-lg space-y-6 sm:space-y-8" id="editTransaksiForm">
         @csrf
         @method('PUT')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+            <div class="space-y-4 sm:space-y-6">
                 @foreach(['id' => 'ID Transaksi', 'id_user' => 'ID User', 'nama_penyewa' => 'Nama Penyewa'] as $field => $label)
                     <div class="form-group">
-                        <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-2">{{ $label }}</label>
-                        <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ $transaksi->$field }}" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
+                        <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
+                        <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ $transaksi->$field }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
                     </div>
                 @endforeach
             </div>
 
-            <div class="space-y-6">
+            <div class="space-y-4 sm:space-y-6">
                 @foreach(['wa1' => 'WA1', 'wa2' => 'WA2', 'wa3' => 'WA3'] as $field => $label)
                     <div class="form-group">
-                        <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-2">{{ $label }}</label>
-                        <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ $transaksi->$field }}" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
+                        <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
+                        <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ $transaksi->$field }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
                     </div>
                 @endforeach
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-6">
             <div class="form-group">
-                <label for="tgl_sewa" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Sewa</label>
-                <input type="date" id="tgl_sewa" name="tgl_sewa" value="{{ $transaksi->tgl_sewa->format('Y-m-d') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
+                <label for="tgl_sewa" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sewa</label>
+                <input type="date" id="tgl_sewa" name="tgl_sewa" value="{{ $transaksi->tgl_sewa->format('Y-m-d') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
             </div>
 
             <div class="form-group">
-                <label for="tgl_kembali" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Kembali</label>
-                <input type="date" id="tgl_kembali" name="tgl_kembali" value="{{ $transaksi->tgl_kembali->format('Y-m-d') }}" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tgl_kembali') border-red-500 @enderror">
+                <label for="tgl_kembali" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Kembali</label>
+                <input type="date" id="tgl_kembali" name="tgl_kembali" value="{{ $transaksi->tgl_kembali->format('Y-m-d') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tgl_kembali') border-red-500 @enderror">
                 @error('tgl_kembali')
                     <p class="text-rose-500 text-xs italic mt-1">{{ $message }}</p>
                 @enderror
             </div>
         </div>
 
-        <div class="mt-12 bg-gray-50 p-8 rounded-lg shadow-inner">
-            <h3 class="text-2xl font-bold text-gray-800 mb-8">Pilih Jenis Motor</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="jenisMotorKanban">
+        <div class="mt-8 sm:mt-12 bg-gray-50 p-4 sm:p-6 rounded-lg shadow-inner">
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 text-center">Pilih Jenis Motor</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6" id="jenisMotorKanban">
                 @foreach($jenisMotorList as $jenisMotor)
-                    <div class="bg-white border-2 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-indigo-500" data-id="{{ $jenisMotor->id }}" data-price="{{ $jenisMotor->stok->harga_perHari }}">
-                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->stok->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenisMotor->stok->merk ?: 'Motor Image' }}" class="w-full h-32 object-cover rounded-md mb-3" loading="lazy">
-                        <h3 class="text-sm font-semibold text-gray-800">{{ $jenisMotor->stok->merk }}</h3>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg hover:border-indigo-500" data-id="{{ $jenisMotor->id }}" data-price="{{ $jenisMotor->stok->harga_perHari }}">
+                        <img src="{{ $jenisMotor->stok->foto ? (filter_var($jenisMotor->stok->foto, FILTER_VALIDATE_URL) ? $jenisMotor->stok->foto : asset('storage/' . $jenisMotor->stok->foto)) : 'https://via.placeholder.com/600x400' }}" alt="{{ $jenisMotor->stok->merk ?: 'Motor Image' }}" class="w-full h-24 sm:h-32 object-cover rounded-md mb-2" loading="lazy">
+                        <h3 class="text-xs sm:text-sm font-semibold text-gray-800">{{ $jenisMotor->stok->merk }}</h3>
                         <p class="text-xs text-gray-600">Nopol: {{ $jenisMotor->nopol }}</p>
-                        <p class="text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->stok->harga_perHari, 0, ',', '.') }}/hari</p>
+                        <p class="text-xs sm:text-sm font-bold text-indigo-600 mt-1">Rp {{ number_format($jenisMotor->stok->harga_perHari, 0, ',', '.') }}/hari</p>
                     </div>
                 @endforeach
             </div>
             <input type="hidden" id="id_jenis" name="id_jenis" value="{{ $transaksi->id_jenis }}">
             @error('id_jenis')
-                <p class="text-rose-500 text-xs italic mt-1">{{ $message }}</p>
+                <p class="text-rose-500 text-xs italic mt-1 text-center">{{ $message }}</p>
             @enderror
         </div>
 
+        <div class="mt-8 sm:mt-12 bg-white p-4 sm:p-6 rounded-lg shadow-md">
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6">Rincian Biaya</h3>
 
-        <div class="mt-12 bg-white p-8 rounded-lg shadow-md">
-            <h3 class="text-2xl font-bold text-gray-800 mb-8">Rincian Biaya</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
                 @foreach([
                     'totalSebelum' => 'Total Sebelum Perpanjang',
                     'totalSesudah' => 'Total Sesudah Perpanjang',
@@ -87,22 +86,23 @@
                     'biayaGantiUnit' => 'Biaya Harga Unit (Jika ganti unit)'
                 ] as $id => $label)
                     <div>
-                        <p class="font-medium text-gray-700">{{ $label }}:</p>
-                        <p id="{{ $id }}" class="text-lg font-semibold text-gray-900"></p>
+                        <p class="font-medium text-sm text-gray-700">{{ $label }}:</p>
+                        <p id="{{ $id }}" class="text-base sm:text-lg font-semibold text-gray-900"></p>
                     </div>
                 @endforeach
             </div>
-
-            <div class="bg-gray-50 p-6 rounded-lg shadow-inner">
-                <h4 class="font-semibold text-xl mb-4 text-gray-800">Rincian:</h4>
-                <p id="rincianBiaya" class="text-2xl font-bold text-indigo-600"></p>
-                <div id="rincianDetail" class="text-base md:text-lg font-bold text-indigo-600 break-words space-y-2">
+            <div class="bg-gray-50 p-4 sm:p-6 rounded-lg shadow-inner max-w-md mx-auto grid gap-4">
+                <h4 class="font-semibold text-lg sm:text-xl text-gray-800">Rincian:</h4>
+                <p id="rincianBiaya" class="text-xl sm:text-2xl font-bold text-indigo-600">Biaya akan ditampilkan di sini</p>
+                <div id="rincianDetail" class="text-sm sm:text-base font-bold text-indigo-600 break-words">
+                    Rincian detail akan ditampilkan di sini
+                </div>
             </div>
 
             <input type="hidden" id="total" name="total" value="{{ $transaksi->total }}">
         </div>
 
-        <button type="submit" class="mt-12 w-full bg-indigo-600 text-white text-xl font-bold px-8 py-4 rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition transform hover:scale-105">
+        <button type="submit" class="mt-8 sm:mt-12 w-full bg-indigo-600 text-white text-lg sm:text-xl font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition transform hover:scale-105">
             Update Transaksi
         </button>
     </form>
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     @media (min-width: 641px) {
         #rincianDetail {
-            font-size: 1.125rem; /* text-lg */
+            font-size: 1rem; /* text-base */
         }
     }
 </style>
