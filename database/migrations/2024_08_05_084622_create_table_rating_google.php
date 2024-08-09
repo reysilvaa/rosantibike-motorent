@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama', 100);
             $table->string('role', 50);
+            $table->string('avatar');
             $table->longText('deskripsi');
             $table->integer('rating');
             $table->date('tanggal');

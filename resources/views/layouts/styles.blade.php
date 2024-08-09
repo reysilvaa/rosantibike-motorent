@@ -8,7 +8,9 @@
 
     <!-- Preload Critical CSS -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" as="script">
+    {{-- <link rel="preload" href="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" as="script"> --}}
+    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+
 
 
     <!-- Include Google Fonts -->

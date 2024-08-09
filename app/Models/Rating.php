@@ -15,6 +15,7 @@ class Rating extends Model
     protected $fillable = [
         'nama',
         'deskripsi',
+        'avatar',
         'role',
         'rating',
         'tanggal',

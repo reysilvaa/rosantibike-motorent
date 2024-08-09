@@ -3,7 +3,7 @@
 <div class="swiper-slide">
     <div class="bg-white rounded-lg p-8 shadow-lg transform transition duration-300 hover:scale-105 h-96">
         <div class="flex items-center mb-6">
-            <img src="{{ $review->avatar ?? 'default-avatar.png' }}" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-blue-500 mr-4">
+            <img src="{{ $review->avatar ? Storage::url($review->avatar) : asset('default-avatar.png') }}" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-blue-500 mr-4">
             <div>
                 <h3 class="text-2xl font-semibold text-gray-800">{{ $review->nama }}</h3>
                 <p class="text-blue-600">{{ $review->role }}</p>

@@ -21,7 +21,7 @@
             x-transition:leave-end="opacity-0 scale-90"
             id="userDropdownMenu"
             class="absolute right-0 mt-2 w-48 bg-white text-gray-900 border border-gray-300 rounded-lg shadow-xl origin-top-right z-50 hidden">
-            <a href="{{ route('profile') }}" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Profile</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Profile</a>
             <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Settings</a>
             <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition duration-150 ease-in-out">Logout</a>
         </div>
