@@ -86,14 +86,14 @@
                 </div>
 
                 <!-- Stok Motor Form -->
-                <div x-show="activeTab === 'stokMotor'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                    <form action="{{ route('admin.stok.update', $stok->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <div x-show="activeTab === 'stokMotor'">
+                    <form action="{{ route('admin.stok.update', $jenisMotor->stok->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         @method('PUT')
 
                         <div class="space-y-4">
                             <label for="merk" class="block text-lg font-medium text-gray-700">Merk</label>
-                            <input type="text" name="merk" id="merk" value="{{ old('merk', $stok->merk) }}"
+                            <input type="text" name="merk" id="merk" value="{{ old('merk', $jenisMotor->stok->merk) }}"
                             class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
                             required>
                         </div>
@@ -104,11 +104,14 @@
                             </div>
                         @endif
 
-                        <div x-data="{ selectedKategori: '{{ old('kategori', $stok->kategori) }}' }" class="space-y-4">
+                        <div x-data="{ selectedKategori: '{{ old('kategori', $jenisMotor->stok->kategori) }}' }" class="space-y-4">
                             <label class="block text-lg font-medium text-gray-700">Jenis Motor</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                 <div class="relative">
-                                    <input type="radio" id="kategori_matic" name="kategori" value="matic" x-model="selectedKategori" class="sr-only">
+                                    <input type="radio" id="kategori_matic" name="kategori" value="matic"
+                                           x-model="selectedKategori"
+                                           {{ old('kategori', $jenisMotor->stok->kategori) === 'matic' ? 'checked' : '' }}
+                                           class="sr-only">
                                     <label for="kategori_matic" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
                                         :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'matic', 'border-gray-300': selectedKategori !== 'matic' }">
                                         <div class="flex flex-col items-center">
@@ -117,7 +120,10 @@
                                     </label>
                                 </div>
                                 <div class="relative">
-                                    <input type="radio" id="kategori_manual" name="kategori" value="manual" x-model="selectedKategori" class="sr-only">
+                                    <input type="radio" id="kategori_manual" name="kategori" value="manual"
+                                           x-model="selectedKategori"
+                                           {{ old('kategori', $jenisMotor->stok->kategori) === 'manual' ? 'checked' : '' }}
+                                           class="sr-only">
                                     <label for="kategori_manual" class="block p-6 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-indigo-300"
                                         :class="{ 'border-indigo-500 ring-2 ring-indigo-500': selectedKategori === 'manual', 'border-gray-300': selectedKategori !== 'manual' }">
                                         <div class="flex flex-col items-center">
@@ -140,7 +146,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-lg">Rp</span>
                                 </div>
-                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $stok->harga_perHari) }}"
+                                <input type="number" name="harga_perHari" id="harga_perHari" value="{{ old('harga_perHari', $jenisMotor->stok->harga_perHari) }}"
                                 class="pl-12 block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
                                 required>
                             </div>
@@ -152,7 +158,7 @@
                         @endif
                         <div class="space-y-4">
                             <label for="judul" class="block text-lg font-medium text-gray-700">Judul</label>
-                            <input type="text" name="judul" id="judul" value="{{ old('judul', $stok->judul) }}"
+                            <input type="text" name="judul" id="judul" value="{{ old('judul', $jenisMotor->stok->judul) }}"
                             class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
                             required>
                         </div>
@@ -167,7 +173,7 @@
                             <label for="deskripsi1" class="block text-lg font-medium text-gray-700">Deskripsi 1</label>
                             <textarea name="deskripsi1" id="deskripsi1" rows="4"
                             class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
-                            required>{{ old('deskripsi1', $stok->deskripsi1) }}</textarea>
+                            required>{{ old('deskripsi1', $jenisMotor->stok->deskripsi1) }}</textarea>
                         </div>
 
                         @if ($errors->has('deskripsi1'))
@@ -180,7 +186,7 @@
                             <label for="deskripsi2" class="block text-lg font-medium text-gray-700">Deskripsi 2</label>
                             <textarea name="deskripsi2" id="deskripsi2" rows="4"
                             class="block w-full rounded-lg border-2 border-gray-300 shadow-md focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 text-lg py-3 px-4"
-                            required>{{ old('deskripsi2', $stok->deskripsi2) }}</textarea>
+                            required>{{ old('deskripsi2', $jenisMotor->stok->deskripsi2) }}</textarea>
                         </div>
 
                         @if ($errors->has('deskripsi2'))
@@ -190,7 +196,7 @@
                         @endif
 
                         <div x-data="{
-                            imagePreview: '{{ old('image_source') === 'url' ? old('foto_url') : old('foto', $stok->foto) }}',
+                            imagePreview: '{{ old('image_source') === 'url' ? old('foto_url') : old('foto', $jenisMotor->stok->foto) }}',
                             imageSource: '{{ old('image_source', 'upload') }}',
                             fileName: '',
                             isDragging: false,

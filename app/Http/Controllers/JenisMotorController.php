@@ -66,8 +66,8 @@ class JenisMotorController extends Controller
     // Show the form for editing the specified resource.
     public function edit($id)
     {
-        $jenisMotor = JenisMotor::findOrFail($id);
         $stoks = Stok::all();
+        $jenisMotor = JenisMotor::with('stok')->findOrFail($id);
         return view('admin.unit.edit', compact('jenisMotor', 'stoks'));
     }
 
