@@ -1,8 +1,6 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateJenisMotorTable extends Migration
@@ -11,21 +9,12 @@ class CreateJenisMotorTable extends Migration
     {
         Schema::create('jenis_motor', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_stok')->constrained('stok');
+            $table->foreignId('id_stok')
+                  ->constrained('stok')
+                  ->onDelete('cascade'); // Menambahkan onDelete('cascade')
             $table->string('nopol', 10)->unique();
-            $table->enum('status', ['ready','disewa', 'perpanjang'])->nullable();
-
+            $table->enum('status', ['ready', 'disewa', 'perpanjang'])->nullable();
         });
-        // DB::unprepared('
-        //     CREATE TRIGGER reduce_stok_after_insert
-        //     AFTER INSERT ON jenis_motor
-        //     FOR EACH ROW
-        //     BEGIN
-        //         UPDATE stok
-        //         SET stok = stok - 1
-        //         WHERE id = NEW.id_stok;
-        //     END
-        // ');
     }
 
     public function down()
