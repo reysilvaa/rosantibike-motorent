@@ -22,7 +22,7 @@
                 <h4 class="text-lg font-semibold mb-4">Kontak</h4>
                 <ul class="space-y-2 text-gray-400">
                     <li>Jl. Bauksit No.90C, RT.4/RW.9, Purwantoro, Kec. Blimbing, Kota Malang, Jawa Timur 65122</li>
-                    <li>Telepon: (+62) 8233-104-4747</li>
+                    <li>Telepon: (+62) 811-3535-122</li>
                     <li>rosantibikemotorent@gmail.com</li>
                 </ul>
             </div>
