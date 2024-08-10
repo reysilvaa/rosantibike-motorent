@@ -28,7 +28,7 @@ class GaleriController extends Controller
             'judul.max' => 'Judul maksimal 20 karakter.',
             'deskripsi.required' => 'Deskripsi wajib diisi.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
-            'deskripsi.max' => 'Deskripsi maksimal 30 karakter.',
+            'deskripsi.max' => 'Deskripsi maksimal 50 karakter.',
             'full_description.required' => 'Deskripsi lengkap wajib diisi.',
             'foto.string' => 'Foto harus berupa URL atau string.',
             'local_foto.image' => 'Foto yang diunggah harus berupa gambar.',
@@ -42,7 +42,7 @@ class GaleriController extends Controller
 
         $validated = $request->validate([
             'judul' => 'required|string|max:20',
-            'deskripsi' => 'required|string|max:30',
+            'deskripsi' => 'required|string|max:50',
             'full_description' => 'required',
             'foto' => 'nullable|string',
             'local_foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk gambar lokal

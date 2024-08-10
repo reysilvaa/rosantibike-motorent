@@ -21,26 +21,41 @@
                 <div>
                     <label for="judul" class="block text-sm font-medium text-gray-700 mb-1">Judul</label>
                     <input type="text" name="judul" id="judul" x-model="judul" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" maxlength="100" required>
+                    @error('judul')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div>
                     <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
                     <input type="text" name="deskripsi" id="deskripsi" x-model="deskripsi" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" maxlength="100" required>
+                    @error('deskripsi')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
             <div>
                 <label for="full_description" class="block text-sm font-medium text-gray-700 mb-1">Full Description</label>
                 <textarea name="full_description" id="full_description" x-model="full_description" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" rows="3" required></textarea>
+                @error('full_description')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div>
                 <label for="foto" class="block text-sm font-medium text-gray-700 mb-1">Foto URL</label>
                 <input type="text" name="foto" id="foto" x-model="foto" @input="previewImage" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter image URL">
+                @error('foto')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div>
                 <label for="local_foto" class="block text-sm font-medium text-gray-700 mb-1">Upload Foto</label>
                 <input type="file" name="local_foto" id="local_foto" @change="previewLocalImage" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                @error('local_foto')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div x-show="foto || localFoto" class="mt-2">
@@ -63,11 +78,17 @@
                     </template>
                 </div>
                 <input type="hidden" name="kategori" x-model="category" required>
+                @error('kategori')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div>
                 <label for="link_maps" class="block text-sm font-medium text-gray-700 mb-1">Link Maps</label>
                 <input type="text" name="link_maps" id="link_maps" x-model="link_maps" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                @error('link_maps')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="flex justify-between mt-6">
