@@ -6,6 +6,7 @@
                 <p class="text-xl mb-6">Klik tombol di bawah untuk mendapatkan petunjuk arah ke <span class="font-bold">ROSANTIBIKE MOTORENT</span>. Kami siap membantu Anda!</p>
                 <a
                 href="https://maps.app.goo.gl/QGVYs7wVaMxEUtmG6"
+                target="_blank"
                 class="bg-white text-blue-600 py-2 px-6 rounded-full text-lg font-semibold hover:bg-blue-100 transition duration-300 ease-in-out inline-block w-full md:w-auto"
             >
                 Dapatkan Petunjuk Arah
