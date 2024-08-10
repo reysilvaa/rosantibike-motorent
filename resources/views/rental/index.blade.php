@@ -148,7 +148,7 @@
                                     <li class="leading-6">Penyewa bersedia di foto dengan unit motor yang akan disewa.</li>
                                 </ol>
                                 <p class="leading-6 text-sm font-mono font-bold mt-4">
-                                    Dengan menyetujui syarat dan ketentuan ini, penyewa membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
+                                    Dengan menyetujui syarat dan ketentuan ini, pemilik membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
                                 </p>
                             </div>
                         </div>
