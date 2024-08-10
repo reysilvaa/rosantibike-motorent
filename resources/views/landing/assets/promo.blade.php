@@ -15,7 +15,7 @@
             <div class="md:w-1/2">
                 <iframe
                 class="rounded-lg shadow-lg w-full h-full aspect-ratio-1/1 md:aspect-ratio-16/9"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.4114755690393!2d112.64555067455653!3d-7.9563592792792965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62959ae7e7a37%3A0xa90ec3b14d2aa16c!2sROSANTIBIKE%20MOTORENT!5e0!3m2!1sid!2sid!4v1722079814753!5m2!1sid!2sid"
+                src="https://maps.app.goo.gl/P3sy1RF2bvckMht66"
                 style="border:0; width: 100%; height: 300px;"
                 allowfullscreen=""
                 loading="lazy"
