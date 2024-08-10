@@ -33,10 +33,10 @@ class AdminTransaksiController extends Controller
                     return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox custom-checkbox" value="' . $row->id . '" />';
                 })
                 ->addColumn('tgl_sewa', function($row) {
-                    return $row->tgl_sewa->format('d-m-Y');
+                    return $row->tgl_sewa->format('d-m-Y H:i');
                 })
                 ->addColumn('tgl_kembali', function($row) {
-                    return $row->tgl_kembali->format('d-m-Y');
+                    return $row->tgl_kembali->format('d-m-Y H:i');
                 })
                 ->addColumn('merk_motor', function($row) {
                     return $row->jenisMotor->stok->merk ?? '';
