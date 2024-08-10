@@ -10,19 +10,31 @@ use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
-    public function previewInvoice($id)
+    protected function getModel($type)
     {
-        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
+        return $type === 'booking' ? Booking::class : Transaksi::class;
+    }
 
-        // Ensure dates are not null and correctly parsed
+    protected function getView($language)
+    {
+        return $language === 'en' ? 'rental.invoiceEng' : 'rental.invoice';
+    }
+
+    public function previewInvoice($type, $id)
+    {
+        $language = request()->query('language', 'id'); // Default to 'id' if not set
+        $model = $this->getModel($type);
+        $transaksi = $model::with('jenisMotor')->findOrFail($id);
+
         $tgl_sewa = Carbon::parse($transaksi->tgl_sewa ?? now());
         $tgl_kembali = Carbon::parse($transaksi->tgl_kembali ?? now());
 
-        // Calculate the difference in days
         $lama_sewa = $tgl_sewa->diffInDays($tgl_kembali);
 
-        // Generate PDF
-        $pdf = Pdf::loadView('rental.invoice', compact('transaksi', 'lama_sewa'));
+        // Set locale based on parameter
+        app()->setLocale($language);
+
+        $pdf = Pdf::loadView($this->getView($language), compact('transaksi', 'lama_sewa'));
 
         return view('rental.preview', [
             'pdf' => $pdf->output(),
@@ -31,74 +43,22 @@ class InvoiceController extends Controller
         ]);
     }
 
-
-    public function downloadInvoice($id)
+    public function downloadInvoice($type, $id)
     {
-        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
+        $language = request()->query('language', 'id'); // Default to 'id' if not set
+        $model = $this->getModel($type);
+        $transaksi = $model::with('jenisMotor')->findOrFail($id);
 
-        $pdf = Pdf::loadView('rental.invoice', compact('transaksi'));
+        // Set locale based on parameter
+        app()->setLocale($language);
 
-        return $pdf->download('invoice_'.$transaksi->id.'.pdf');
-    }
+        $pdf = Pdf::loadView($this->getView($language), compact('transaksi'));
 
-    public function previewInvoiceBooking($id)
-    {
-        $transaksi = Booking::with('jenisMotor')->findOrFail($id);
+        $tglSewaFormatted = $transaksi->tgl_sewa->format('d-m-Y_His');
+        $tglKembaliFormatted = $transaksi->tgl_kembali->format('d-m-Y_His');
+        $date = "{$tglSewaFormatted}_{$tglKembaliFormatted}";
+        $fileName = "{$type}_{$transaksi->nama_penyewa}_{$date}.pdf";
 
-        // Ensure dates are not null and correctly parsed
-        $tgl_sewa = Carbon::parse($transaksi->tgl_sewa ?? now());
-        $tgl_kembali = Carbon::parse($transaksi->tgl_kembali ?? now());
-
-        // Calculate the difference in days
-        $lama_sewa = $tgl_sewa->diffInDays($tgl_kembali);
-
-        // Generate PDF
-        $pdf = Pdf::loadView('rental.invoice', compact('transaksi', 'lama_sewa'));
-
-        return view('rental.preview', [
-            'pdf' => $pdf->output(),
-            'transaksi' => $transaksi,
-            'lama_sewa' => $lama_sewa
-        ]);
-    }
-
-
-    public function downloadInvoiceBooking($id)
-    {
-        $transaksi = Booking::with('jenisMotor')->findOrFail($id);
-
-        $pdf = Pdf::loadView('rental.invoice', compact('transaksi'));
-
-        return $pdf->download('invoice_'.$transaksi->id.'.pdf');
-    }
-    public function previewInvoiceEnglish($id)
-    {
-        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
-
-        // Ensure dates are not null and correctly parsed
-        $tgl_sewa = Carbon::parse($transaksi->tgl_sewa ?? now());
-        $tgl_kembali = Carbon::parse($transaksi->tgl_kembali ?? now());
-
-        // Calculate the difference in days
-        $lama_sewa = $tgl_sewa->diffInDays($tgl_kembali);
-
-        // Generate PDF
-        $pdf = Pdf::loadView('rental.invoiceEng', compact('transaksi', 'lama_sewa'));
-
-        return view('rental.preview', [
-            'pdf' => $pdf->output(),
-            'transaksi' => $transaksi,
-            'lama_sewa' => $lama_sewa
-        ]);
-    }
-
-
-    public function downloadInvoiceEnglish($id)
-    {
-        $transaksi = Transaksi::with('jenisMotor')->findOrFail($id);
-
-        $pdf = Pdf::loadView('rental.invoiceEng', compact('transaksi'));
-
-        return $pdf->download('invoice_'.$transaksi->id.'.pdf');
+        return $pdf->download($fileName);
     }
 }

@@ -38,7 +38,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Transaction Routes
-Route::prefix('transaksi')->name('transaksi.')->group(function () {
+Route::prefix('booking')->name('transaksi.')->group(function () {
     // Transaction Routes
     Route::get('/', [TransaksiController::class, 'index'])->name('index');
     Route::post('/store', [TransaksiController::class, 'store'])->name('store');
@@ -46,19 +46,13 @@ Route::prefix('transaksi')->name('transaksi.')->group(function () {
     Route::get('/get-available-stock', [TransaksiController::class, 'getAvailableStock'])->name('getAvailableStock');
     // Route::get('/check-booking-dates', [TransaksiController::class, 'checkBookingDates'])->name('checkBookingDates');
 
-    // Invoice Routes for Transaksi
-    Route::prefix('invoice/transaksi')->name('invoice.')->group(function () {
+    // Invoice Routes for Transaksi and Booking
+    Route::prefix('invoice/{type}')->name('invoice.')->group(function () {
         Route::get('{id}/preview', [InvoiceController::class, 'previewInvoice'])->name('preview');
         Route::get('{id}/download', [InvoiceController::class, 'downloadInvoice'])->name('download');
-        Route::get('{id}/english/preview', [InvoiceController::class, 'previewInvoiceEnglish'])->name('EnglishPreview');
-        Route::get('{id}/english/download', [InvoiceController::class, 'downloadInvoiceEnglish'])->name('EnglishDownload');
     });
 
-    // Invoice Routes for Booking
-    Route::prefix('invoice/booking')->name('invoice.booking.')->group(function () {
-        Route::get('{id}/preview', [InvoiceController::class, 'previewInvoiceBooking'])->name('preview');
-        Route::get('{id}/download', [InvoiceController::class, 'downloadInvoiceBooking'])->name('download');
-    });
+
 });
 
 // In your web.php (or routes file)

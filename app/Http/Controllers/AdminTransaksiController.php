@@ -26,7 +26,7 @@ class AdminTransaksiController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-2 text-xs flex items-center justify-center"><i class="fa-solid fa-pen"></i></a>';
-                    $cetakBtn = '<a href="' . route('transaksi.invoice.preview', $row->id) . '" target="_blank" class="bg-blue-600 text-white hover:bg-blue-700 rounded px-3 py-2 text-xs flex items-center justify-center" title="Preview Invoice"><i class="fa-solid fa-eye"></i></a>';
+                    $cetakBtn = '<a href="' . route('transaksi.invoice.preview', ['type' => 'transaksi', 'id' => $row->id]) . '" target="_blank" class="bg-blue-600 text-white hover:bg-blue-700 rounded px-3 py-2 text-xs flex items-center justify-center" title="Preview Invoice"><i class="fa-solid fa-eye"></i></a>';
                     return '<div class="flex space-x-2 justify-center">' . $editBtn . $cetakBtn . '</div>';
                 })
                 ->addColumn('checkbox', function($row) {
