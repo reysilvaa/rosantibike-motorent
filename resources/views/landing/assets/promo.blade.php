@@ -15,7 +15,7 @@
             <div class="md:w-1/2">
                 <iframe
                 class="rounded-lg shadow-lg w-full h-full aspect-ratio-1/1 md:aspect-ratio-16/9"
-                src="https://maps.app.goo.gl/P3sy1RF2bvckMht66"
+                src="https://maps.app.goo.gl/9RRBNw6brUwKR68R9"
                 style="border:0; width: 100%; height: 300px;"
                 allowfullscreen=""
                 loading="lazy"
