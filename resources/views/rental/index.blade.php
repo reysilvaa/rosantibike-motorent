@@ -14,13 +14,12 @@
     </div>
 
     <div class="max-w-4xl mx-auto">
-        <!-- Card Container -->
         <div class="bg-white shadow-md rounded-lg border border-gray-200 mb-8">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h5 class="text-2xl font-semibold">Formulir Booking</h5>
             </div>
-            <div class="p-6"> <!-- Padding reduced for compact layout -->
-                <form action="{{ route('transaksi.store') }}" method="POST" id="bookingForm">
+            <div class="p-6">
+                <form action="{{ route('transaksi.store') }}" method="POST" id="bookingForm" x-data="{ canAgree: false }">
                     @csrf
                     <div class="mb-4 flex items-center gap-4">
                         <label for="nama_penyewa" class="w-1/3 text-sm font-medium text-gray-700">Nama Penyewa</label>
@@ -65,7 +64,6 @@
                                 <input type="number" id="jashujan" name="rentals[0][jashujan]" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
                             </div>
 
-
                             <label for="jenis_motor" class="block text-sm font-medium text-gray-700">Pilih Jenis Motor</label>
                             <label for="jenis_motor" class="block text-xs font-medium text-red-700">(Motor yang ada dipilihan adalah motor yang sedang dalam kondisi terbaik!)</label>
                             <div class="mb-4">
@@ -97,8 +95,9 @@
                         </div>
                     </div>
 
-                    <button type="button" id="addRental" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4">Add Another Rental</button>
-                    {{-- <button type="button" id="removeRental" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4" hidden>Remove Rental</button> --}}
+                    <button type="button" id="addRental" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4">
+                        Tambahkan Booking
+                    </button>
 
                     <div id="error-message" class="text-red-600 mb-4 text-sm"></div>
 
@@ -106,17 +105,80 @@
                         <label for="grand_total" class="w-1/3 text-sm font-medium text-gray-700">Total Keseluruhan</label>
                         <input type="text" id="grand_total" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" readonly>
                     </div>
-                    <div class="mb-6 flex items-center gap-4">
-                        <input type="checkbox" id="agreement" name="agreement" required class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                        <label for="agreement" class="text-sm font-medium text-gray-700">
-                            Saya Setuju <a href="#" class="text-indigo-600 hover:text-indigo-500">sengan semua syarat dan aturan yang berlaku</a>.
+
+                    <div x-data="{
+                        canAgree: false,
+                        checkScroll(event) {
+                            const container = event.target;
+                            this.canAgree = container.scrollHeight - container.scrollTop <= container.clientHeight + 1;
+                        }
+                    }">
+                    <div class="mb-6">
+                        <h6 class="text-2xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
+                        <div class="border border-gray-200 rounded-lg shadow-md p-6 h-72 overflow-y-auto bg-white"
+                             x-on:scroll="checkScroll($event)"
+                             x-ref="termsContainer">
+                             <div class="prose prose-sm text-gray-800 mx-auto max-w-2xl">
+                                <h3 class="text-xl font-bold mt-4 mb-2 border-b border-gray-300 pb-2">Syarat Jaminan</h3>
+                                <ol class="list-decimal list-inside space-y-2 custom-font">
+                                    <li class="leading-6">Penyewa harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung.</li>
+                                    <li class="leading-6">Apabila Penyewa berboncengan harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung (Teman Boncengan).</li>
+                                    <li class="leading-6">Identitas Penyewa akan ditahan hingga pengembalian motor.</li>
+                                </ol>
+
+                                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Penyewa</h3>
+                                <ol class="list-decimal list-inside space-y-2 custom-font">
+                                    <li class="leading-6">Penyewa harus berusia minimal 18 tahun dan memiliki SIM yang masih berlaku.</li>
+                                    <li class="leading-6">Penyewa bertanggung jawab penuh atas kerusakan atau kehilangan motor selama masa sewa.</li>
+                                    <li class="leading-6">Keterlambatan pengembalian akan dikenakan denda Rp. 15.000 / jam.</li>
+                                    <li class="leading-6">Dilarang keras menggunakan motor untuk kegiatan ilegal atau yang melanggar hukum.</li>
+                                    <li class="leading-6">Motor harus dikembalikan dalam kondisi yang sama seperti saat dipinjam.</li>
+                                    <li class="leading-6">Penyewa wajib menggunakan helm dan mematuhi peraturan lalu lintas yang berlaku.</li>
+                                    <li class="leading-6">Penyewa wajib melaporkan segera jika terjadi kecelakaan atau kerusakan pada motor.</li>
+                                </ol>
+
+                                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Lain</h3>
+                                <ol class="list-decimal list-inside space-y-2 custom-font">
+                                    <li class="leading-6">Biaya sewa tidak termasuk biaya bahan bakar / bensin.</li>
+                                    <li class="leading-6">Bersedia di foto dengan unit motor yang akan disewa.</li>
+                                </ol>
+                                <p class="leading-6 text-sm font-mono mt-4">
+                                    Dengan menyetujui syarat dan ketentuan ini, penyewa membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-6 flex items-center gap-3">
+                        <input type="checkbox" id="agreement" name="agreement" required
+                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                               x-bind:disabled="!canAgree">
+                        <label for="agreement" class="text-sm font-medium text-gray-700"
+                               x-bind:class="{ 'opacity-50': !canAgree }">
+                            Saya telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
                         </label>
                     </div>
-                    <button type="submit" class="inline-flex items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit Booking</button>
+
+                    <button type="submit" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            x-bind:disabled="!canAgree">
+                        Submit Booking
+                    </button>
+                </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 @include('rental.script')
+<style>
+    .list-decimal {
+        list-style-type: decimal;
+    }
+    .custom-font {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 13px;
+    }
+</style>
 @endsection
