@@ -84,9 +84,10 @@
     </nav>
     <!-- Mobile Menu -->
     <div class="md:hidden" x-show="isOpen" @click.away="isOpen = false">
-        <a href="#beranda" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
+        <a href="{{ route('landing') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Beranda</a>
         <a href="{{ route('landing.galeri') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Rekomendasi</a>
-        <a href="#armada" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Armada</a>
+        <a href="{{ route('landing.motor-matic') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Motor Matic</a>
+        <a href="{{ route('landing.motor-manual') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Motor Manual</a>
         <a href="{{ route('landing.faqs') }}" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">FAQ'S</a>
         <a href="#kontak" class="block py-2 px-4 text-sm hover:bg-blue-500 hover:text-white">Kontak</a>
     </div>

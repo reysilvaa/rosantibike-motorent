@@ -1,7 +1,7 @@
 <!-- Dokumentasi Section -->
 <section id="dokumentasi" class="bg-gradient-to-bl from-purple-600 to-blue-500 text-white py-20">
     <div class="container mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-12 text-white">Jelajahi Petualangan Kami</h2>
+        <h2 class="text-4xl font-bold text-center mb-12 text-white">Rekomendasi Wisata Kami</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @php
                 $mainImage = $galeris->first() ?? (object)[ 'foto' => 'path/to/default/image.jpg', 'judul' => 'Default Title', 'deskripsi' => 'Default Description' ];
