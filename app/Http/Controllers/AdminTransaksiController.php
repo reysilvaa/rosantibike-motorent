@@ -66,8 +66,7 @@ class AdminTransaksiController extends Controller
 
         // Tampilkan view edit dengan data transaksi dan daftar jenis motor
         return view('admin.transaksi.edit', compact('transaksi', 'jenisMotorList'));
-            }
-
+    }
 
     public function update(Request $request, $id)
     {
@@ -80,43 +79,53 @@ class AdminTransaksiController extends Controller
         // Temukan transaksi yang akan diperbarui
         $transaksi = Transaksi::findOrFail($id);
 
-        // Simpan total awal sebelum update
-        $originalTotal = $transaksi->total;
-
         // Simpan tanggal kembali yang asli
         $originalTglKembali = $transaksi->tgl_kembali;
 
         // Ambil data jenis motor terbaru
-        $jenisMotor = JenisMotor::findOrFail($validated['id_jenis']);
+        $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
 
-        // Hitung jumlah hari perpanjangan dari tanggal kembali yang asli
-        $tglSewa = $transaksi->tgl_sewa;
-        $tglKembali = $validated['tgl_kembali'];
+        // Cek apakah tanggal kembali berubah
+        if ($validated['tgl_kembali'] != $originalTglKembali) {
+            // Jika tanggal kembali berubah, hitung perpanjangan
+            $tglSewa = $transaksi->tgl_sewa;
+            $tglKembali = $validated['tgl_kembali'];
 
-        // Jika tanggal kembali baru lebih awal dari tanggal kembali asli, tidak perlu perpanjangan
-        // if ($tglKembali <= $originalTglKembali) {
-        //     return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
-        // }
+            // Hitung jumlah hari perpanjangan
+            $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
 
-        // Hitung jumlah hari perpanjangan
-        $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
+            // Hitung total harga perpanjangan
+            $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotorBaru->harga_perHari;
 
-        // Hitung total harga perpanjangan
-        $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotor->harga_perHari;
+            // Tambahkan total perpanjangan ke total yang sudah ada
+            $transaksi->total += $totalHargaPerpanjangan;
 
-        // Tambahkan total perpanjangan ke total yang sudah ada
-        $totalHargaBaru = $originalTotal + $totalHargaPerpanjangan;
+            // Perbarui tanggal kembali
+            $transaksi->tgl_kembali = $tglKembali;
+        }
 
-        // Perbarui data transaksi
-        $transaksi->tgl_kembali = $validated['tgl_kembali'];
-        $transaksi->id_jenis = $validated['id_jenis'];
-        $transaksi->total = $totalHargaBaru;
-        $transaksi->jenisMotor->status = 'perpanjang'; // Atau status sesuai kebutuhan
+        // Jika jenis motor berubah
+        if ($transaksi->id_jenis != $validated['id_jenis']) {
+            // Ubah status jenis motor lama menjadi ready
+            $jenisMotorLama = JenisMotor::findOrFail($transaksi->id_jenis);
+            $jenisMotorLama->status = 'ready';
+            $jenisMotorLama->save();
+
+            // Ubah status jenis motor baru menjadi disewa
+            $jenisMotorBaru->status = 'disewa';
+            $jenisMotorBaru->save();
+
+            // Perbarui id_jenis pada transaksi
+            $transaksi->id_jenis = $validated['id_jenis'];
+        }
+
+        // Simpan perubahan transaksi
         $transaksi->save();
 
         // Redirect dengan pesan sukses
         return redirect()->route('admin.transaksi.edit', ['transaksi' => $id])->with('success', 'Transaksi berhasil diperbarui.');
     }
+
 
 
     public function destroy(Transaksi $transaksi)

@@ -43,7 +43,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-6">
             <div class="form-group">
                 <label for="tgl_sewa" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sewa</label>
-                <input type="datetime-local" id="tgl_sewa" name="tgl_sewa" value="{{ $booking->tgl_sewa-}}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
+                <input type="datetime-local" id="tgl_sewa" name="tgl_sewa" value="{{ $booking->tgl_sewa}}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
             </div>
 
             <div class="form-group">

@@ -76,27 +76,26 @@ class AdminBookingController extends Controller
         $booking = Booking::findOrFail($id);
         $originalTotal = $booking->total;
         $originalTglKembali = $booking->tgl_kembali;
-        $jenisMotor = JenisMotor::findOrFail($validated['id_jenis']);
+        $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
 
-        $tglSewa = $booking->tgl_sewa;
-        $tglKembali = $validated['tgl_kembali'];
+        if ($validated['tgl_kembali'] != $originalTglKembali) {
+            $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($validated['tgl_kembali']);
+            $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotorBaru->harga_perHari;
+            $booking->total = $originalTotal + $totalHargaPerpanjangan;
+            $booking->tgl_kembali = $validated['tgl_kembali'];
+        }
 
-        // if ($tglKembali <= $originalTglKembali) {
-        //     notify()->preset('error', [
-        //         'title' => 'Gagal Memperbarui Booking',
-        //         'message' => 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.'
-        //     ]);
-        //     return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
-        // }
+        if ($booking->id_jenis != $validated['id_jenis']) {
+            $jenisMotorLama = JenisMotor::findOrFail($booking->id_jenis);
+            $jenisMotorLama->status = 'ready';
+            $jenisMotorLama->save();
 
-        $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
-        $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotor->harga_perHari;
-        $totalHargaBaru = $originalTotal + $totalHargaPerpanjangan;
+            // $jenisMotorBaru->status = 'ready';
+            // $jenisMotorBaru->save();
 
-        $booking->tgl_kembali = $validated['tgl_kembali'];
-        $booking->id_jenis = $validated['id_jenis'];
-        $booking->total = $totalHargaBaru;
-        $booking->jenisMotor->status = 'perpanjang';
+            $booking->id_jenis = $validated['id_jenis'];
+        }
+
         $booking->save();
 
         notify()->preset('success', [
@@ -106,6 +105,7 @@ class AdminBookingController extends Controller
 
         return redirect()->route('admin.booking.edit', ['booking' => $id]);
     }
+
 
     public function destroy(Booking $booking)
     {
