@@ -45,7 +45,6 @@
 <x-back-to-list-button route="{{ route('dashboard') }}" />
 
 @endsection
-
 @push('scripts')
 <script type="text/javascript">
 $(document).ready(function() {
@@ -69,6 +68,7 @@ $(document).ready(function() {
         paging: true,
         searching: true,
         ordering: true,
+        responsive: true,
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
@@ -121,8 +121,8 @@ $(document).ready(function() {
                 showCancelButton: true,
                 confirmButtonText: 'Ya, hapus',
                 cancelButtonText: 'Batal',
-                confirmButtonColor: '#4c51bf',  // Warna indigo-600
-                cancelButtonColor: '#38a169',  // Warna hijau
+                confirmButtonColor: '#4c51bf',
+                cancelButtonColor: '#38a169',
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -138,7 +138,7 @@ $(document).ready(function() {
                                 icon: 'success',
                                 title: 'Bulk Delete Berhasil',
                                 text: 'Bookings berhasil dihapus.',
-                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                                confirmButtonColor: '#4c51bf'
                             });
                         },
                         error: function(xhr) {
@@ -146,7 +146,7 @@ $(document).ready(function() {
                                 icon: 'error',
                                 title: 'Kesalahan',
                                 text: 'Terjadi kesalahan saat mencoba menghapus booking yang dipilih.',
-                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                                confirmButtonColor: '#4c51bf'
                             });
                         }
                     });
@@ -157,7 +157,7 @@ $(document).ready(function() {
                 icon: 'warning',
                 title: 'Tidak Ada Booking Terpilih',
                 text: 'Silakan pilih setidaknya satu booking untuk dihapus.',
-                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                confirmButtonColor: '#4c51bf'
             });
         }
     });
@@ -174,7 +174,6 @@ $(document).ready(function() {
                 },
                 success: function(response){
                     table.draw();
-                    // Menampilkan notifikasi sukses
                     Swal.fire({
                         icon: 'success',
                         title: 'Booking Berhasil Dihapus',
@@ -190,4 +189,5 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+
 

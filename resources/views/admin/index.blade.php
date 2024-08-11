@@ -108,19 +108,18 @@
             </div>
         </div>
 @endsection
-
 @push('styles')
 <script type="text/javascript">
 $(document).ready(function() {
     $.extend($.fn.dataTable.defaults, {
         language: {
             paginate: {
-                previous: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Sebelumnya</button>',
-                next: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Selanjutnya</button>',
+                previous: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Previous</button>',
+                next: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Next</button>',
             },
-            info: '<span class="text-sm text-gray-700 px-3 py-2">Menampilkan _START_ hingga _END_ dari _TOTAL_ data</span>',
-            lengthMenu: '<span class="text-sm text-gray-700 px-3 py-2">Menampilkan _MENU_ Entri</span>',
-            search: '<span class="text-sm text-gray-700 px-3 py-2">Cari:</span>'
+            info: '<span class="text-sm text-gray-700 px-3 py-2">Showing _START_ to _END_ of _TOTAL_ entries</span>',
+            lengthMenu: '<span class="text-sm text-gray-700 px-3 py-2">Show _MENU_ entries</span>',
+            search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
         }
     });
 
@@ -129,8 +128,10 @@ $(document).ready(function() {
         serverSide: true,
         ajax: "{{ route('admin.transaksi.data') }}",
         fixedHeader: true,
-        scrollX: false, // Remove horizontal scroll
-        scrollY: false, // Remove vertical scroll
+        paging: true,
+        searching: true,
+        ordering: true,
+        responsive: true, // Menambahkan opsi responsive
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
@@ -143,25 +144,28 @@ $(document).ready(function() {
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         drawCallback: function() {
+            // Menambahkan gaya pada tombol pagination
             $('.paginate_button').addClass('px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100');
             $('.paginate_button.current').addClass('bg-blue-600 text-white hover:bg-blue-700').removeClass('text-gray-700 bg-white hover:bg-gray-100');
             $('.dataTables_info').addClass('text-sm text-gray-700 px-3 py-2');
 
+            // Menyelaraskan filter length dan search secara horizontal
             $('.dataTables_length').addClass('flex items-center space-x-4 mb-2');
             $('.dataTables_filter').addClass('flex items-center space-x-4 mb-2');
 
+            // Menambahkan gaya pada elemen select dan input
             $('.dataTables_length select').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
             $('.dataTables_filter input').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
         }
     });
 
-    // Handle click on "Select all" control
+    // Menangani klik pada kontrol "Select all"
     $('#select_all_checkbox').on('click', function(){
         var rows = table.rows({ 'search': 'applied' }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
 
-    // Handle click on checkbox to set state of "Select all" control
+    // Menangani klik pada checkbox untuk mengatur status kontrol "Select all"
     $('#data-table tbody').on('change', 'input[type="checkbox"]', function(){
         if(!this.checked){
             var el = $('#select_all_checkbox').get(0);
@@ -171,52 +175,100 @@ $(document).ready(function() {
         }
     });
 
-    // Handle form submission event
     $('#bulk-delete').on('click', function(e){
         var ids = [];
         $('.transaksi_checkbox:checked').each(function(){
             ids.push($(this).val());
         });
+
         if(ids.length > 0){
-            if(confirm("Are you sure you want to delete selected transaksi?")){
+            Swal.fire({
+                icon: 'question',
+                title: 'Apakah Anda yakin?',
+                text: 'Anda ingin menghapus transaksi yang dipilih?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#4c51bf',  // Warna indigo-600
+                cancelButtonColor: '#38a169',  // Warna hijau
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.transaksi.bulkDelete') }}",
+                        method: 'POST',
+                        data: {
+                            ids: ids,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response){
+                            table.draw();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Transaksi Berhasil Dihapus',
+                                text: 'Transaksi yang dipilih berhasil dihapus.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Kesalahan',
+                                text: 'Terjadi kesalahan saat mencoba menghapus transaksi yang dipilih.',
+                                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Transaksi Terpilih',
+                text: 'Silakan pilih setidaknya satu transaksi untuk dihapus.',
+                confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
+            });
+        }
+    });
+
+    // Menangani tombol delete
+    $('#data-table').on('click', '.delete', function(){
+        var id = $(this).data('id');
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Apakah Anda yakin?',
+            text: 'Anda ingin menghapus booking ini?',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#4c51bf',  // Warna indigo-600
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('admin.transaksi.bulkDelete') }}",
-                    method: 'POST',
+                    url: "/admin/transaksi/" + id,
+                    method: 'DELETE',
                     data: {
-                        ids: ids,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response){
                         table.draw();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Booking Berhasil Dihapus',
+                            text: 'Booking berhasil dihapus.'
+                        });
                     },
                     error: function(xhr) {
-                        alert('An error occurred while trying to delete the selected transactions.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan',
+                            text: 'Terjadi kesalahan saat mencoba menghapus booking.'
+                        });
                     }
                 });
             }
-        } else {
-            alert("Please select at least one transaksi");
-        }
-    });
-
-    // Handle delete button
-    $('#data-table').on('click', '.delete', function(){
-        var id = $(this).data('id');
-        if(confirm("Are you sure you want to delete this transaksi?")){
-            $.ajax({
-                url: "/admin/transaksi/" + id,
-                method: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response){
-                    table.draw();
-                },
-                error: function(xhr) {
-                    alert('An error occurred while trying to delete the transaction.');
-                }
-            });
-        }
+        });
     });
 });
 </script>
