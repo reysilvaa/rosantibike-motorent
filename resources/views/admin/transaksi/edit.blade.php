@@ -43,12 +43,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-6">
             <div class="form-group">
                 <label for="tgl_sewa" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sewa</label>
-                <input type="date" id="tgl_sewa" name="tgl_sewa" value="{{ $transaksi->tgl_sewa->format('Y-m-d') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
+                <input type="datetime-local" id="tgl_sewa" name="tgl_sewa" value="{{ $transaksi->tgl_sewa}}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-100" disabled>
             </div>
 
             <div class="form-group">
                 <label for="tgl_kembali" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Kembali</label>
-                <input type="date" id="tgl_kembali" name="tgl_kembali" value="{{ $transaksi->tgl_kembali->format('Y-m-d') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tgl_kembali') border-red-500 @enderror">
+                <input type="datetime-local" id="tgl_kembali" name="tgl_kembali" value="{{ $transaksi->tgl_kembali}}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tgl_kembali') border-red-500 @enderror">
                 @error('tgl_kembali')
                     <p class="text-rose-500 text-xs italic mt-1">{{ $message }}</p>
                 @enderror
