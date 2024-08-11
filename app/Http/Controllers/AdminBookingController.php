@@ -81,13 +81,13 @@ class AdminBookingController extends Controller
         $tglSewa = $booking->tgl_sewa;
         $tglKembali = $validated['tgl_kembali'];
 
-        if ($tglKembali <= $originalTglKembali) {
-            notify()->preset('error', [
-                'title' => 'Gagal Memperbarui Booking',
-                'message' => 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.'
-            ]);
-            return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
-        }
+        // if ($tglKembali <= $originalTglKembali) {
+        //     notify()->preset('error', [
+        //         'title' => 'Gagal Memperbarui Booking',
+        //         'message' => 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.'
+        //     ]);
+        //     return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
+        // }
 
         $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
         $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotor->harga_perHari;

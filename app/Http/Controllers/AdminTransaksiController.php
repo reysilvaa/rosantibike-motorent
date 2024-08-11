@@ -94,9 +94,9 @@ class AdminTransaksiController extends Controller
         $tglKembali = $validated['tgl_kembali'];
 
         // Jika tanggal kembali baru lebih awal dari tanggal kembali asli, tidak perlu perpanjangan
-        if ($tglKembali <= $originalTglKembali) {
-            return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
-        }
+        // if ($tglKembali <= $originalTglKembali) {
+        //     return redirect()->back()->with('error', 'Tanggal kembali baru tidak boleh lebih awal dari tanggal kembali asli.');
+        // }
 
         // Hitung jumlah hari perpanjangan
         $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
