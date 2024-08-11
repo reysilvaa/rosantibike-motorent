@@ -63,7 +63,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: "{{ route('admin.transaksi.data') }}",
-        fixedHeader: true,
+        // fixedHeader: true,
         paging: true,
         searching: true,
         ordering: true,
