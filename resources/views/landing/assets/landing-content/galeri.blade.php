@@ -1,5 +1,5 @@
 @include('landing.assets.navbar-no-scroll')
-<section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()">
+<section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()" >
     <div class="container mx-auto px-4">
             <div class="container mx-auto px-4">
                 <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-7 pt-10">
@@ -81,50 +81,52 @@
             </template>
         </div>
 
-        <!-- Immersive Modal -->
-        <div
-        x-show="modalOpen && selectedItem.foto"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-300"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90"
-        @click.away="closeModal()"
-        @keydown.escape.window="closeModal()"
-    >
-        <div
-            class="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-lg sm:max-w-xl"
+        <div x-cloak x-show="modalOpen">
+            <!-- Immersive Modal -->
+            <div
+            x-show="modalOpen && selectedItem.foto"
             x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-90"
-            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
             x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-90"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90"
+            @click.away="closeModal()"
+            @keydown.escape.window="closeModal()"
         >
-            <div class="relative">
-                <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-48 sm:h-56 object-cover">
-                <button @click="closeModal()" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-75 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <div class="p-4">
-                <h3 class="text-xl sm:text-2xl font-bold mb-2" x-text="selectedItem.judul"></h3>
-                <div class="text-gray-700 text-sm sm:text-base mb-4 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
-                    <p x-text="selectedItem.full_description"></p>
+            <div
+                class="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-lg sm:max-w-xl"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-90"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90"
+            >
+                <div class="relative">
+                    <img :src="selectedItem.foto" :alt="selectedItem.judul" class="w-full h-48 sm:h-56 object-cover">
+                    <button @click="closeModal()" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-75 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <div class="flex justify-end">
-                    <a
-                        :href="selectedItem.link_maps"
-                        target="_blank"
-                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105"
-                    >
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-                        </svg>
-                        View on Map
-                    </a>
+                <div class="p-4">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2" x-text="selectedItem.judul"></h3>
+                    <div class="text-gray-700 text-sm sm:text-base mb-4 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
+                        <p x-text="selectedItem.full_description"></p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a
+                            :href="selectedItem.link_maps"
+                            target="_blank"
+                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 ease-in-out transform hover:scale-105"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                            View on Map
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,15 +136,18 @@
 <script>
 function galleryData(galeris) {
     return {
+        modalOpen: false,
         galeris: galeris,
         categories: ['Semua', ...Array.from(new Set(galeris.map(item => capitalizeFirstLetter(item.kategori))))],
         filter: 'Semua',
         currentSlide: 0,
-        modalOpen: false,
-        selectedItem: 0, // bug
+        selectedItem: {}, // bug
         filteredItems: [],
         init() {
             this.filteredItems = this.galeris;
+            setTimeout(() => {
+                this.canOpenModal = true;
+            }, 500);
         },
         setFilter(category) {
             this.filter = category;
@@ -170,6 +175,7 @@ function galleryData(galeris) {
             this.currentSlide = index;
         },
         openModal(item) {
+            if (!this.canOpenModal) return;
             this.selectedItem = item;
             this.modalOpen = true;
             document.body.style.overflow = 'hidden'; // Prevent scroll on body
@@ -186,6 +192,7 @@ function galleryData(galeris) {
     }
 </script>
 <style>
+        [x-cloak] { display: none !important; }
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
     }

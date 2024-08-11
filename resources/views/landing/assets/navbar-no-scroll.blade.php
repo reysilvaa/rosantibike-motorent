@@ -1,15 +1,4 @@
 @include('landing.assets.link.link')
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net;
-    style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
-    img-src 'self' data: https:;
-    connect-src 'self' https:;
-    font-src 'self' data: https:;
-    frame-src 'self' https://www.google.com;
-    object-src 'none';
-    base-uri 'self';
-    ">
-
     <title>@yield('title', 'Motor Matic - Rental Motor Rosanti')</title>
 
 <body class="font-['Poppins'] bg-gray-50 text-gray-800">
