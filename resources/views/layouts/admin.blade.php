@@ -43,6 +43,22 @@
         .inset-0 {
             top: auto!important;
         }
+        @media (max-width: 640px) {
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                font-size: 0.75rem;
+            }
+
+            .status-badge {
+                font-size: 0.75rem; /* Ukuran font lebih kecil pada layar kecil */
+                padding: 0.25rem 0.5rem; /* Padding lebih kecil pada layar kecil */
+            }
+        }
+
     </style>
 </head>
 
@@ -75,6 +91,6 @@
         </main>
     @endauth
 
-    
+
 </body>
 </html>

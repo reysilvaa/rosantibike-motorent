@@ -21,9 +21,11 @@ class AdminTransaksiController extends Controller
     public function getData(Request $request)
     {
         if ($request->ajax()) {
-            $data = Transaksi::with('jenisMotor.stok')->select('transaksi.*');
+            $data = Transaksi::with(['jenisMotor.stok'])
+                ->leftJoin('jenis_motor', 'transaksi.id_jenis', '=', 'jenis_motor.id')
+                ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status');
+
             return DataTables::of($data)
-                ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('admin.transaksi.edit', $row->id) . '" class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-2 text-xs flex items-center justify-center"><i class="fa-solid fa-pen"></i></a>';
                     $cetakBtn = '<a href="' . route('transaksi.invoice.preview', ['type' => 'transaksi', 'id' => $row->id]) . '" target="_blank" class="bg-blue-600 text-white hover:bg-blue-700 rounded px-3 py-2 text-xs flex items-center justify-center" title="Preview Invoice"><i class="fa-solid fa-eye"></i></a>';
@@ -32,25 +34,50 @@ class AdminTransaksiController extends Controller
                 ->addColumn('checkbox', function($row) {
                     return '<input type="checkbox" name="transaksi_checkbox[]" class="transaksi_checkbox custom-checkbox" value="' . $row->id . '" />';
                 })
-                ->addColumn('tgl_sewa', function($row) {
+                ->editColumn('nopol', function($row) {
+                    return $row->nopol ?? '';
+                })
+                ->editColumn('tgl_sewa', function($row) {
                     return $row->tgl_sewa->format('d-m-Y H:i');
                 })
-                ->addColumn('tgl_kembali', function($row) {
+                ->editColumn('tgl_kembali', function($row) {
                     return $row->tgl_kembali->format('d-m-Y H:i');
                 })
-                ->addColumn('merk_motor', function($row) {
+                ->editColumn('merk_motor', function($row) {
                     return $row->jenisMotor->stok->merk ?? '';
                 })
-                ->addColumn('status', function($row) {
-                    return $row->jenisMotor->status ?? '';
+                ->editColumn('status', function($row) {
+                    return $row->status ?? '';
                 })
-                ->addColumn('total', function($row) {
+                ->editColumn('total', function($row) {
                     return "Rp. " . number_format($row->total, 0, ',', '.');
+                })
+                ->filterColumn('nopol', function($query, $keyword) {
+                    $query->where('jenis_motor.nopol', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('merk_motor', function($query, $keyword) {
+                    $query->whereHas('jenisMotor.stok', function($q) use ($keyword) {
+                        $q->where('merk', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('status', function($query, $keyword) {
+                    $query->where('jenis_motor.status', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('tgl_sewa', function($query, $keyword) {
+                    $query->whereRaw("DATE_FORMAT(transaksi.tgl_sewa, '%d-%m-%Y %H:%i') like ?", ["%{$keyword}%"]);
+                })
+                ->filterColumn('tgl_kembali', function($query, $keyword) {
+                    $query->whereRaw("DATE_FORMAT(transaksi.tgl_kembali, '%d-%m-%Y %H:%i') like ?", ["%{$keyword}%"]);
+                })
+                ->filterColumn('total', function($query, $keyword) {
+                    $query->whereRaw("CAST(total AS CHAR) like ?", ["%{$keyword}%"]);
                 })
                 ->rawColumns(['action', 'checkbox'])
                 ->make(true);
         }
     }
+
+
 
     public function edit($id)
     {

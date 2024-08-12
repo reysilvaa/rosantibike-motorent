@@ -14,42 +14,42 @@
             });
         }
     }
-}">
+}" class="max-w-screen-sm mx-auto px-4 py-6">
     <div class="mb-6">
-        <h6 class="text-2xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
-        <div class="border border-gray-200 rounded-lg shadow-md p-6 h-72 overflow-y-auto bg-white"
+        <h6 class="text-xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
+        <div class="border border-gray-200 rounded-lg shadow-md p-4 sm:p-6 h-64 overflow-y-auto bg-white"
              x-on:scroll="checkScroll($event)"
              x-ref="termsContainer">
-             <div class="prose prose-sm text-gray-800 mx-auto max-w-2xl">
-                <h3 class="text-xl font-bold mt-4 mb-2 border-b border-gray-300 pb-2">Syarat Jaminan</h3>
+             <div class="prose prose-sm text-gray-800 mx-auto max-w-full">
+                <h3 class="text-lg font-bold mt-4 mb-2 border-b border-gray-300 pb-2">Syarat Jaminan</h3>
                 <ol class="list-decimal list-inside space-y-2 custom-font">
-                    <li class="leading-6">Penyewa harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung.</li>
-                    <li class="leading-6">Apabila Penyewa berboncengan harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung (Teman Boncengan).</li>
-                    <li class="leading-6">Identitas Penyewa akan ditahan hingga pengembalian motor.</li>
+                    <li>Penyewa harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung.</li>
+                    <li>Apabila Penyewa berboncengan harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung (Teman Boncengan).</li>
+                    <li>Identitas Penyewa akan ditahan hingga pengembalian motor.</li>
                 </ol>
 
-                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Penyewa</h3>
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Penyewa</h3>
                 <ol class="list-decimal list-inside space-y-2 custom-font">
-                    <li class="leading-6">Penyewa harus berusia minimal 18 tahun dan memiliki SIM yang masih berlaku.</li>
-                    <li class="leading-6">Penyewa bertanggung jawab penuh atas kerusakan atau kehilangan motor selama masa sewa.</li>
-                    <li class="leading-6">Dilarang keras menggunakan motor untuk kegiatan ilegal atau yang melanggar hukum.</li>
-                    <li class="leading-6">Motor harus dikembalikan dalam kondisi yang sama seperti saat dipinjam.</li>
-                    <li class="leading-6">Penyewa wajib menggunakan helm dan mematuhi peraturan lalu lintas yang berlaku.</li>
-                    <li class="leading-6">Penyewa wajib melaporkan segera jika terjadi kecelakaan atau kerusakan pada motor.</li>
+                    <li>Penyewa harus berusia minimal 18 tahun dan memiliki SIM yang masih berlaku.</li>
+                    <li>Penyewa bertanggung jawab penuh atas kerusakan atau kehilangan motor selama masa sewa.</li>
+                    <li>Dilarang keras menggunakan motor untuk kegiatan ilegal atau yang melanggar hukum.</li>
+                    <li>Motor harus dikembalikan dalam kondisi yang sama seperti saat dipinjam.</li>
+                    <li>Penyewa wajib menggunakan helm dan mematuhi peraturan lalu lintas yang berlaku.</li>
+                    <li>Penyewa wajib melaporkan segera jika terjadi kecelakaan atau kerusakan pada motor.</li>
                 </ol>
 
-                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Biaya</h3>
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Biaya</h3>
                 <ol class="list-decimal list-inside space-y-2 custom-font">
-                    <li class="leading-6">Keterlambatan pengembalian akan dikenakan denda Rp. 15.000 / jam.</li>
-                    <li class="leading-6">Apabila menggunakan jasa antar-jemput maka Penyewa bersedia dikenakan biaya tambahan.</li>
-                    <li class="leading-6">Biaya sewa tidak termasuk biaya bahan bakar / bensin.</li>
+                    <li>Keterlambatan pengembalian akan dikenakan denda Rp. 15.000 / jam.</li>
+                    <li>Apabila menggunakan jasa antar-jemput maka Penyewa bersedia dikenakan biaya tambahan.</li>
+                    <li>Biaya sewa tidak termasuk biaya bahan bakar / bensin.</li>
                 </ol>
 
-                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Dokumentasi</h3>
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Dokumentasi</h3>
                 <ol class="list-decimal list-inside space-y-2 custom-font">
-                    <li class="leading-6">Penyewa bersedia di foto dengan unit motor yang akan disewa.</li>
+                    <li>Penyewa bersedia di foto dengan unit motor yang akan disewa.</li>
                 </ol>
-                <p class="leading-6 text-xs font-mono font-bold mt-4">
+                <p class="text-xs font-mono font-bold mt-4">
                     Dengan menyetujui syarat dan ketentuan ini, pemilik membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
                 </p>
             </div>
@@ -78,11 +78,8 @@
 </div>
 
 <style>
-    .list-decimal {
-        list-style-type: decimal;
-    }
     .custom-font {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 13px;
+        font-size: 14px;
     }
 </style>

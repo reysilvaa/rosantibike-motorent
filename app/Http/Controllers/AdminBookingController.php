@@ -23,7 +23,10 @@ class AdminBookingController extends Controller
     public function getData(Request $request)
     {
         if ($request->ajax()) {
-            $data = Booking::with('jenisMotor.stok')->select('booking.*');
+            $data = Booking::with(['jenisMotor.stok'])
+                ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
+                ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status');
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
@@ -34,25 +37,46 @@ class AdminBookingController extends Controller
                 ->addColumn('checkbox', function($row) {
                     return '<input type="checkbox" name="booking_checkbox[]" class="booking_checkbox custom-checkbox" value="' . $row->id . '" />';
                 })
-                ->addColumn('tgl_sewa', function($row) {
+                ->editColumn('tgl_sewa', function($row) {
                     return $row->tgl_sewa->format('d-m-Y H:i');
                 })
-                ->addColumn('tgl_kembali', function($row) {
+                ->editColumn('tgl_kembali', function($row) {
                     return $row->tgl_kembali->format('d-m-Y H:i');
                 })
-                ->addColumn('merk_motor', function($row) {
+                ->editColumn('merk_motor', function($row) {
                     return $row->jenisMotor->stok->merk ?? '';
                 })
-                ->addColumn('status', function($row) {
-                    return $row->jenisMotor->status ?? '';
+                ->editColumn('status', function($row) {
+                    return $row->status ?? '';
                 })
-                ->addColumn('total', function($row) {
+                ->editColumn('total', function($row) {
                     return "Rp. " . number_format($row->total, 0, ',', '.');
+                })
+                ->filterColumn('nopol', function($query, $keyword) {
+                    $query->where('jenis_motor.nopol', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('merk_motor', function($query, $keyword) {
+                    $query->whereHas('jenisMotor.stok', function($q) use ($keyword) {
+                        $q->where('merk', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('status', function($query, $keyword) {
+                    $query->where('jenis_motor.status', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('tgl_sewa', function($query, $keyword) {
+                    $query->whereRaw("DATE_FORMAT(booking.tgl_sewa, '%d-%m-%Y %H:%i') like ?", ["%{$keyword}%"]);
+                })
+                ->filterColumn('tgl_kembali', function($query, $keyword) {
+                    $query->whereRaw("DATE_FORMAT(booking.tgl_kembali, '%d-%m-%Y %H:%i') like ?", ["%{$keyword}%"]);
+                })
+                ->filterColumn('total', function($query, $keyword) {
+                    $query->whereRaw("CAST(total AS CHAR) like ?", ["%{$keyword}%"]);
                 })
                 ->rawColumns(['action', 'checkbox'])
                 ->make(true);
         }
     }
+
 
     public function edit($id)
     {

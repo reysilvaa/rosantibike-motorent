@@ -17,27 +17,28 @@
         </div>
         <div class="p-4">
             <button class="bg-red-600 text-white px-4 py-2 rounded-md mb-3 hover:bg-red-700" id="bulk-delete">Delete Selected</button>
-            <div class="overflow-x-auto">
-                <table id="data-table" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 2%">
-                                <input type="checkbox" class="form-check-input" id="select_all_checkbox">
-                            </th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 5%">No</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 15%">Nama Penyewa</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 15%">Jenis Motor</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 15%">Tanggal Sewa</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 15%">Tanggal Kembali</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 10%">Status</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 10%">Total</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-600 uppercase tracking-wider" style="width: 8%">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 text-center custom-tbody-padding">
-                        {{-- content otomatis datatables --}}
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table id="data-table" class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">
+                                    <input type="checkbox" class="form-check-input" id="select_all_checkbox">
+                                </th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nopol</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nama Penyewa</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Jenis Motor</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Sewa</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Kembali</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Total</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {{-- content otomatis datatables --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -71,13 +72,41 @@ $(document).ready(function() {
         responsive: true,
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'nama_penyewa', name: 'nama_penyewa', searchable: true},
+            {data: 'nopol', name: 'nopol'},
+            {data: 'nama_penyewa', name: 'nama_penyewa'},
             {data: 'merk_motor', name: 'merk_motor'},
             {data: 'tgl_sewa', name: 'tgl_sewa'},
             {data: 'tgl_kembali', name: 'tgl_kembali'},
-            {data: 'status', name: 'status'},
-            {data: 'total', name: 'total'},
+            {
+                data: 'status',
+                name: 'status',
+                render: function (data, type, row) {
+                    // Mengatur kelas berdasarkan status
+                    let statusClass = '';
+                    let statusText = data || 'Unknown'; // Default to 'Unknown' jika data kosong
+
+                    switch (data) {
+                        case 'ready':
+                            statusClass = 'bg-green-500 text-white';
+                            break;
+                        case 'perpanjang':
+                            statusClass = 'bg-yellow-500 text-black';
+                            break;
+                        case 'disewa':
+                            statusClass = 'bg-red-500 text-white';
+                            break;
+                        default:
+                            statusClass = 'bg-gray-500 text-white';
+                    }
+
+                    // Mengembalikan HTML untuk sel dengan status
+                    return `
+                        <span class="inline-block px-2 py-1 rounded text-xs font-medium ${statusClass}">
+                            ${statusText}
+                        </span>
+                    `;
+                }
+            },            {data: 'total', name: 'total'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         drawCallback: function() {
