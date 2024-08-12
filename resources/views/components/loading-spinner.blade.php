@@ -1,74 +1,58 @@
 <!-- resources/views/components/loading-spinner.blade.php -->
-<div id="loading-spinner" class="fixed inset-0 flex items-center justify-center bg-white z-50">
-    <div class="flex flex-col items-center space-y-4">
-        <!-- Spinner Circle -->
-        <div class="relative w-24 h-24 flex items-center justify-center">
-            <div class="absolute w-24 h-24 border-8 border-t-blue-500 border-solid rounded-full animate-spin"></div>
-            <div class="absolute w-24 h-24 border-8 border-gray-300 border-solid rounded-full opacity-50"></div>
+<div
+    x-data="{ isLoading: true }"
+    x-init="setTimeout(() => isLoading = false, 3000)"
+    x-show="isLoading"
+    x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 backdrop-blur-sm z-50"
+>
+    <div class="relative">
+        <!-- Main rotating square -->
+        <div class="w-16 h-16 border-t-4 border-blue-500 animate-spin-cubic"></div>
+
+        <!-- Smaller squares -->
+        <div class="absolute top-0 left-0 w-16 h-16">
+            <div class="w-6 h-6 bg-blue-500 absolute top-0 left-0 animate-scale-fade"></div>
+            <div class="w-6 h-6 bg-blue-500 absolute top-0 right-0 animate-scale-fade animation-delay-300"></div>
+            <div class="w-6 h-6 bg-blue-500 absolute bottom-0 left-0 animate-scale-fade animation-delay-600"></div>
+            <div class="w-6 h-6 bg-blue-500 absolute bottom-0 right-0 animate-scale-fade animation-delay-900"></div>
         </div>
-        <!-- Loading Text -->
-        {{-- <p class="text-blue-600 text-xl font-semibold animate-pulse">Loading...</p> --}}
     </div>
 </div>
 
-<!-- Additional style for the background animation -->
 <style>
-    @keyframes spin {
+    @keyframes spin-cubic {
         0% { transform: rotate(0deg); }
+        25% { transform: rotate(90deg); }
+        50% { transform: rotate(180deg); }
+        75% { transform: rotate(270deg); }
         100% { transform: rotate(360deg); }
     }
 
-    /* Spinner animation */
-    .animate-spin {
-        animation: spin 1.5s linear infinite;
+    @keyframes scale-fade {
+        0%, 100% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1); opacity: 1; }
     }
 
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.7; }
-        100% { opacity: 1; }
+    .animate-spin-cubic {
+        animation: spin-cubic 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     }
 
-    /* Pulse effect for text */
-    .animate-pulse {
-        animation: pulse 1.5s infinite ease-in-out;
+    .animate-scale-fade {
+        animation: scale-fade 2s ease-in-out infinite;
     }
 
-    /* Improved spinner design */
-    .relative > div:first-child {
-        border-top-color: #3490dc; /* Blue color */
+    .animation-delay-300 {
+        animation-delay: 300ms;
     }
 
-    .relative > div:last-child {
-        border-top-color: transparent;
+    .animation-delay-600 {
+        animation-delay: 600ms;
     }
 
-    /* Smooth backdrop and shadow */
-    #loading-spinner {
-        background-color: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        animation: backgroundAnimation 6s infinite alternate;
-    }
-
-    /* Background animation for a dynamic effect */
-    @keyframes backgroundAnimation {
-        0% { background-color: rgba(255, 255, 255, 0.9); }
-        100% { background-color: rgba(0, 150, 255, 0.1); }
+    .animation-delay-900 {
+        animation-delay: 900ms;
     }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Hide loading spinner after 3 seconds
-        setTimeout(() => {
-            const spinner = document.getElementById('loading-spinner');
-            if (spinner) {
-                spinner.style.opacity = '0';
-                setTimeout(() => {
-                    spinner.style.display = 'none';
-                }, 600);
-            }
-        }, 3000);
-    });
-</script>
