@@ -8,16 +8,16 @@
     x-transition:leave-end="opacity-0"
     class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 backdrop-blur-sm z-50"
 >
-    <div class="relative">
+    <div class="relative w-16 h-16">
         <!-- Main rotating square -->
-        <div class="w-16 h-16 border-t-4 border-blue-500 animate-spin-cubic"></div>
+        <div class="absolute inset-0 border-t-4 border-blue-500 animate-spin-cubic"></div>
 
         <!-- Smaller squares -->
-        <div class="absolute top-0 left-0 w-16 h-16">
-            <div class="w-6 h-6 bg-blue-500 absolute top-0 left-0 animate-scale-fade"></div>
-            <div class="w-6 h-6 bg-blue-500 absolute top-0 right-0 animate-scale-fade animation-delay-300"></div>
-            <div class="w-6 h-6 bg-blue-500 absolute bottom-0 left-0 animate-scale-fade animation-delay-600"></div>
-            <div class="w-6 h-6 bg-blue-500 absolute bottom-0 right-0 animate-scale-fade animation-delay-900"></div>
+        <div class="absolute inset-0 flex flex-wrap">
+            <div class="w-6 h-6 bg-blue-500 animate-scale-fade animation-delay-300"></div>
+            <div class="w-6 h-6 bg-blue-500 animate-scale-fade animation-delay-600"></div>
+            <div class="w-6 h-6 bg-blue-500 animate-scale-fade animation-delay-900"></div>
+            <div class="w-6 h-6 bg-blue-500 animate-scale-fade"></div>
         </div>
     </div>
 </div>
