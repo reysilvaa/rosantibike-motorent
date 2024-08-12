@@ -1,5 +1,28 @@
 @include('landing.assets.navbar-no-scroll')
-<section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()" >
+<x-loading-spinner />
+
+<section id="galeri-wisata" class="py-20 bg-gradient-to-b from-blue-50 to-white" x-data="galleryData({{ $galeris->toJson() }})" x-init="init()
+    function typeEffect() {
+        if (index < fullText.length) {
+            typingText += fullText[index];
+            index++;
+            setTimeout(typeEffect, 100);
+        }
+    }
+
+    function init() {
+        setTimeout(() => {
+            const spinner = document.getElementById('loading-spinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+            loadingComplete = true;
+            typeEffect();
+        }, 3000);
+    }
+
+    init();
+}">
     <div class="container mx-auto px-4">
             <div class="container mx-auto px-4">
                 <h2 class="text-5xl font-extrabold text-center text-gray-800 mb-7 pt-10">
