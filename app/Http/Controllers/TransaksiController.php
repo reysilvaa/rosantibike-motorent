@@ -204,7 +204,9 @@ class TransaksiController extends Controller
                     ->orWhereBetween('tgl_kembali', [$tgl_sewa, $tgl_kembali])
                     ->orWhere(function ($q) use ($tgl_sewa, $tgl_kembali) {
                         $q->where('tgl_sewa', '<=', $tgl_sewa)
-                        ->where('tgl_kembali', '>=', $tgl_kembali);
+                        ->where('tgl_kembali', '>=', $tgl_kembali)
+                        ->where('tgl_kembali', '=', $tgl_kembali)
+                        ->where('tgl_sewa', '=', $tgl_sewa);
                     });
             })
             ->exists();
@@ -215,7 +217,9 @@ class TransaksiController extends Controller
                     ->orWhereBetween('tgl_kembali', [$tgl_sewa, $tgl_kembali])
                     ->orWhere(function ($q) use ($tgl_sewa, $tgl_kembali) {
                         $q->where('tgl_sewa', '<=', $tgl_sewa)
-                        ->where('tgl_kembali', '>=', $tgl_kembali);
+                        ->where('tgl_kembali', '>=', $tgl_kembali)
+                        ->where('tgl_kembali', '=', $tgl_kembali)
+                        ->where('tgl_sewa', '=', $tgl_sewa);
                     });
             })
             ->exists();
