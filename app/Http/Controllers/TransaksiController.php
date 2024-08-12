@@ -198,29 +198,24 @@ class TransaksiController extends Controller
             return false;
         }
 
+        $tgl_sewa_start = Carbon::parse($tgl_sewa)->startOfDay();
+        $tgl_kembali_end = Carbon::parse($tgl_kembali)->endOfDay();
+
         $isBooked = Booking::where('id_jenis', $id_jenis)
-            ->where(function ($query) use ($tgl_sewa, $tgl_kembali) {
-                $query->whereBetween('tgl_sewa', [$tgl_sewa, $tgl_kembali])
-                    ->orWhereBetween('tgl_kembali', [$tgl_sewa, $tgl_kembali])
-                    ->orWhere(function ($q) use ($tgl_sewa, $tgl_kembali) {
-                        $q->where('tgl_sewa', '<=', $tgl_sewa)
-                        ->where('tgl_kembali', '>=', $tgl_kembali)
-                        ->whereDate('tgl_kembali', '=', $tgl_kembali) // changes
-                        ->whereDate('tgl_sewa', '=', $tgl_sewa); // changes
-                    });
+            ->where(function ($query) use ($tgl_sewa_start, $tgl_kembali_end) {
+                $query->where(function ($q) use ($tgl_sewa_start, $tgl_kembali_end) {
+                    $q->where('tgl_sewa', '<=', $tgl_kembali_end)
+                    ->where('tgl_kembali', '>=', $tgl_sewa_start);
+                });
             })
             ->exists();
 
         $isRented = Transaksi::where('id_jenis', $id_jenis)
-            ->where(function ($query) use ($tgl_sewa, $tgl_kembali) {
-                $query->whereBetween('tgl_sewa', [$tgl_sewa, $tgl_kembali])
-                    ->orWhereBetween('tgl_kembali', [$tgl_sewa, $tgl_kembali])
-                    ->orWhere(function ($q) use ($tgl_sewa, $tgl_kembali) {
-                        $q->where('tgl_sewa', '<=', $tgl_sewa)
-                        ->where('tgl_kembali', '>=', $tgl_kembali)
-                        ->whereDate('tgl_kembali', '=', $tgl_kembali) // changes
-                        ->whereDate('tgl_sewa', '=', $tgl_sewa);// changes
-                    });
+            ->where(function ($query) use ($tgl_sewa_start, $tgl_kembali_end) {
+                $query->where(function ($q) use ($tgl_sewa_start, $tgl_kembali_end) {
+                    $q->where('tgl_sewa', '<=', $tgl_kembali_end)
+                    ->where('tgl_kembali', '>=', $tgl_sewa_start);
+                });
             })
             ->exists();
 
