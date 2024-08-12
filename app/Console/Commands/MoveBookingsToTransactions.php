@@ -27,7 +27,7 @@ class MoveBookingsToTransactions extends Command
 
         try {
             // Get bookings where tgl_sewa is today
-            $bookings = Booking::whereDate('tgl_sewa', $today)->get();
+            $bookings = Booking::where('tgl_sewa', $today)->get();
 
             foreach ($bookings as $booking) {
                 // Create a transaction record
