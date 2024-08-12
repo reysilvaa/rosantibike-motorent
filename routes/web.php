@@ -56,7 +56,7 @@ Route::prefix('booking')->name('transaksi.')->group(function () {
 });
 
 // In your web.php (or routes file)
-Route::post('/transaksi/available-stock', [TransaksiController::class, 'getAvailableStock']);
+Route::post('/booking/available-stock', [TransaksiController::class, 'getAvailableStock']);
 
 // Admin Routes
 Route::get('/send-reminder/{id}', [EmailController::class, 'sendReminder'])->name('send.reminder');

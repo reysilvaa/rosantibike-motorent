@@ -72,18 +72,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (tglSewa < new Date() && tglSewa.toDateString() !== new Date().toDateString()) {
-            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Tanggal sewa tidak boleh kurang dari tanggal hari ini.</span>';
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanggal Sewa Tidak Valid',
+                text: '⚠️ Tanggal sewa tidak boleh kurang dari tanggal hari ini.',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-red-600 text-white'
+                }
+            });
+            resetSelections();
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
         }
 
         if (tglKembali < tglSewa) {
-            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Tanggal kembali tidak boleh kurang dari tanggal sewa.</span>';
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanggal Kembali Tidak Valid',
+                text: '⚠️ Tanggal kembali tidak boleh kurang dari tanggal sewa.',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-red-600 text-white'
+                }
+            });
+            resetSelections();
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
         }
+
 
         const diffTime = Math.abs(tglKembali - tglSewa);
         const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
@@ -104,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function cekTanggalBooking(tglSewa, tglKembali, idJenis) {
-        return fetch(`/transaksi/check-booking-dates?tgl_sewa=${tglSewa}&tgl_kembali=${tglKembali}&id_jenis=${idJenis}`)
+        return fetch(`/booking/check-booking-dates?tgl_sewa=${tglSewa}&tgl_kembali=${tglKembali}&id_jenis=${idJenis}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -135,7 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isBooked) {
                 resetSelections();
-                errorMessageDiv.innerHTML = '<span class="text-yellow-600">🔒 Motor ini sudah dibooking untuk tanggal yang dipilih.</span>';
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Motor Sudah Dibooking',
+                    text: '🔒 Motor ini sudah dibooking untuk tanggal yang dipilih.',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                        confirmButton: 'bg-indigo-600 text-white'
+                    }
+                });
                 tglKembaliInput.classList.add('border-yellow-500');
                 bookedMotors[idJenisInput.value] = true;
             } else {
@@ -148,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateGrandTotal();
 
             // Fetch and update available stock
-            fetch(`/transaksi/get-available-stock?id_jenis=${idJenisInput.value}&tgl_sewa=${tglSewaInput.value}&tgl_kembali=${tglKembaliInput.value}`)
+            fetch(`/booking/get-available-stock?id_jenis=${idJenisInput.value}&tgl_sewa=${tglSewaInput.value}&tgl_kembali=${tglKembaliInput.value}`)
                 .then(response => response.json())
                 .then(data => {
                     const stockElement = rentalForm.querySelector(`.kanban-item[data-value="${idJenisInput.value}"] .stock-count`);
@@ -197,9 +224,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const selectedCount = selectedMotors[motorId] || 0;
 
                     if (selectedCount >= availableStock && !this.classList.contains('selected')) {
-                        errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Maaf, stok motor ini sudah habis.</span>';
+                        resetSelections();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Stok Habis',
+                            text: '⚠️ Maaf, stok motor ini sudah habis.',
+                            confirmButtonText: 'Ok',
+                            customClass: {
+                                confirmButton: 'bg-indigo-600 text-white'
+                            }
+                        });
                         return;
                     }
+
 
                     form.querySelectorAll('.kanban-item').forEach(i => {
                         if (i.classList.contains('selected')) {
@@ -217,9 +254,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const availableIds = allIds.filter(id => !selectedIdJenis.has(id) && !bookedMotors[id]);
                     if (availableIds.length === 0) {
-                        errorMessageDiv.innerHTML = '<span class="text-yellow-600">⚠️ Tidak ada motor tersedia untuk jenis ini saat ini.</span>';
+                        resetSelections();
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Motor Tidak Tersedia',
+                            text: '⚠️ Tidak ada motor tersedia untuk jenis ini saat ini.',
+                            confirmButtonText: 'Ok',
+                            customClass: {
+                                confirmButton: 'bg-indigo-600 text-white'
+                            }
+                        });
                         return;
                     }
+
                     const selectedId = availableIds[Math.floor(Math.random() * availableIds.length)];
                     selectedIdJenis.add(selectedId);
                     form.querySelector('.id_jenis').value = selectedId;
@@ -285,32 +332,98 @@ document.addEventListener('DOMContentLoaded', function() {
     updateGrandTotal();
 
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
+    e.preventDefault();
+    let isValid = true;
 
-        document.querySelectorAll('.rental-form').forEach(form => {
-            if (!form.querySelector('.kanban-item.selected')) {
-                isValid = false;
-                errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon pilih motor untuk setiap rental.</span>';
-            }
-        });
-
-        if (isValid) {
+    // Periksa setiap rental form untuk melihat apakah motor sudah dipilih
+    document.querySelectorAll('.rental-form').forEach(form => {
+        if (!form.querySelector('.kanban-item.selected')) {
+            isValid = false;
             Swal.fire({
-                title: 'Berhasil!',
-                text: 'Formulir berhasil dikirimkan.',
-                icon: 'success',
-                confirmButtonText: 'Siap',
+                icon: 'warning',
+                title: 'Pilih Motor',
+                text: '⚠️ Mohon pilih motor untuk setiap rental.',
+                confirmButtonText: 'Ok',
                 customClass: {
                     confirmButton: 'bg-indigo-600 text-white'
                 }
-            }).then(() => {
-                this.submit();
+            });
+        }
+    });
+
+    document.querySelectorAll('.rental-form').forEach(form => {
+        const tglSewaInput = form.querySelector('.tgl_sewa');
+        const tglKembaliInput = form.querySelector('.tgl_kembali');
+        const tglSewa = new Date(tglSewaInput.value);
+        const tglKembali = new Date(tglKembaliInput.value);
+
+        if (tglSewa < new Date() && tglSewa.toDateString() !== new Date().toDateString()) {
+            isValid = false;
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanggal Sewa Tidak Valid',
+                text: '⚠️ Tanggal sewa tidak boleh kurang dari tanggal hari ini.',
+                confirmButtonText: 'Ok'
             });
         }
 
+        if (tglKembali < tglSewa) {
+            isValid = false;
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanggal Kembali Tidak Valid',
+                text: '⚠️ Tanggal kembali tidak boleh kurang dari tanggal sewa.',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-indigo-600 text-white'
+                }
+            });
+        }
     });
+        // Periksa apakah terdapat motor yang sudah dibooking pada tanggal tersebut
+        document.querySelectorAll('.rental-form').forEach(form => {
+            const idJenisInput = form.querySelector('.id_jenis');
+            const motorId = idJenisInput.value;
 
+            if (bookedMotors[motorId]) {
+                isValid = false;
+                resetSelections();
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Motor Sudah Dibooking',
+                    text: '🔒 Motor ini sudah dibooking untuk tanggal yang dipilih.',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        });
+
+        // Jika validasi gagal, tampilkan pesan kesalahan dan jangan kirim form
+        if (!isValid) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Formulir tidak valid. Mohon periksa kembali data yang Anda masukkan.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'bg-red-600 text-white'
+                }
+            });
+            return; // Mencegah pengiriman form jika tidak valid
+        }
+
+        // Jika semua validasi berhasil, kirim form
+        Swal.fire({
+            title: 'Berhasil!',
+            text: 'Formulir berhasil dikirimkan.',
+            icon: 'success',
+            confirmButtonText: 'Siap',
+            customClass: {
+                confirmButton: 'bg-indigo-600 text-white'
+            }
+        }).then(() => {
+            this.submit();
+        });
+    });
 });
 </script>
 <style>

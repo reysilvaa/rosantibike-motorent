@@ -106,69 +106,10 @@
                         <input type="text" id="grand_total" class="w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" readonly>
                     </div>
 
-                    <div x-data="{
-                        canAgree: false,
-                        checkScroll(event) {
-                            const container = event.target;
-                            this.canAgree = container.scrollHeight - container.scrollTop <= container.clientHeight + 1;
-                        }
-                    }">
-                    <div class="mb-6">
-                        <h6 class="text-2xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
-                        <div class="border border-gray-200 rounded-lg shadow-md p-6 h-72 overflow-y-auto bg-white"
-                             x-on:scroll="checkScroll($event)"
-                             x-ref="termsContainer">
-                             <div class="prose prose-sm text-gray-800 mx-auto max-w-2xl">
-                                <h3 class="text-xl font-bold mt-4 mb-2 border-b border-gray-300 pb-2">Syarat Jaminan</h3>
-                                <ol class="list-decimal list-inside space-y-2 custom-font">
-                                    <li class="leading-6">Penyewa harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung.</li>
-                                    <li class="leading-6">Apabila Penyewa berboncengan harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung (Teman Boncengan).</li>
-                                    <li class="leading-6">Identitas Penyewa akan ditahan hingga pengembalian motor.</li>
-                                </ol>
 
-                                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Penyewa</h3>
-                                <ol class="list-decimal list-inside space-y-2 custom-font">
-                                    <li class="leading-6">Penyewa harus berusia minimal 18 tahun dan memiliki SIM yang masih berlaku.</li>
-                                    <li class="leading-6">Penyewa bertanggung jawab penuh atas kerusakan atau kehilangan motor selama masa sewa.</li>
-                                    <li class="leading-6">Dilarang keras menggunakan motor untuk kegiatan ilegal atau yang melanggar hukum.</li>
-                                    <li class="leading-6">Motor harus dikembalikan dalam kondisi yang sama seperti saat dipinjam.</li>
-                                    <li class="leading-6">Penyewa wajib menggunakan helm dan mematuhi peraturan lalu lintas yang berlaku.</li>
-                                    <li class="leading-6">Penyewa wajib melaporkan segera jika terjadi kecelakaan atau kerusakan pada motor.</li>
-                                </ol>
-
-                                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Biaya</h3>
-                                <ol class="list-decimal list-inside space-y-2 custom-font">
-                                    <li class="leading-6">Keterlambatan pengembalian akan dikenakan denda Rp. 15.000 / jam.</li>
-                                    <li class="leading-6">Apabila menggunakan jasa antar-jemput maka Penyewa bersedia dikenakan biaya tambahan.</li>
-                                    <li class="leading-6">Biaya sewa tidak termasuk biaya bahan bakar / bensin.</li>
-                                </ol>
-
-                                <h3 class="text-xl font-bold mt-8 mb-2 border-b border-gray-300 pb-2">Ketentuan Dokumentasi</h3>
-                                <ol class="list-decimal list-inside space-y-2 custom-font">
-                                    <li class="leading-6">Penyewa bersedia di foto dengan unit motor yang akan disewa.</li>
-                                </ol>
-                                <p class="leading-6 text-xs font-mono font-bold mt-4">
-                                    Dengan menyetujui syarat dan ketentuan ini, pemilik membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    @include('rental.terms')
 
 
-                    <div class="mb-6 flex items-center gap-3">
-                        <input type="checkbox" id="agreement" name="agreement" required
-                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                               x-bind:disabled="!canAgree">
-                        <label for="agreement" class="text-sm font-medium text-gray-700"
-                               x-bind:class="{ 'opacity-50': !canAgree }">
-                            Saya telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
-                        </label>
-                    </div>
-
-                    <button type="submit" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            x-bind:disabled="!canAgree">
-                        Submit Booking
-                    </button>
                 </div>
                 </form>
             </div>
@@ -177,13 +118,5 @@
 </div>
 
 @include('rental.script')
-<style>
-    .list-decimal {
-        list-style-type: decimal;
-    }
-    .custom-font {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 13px;
-    }
-</style>
+
 @endsection
