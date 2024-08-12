@@ -11,6 +11,10 @@
                 icon: 'warning',
                 title: 'Perhatian',
                 text: 'Anda harus membaca syarat hingga ke bawah dan menyetujui syarat dan ketentuan sebelum melanjutkan.',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-indigo-600 text-white'
+                }
             });
         }
     }
