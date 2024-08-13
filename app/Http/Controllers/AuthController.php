@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class AuthController extends Controller
             Auth::login($user, $credentials['remember'] ?? false);
 
             // Redirect to intended route or default route
-            return redirect()->intended('admin');
+            return response()->json(['redirect_url' => url('/admin')]);
         }
 
         // Log the failed authentication attempt
