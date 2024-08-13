@@ -29,9 +29,12 @@ class MoveBookingsToTransactions extends Command
             // Get bookings where tgl_sewa is today
             $bookings = Booking::where('tgl_sewa', $today)->get();
 
+            // Prepare transactions data for batch insert
+            $transactionsData = [];
+            $motorIdsToUpdate = [];
+
             foreach ($bookings as $booking) {
-                // Create a transaction record
-                Transaksi::create([
+                $transactionsData[] = [
                     'nama_penyewa' => $booking->nama_penyewa,
                     'wa1' => $booking->wa1,
                     'wa2' => $booking->wa2,
@@ -42,17 +45,27 @@ class MoveBookingsToTransactions extends Command
                     'total' => $booking->total,
                     'helm' => $booking->helm,
                     'jashujan' => $booking->jashujan,
-                ]);
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
 
-                // Update JenisMotor status to 'disewa'
-                $jenis_motor = JenisMotor::find($booking->id_jenis);
-                if ($jenis_motor) {
-                    $jenis_motor->update(['status' => 'disewa']);
-                }
-
-                // Delete the booking record
-                $booking->delete();
+                // Add motor ID to the update list
+                $motorIdsToUpdate[] = $booking->id_jenis;
             }
+
+            // Insert all transactions at once
+            if (!empty($transactionsData)) {
+                Transaksi::insert($transactionsData);
+            }
+
+            // Update status of all involved motors
+            if (!empty($motorIdsToUpdate)) {
+                JenisMotor::whereIn('id', $motorIdsToUpdate)
+                    ->update(['status' => 'disewa']);
+            }
+
+            // Delete all bookings that have been moved
+            Booking::where('tgl_sewa', $today)->delete();
 
             DB::commit();
             $this->info('Bookings moved to transactions successfully.');
