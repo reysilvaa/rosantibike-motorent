@@ -21,13 +21,12 @@ class MoveBookingsToTransactions extends Command
 
     public function handle()
     {
-        $today = Carbon::today()->toDateString();
-
+        $today = Carbon::today();
         DB::beginTransaction();
 
         try {
             // Get bookings where tgl_sewa is today
-            $bookings = Booking::where('tgl_sewa', $today)->get();
+            $bookings = Booking::whereDate('tgl_sewa', $today)->get();
 
             // Prepare transactions data for batch insert
             $transactionsData = [];
