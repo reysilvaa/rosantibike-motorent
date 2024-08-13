@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $(document).ready(function () {
             $('#loginForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent the default form submission
@@ -83,9 +83,27 @@
                             }
                         });
                     },
+                    error: function (xhr) {
+                        // Handle errors (e.g., validation errors)
+                        var errors = xhr.responseJSON.errors;
+                        var errorList = '<ul>';
+                        $.each(errors, function (key, value) {
+                            $.each(value, function (index, error) {
+                                errorList += '<li>' + error + '</li>';
+                            });
+                        });
+                        errorList += '</ul>';
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: errorList,
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 });
             });
         });
-    </script>
+    </script> --}}
 </body>
 </html>
