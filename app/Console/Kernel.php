@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('bookings:move')->everyMinute(); // Atur sesuai kebutuhan
         $schedule->command('email:send-reminders')->daily(); // Atur sesuai kebutuhan
-        $schedule->command('bookings:move')->daily(); // Atur sesuai kebutuhan
     }
 
 
