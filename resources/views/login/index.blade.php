@@ -83,24 +83,6 @@
                             }
                         });
                     },
-                    error: function (xhr) {
-                        // Handle errors (e.g., validation errors)
-                        var errors = xhr.responseJSON.errors;
-                        var errorList = '<ul>';
-                        $.each(errors, function (key, value) {
-                            $.each(value, function (index, error) {
-                                errorList += '<li>' + error + '</li>';
-                            });
-                        });
-                        errorList += '</ul>';
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: errorList,
-                            confirmButtonText: 'OK'
-                        });
-                    }
                 });
             });
         });
