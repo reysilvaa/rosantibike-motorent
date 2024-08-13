@@ -64,7 +64,7 @@ class MoveBookingsToTransactions extends Command
             }
 
             // Delete all bookings that have been moved
-            Booking::where('tgl_sewa', $today)->delete();
+            Booking::whereDate('tgl_sewa', $today)->delete();
 
             DB::commit();
             $this->info('Bookings moved to transactions successfully.');
