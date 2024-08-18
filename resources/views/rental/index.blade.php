@@ -27,18 +27,23 @@
                     </div>
 
                     <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
+                        <label for="alamat" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Alamat Domisili</label>
+                        <input type="text" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" id="alamat" name="alamat" placeholder="Rosanti Homestay, Jl RosantiBike No 90 Malang" required>
+                    </div>
+
+                    <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                         <label for="wa1" class="w-full md:w-1/3 text-sm font-medium text-gray-700">WhatsApp 1</label>
-                        <input type="tel" id="wa1" name="wa1" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789" required>
+                        <input type="tel" id="wa1" name="wa1" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789 (Saya sendiri)" required>
                     </div>
 
                     <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
-                        <label for="wa2" class="w-full md:w-1/3 text-sm font-medium text-gray-700">WhatsApp 2 (Optional)</label>
-                        <input type="tel" id="wa2" name="wa2" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789">
+                        <label for="wa2" class="w-full md:w-1/3 text-sm font-medium text-gray-700">WhatsApp 2</label>
+                        <input type="tel" id="wa2" name="wa2" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789 (Mbak Rosantibike)" required>
                     </div>
 
                     <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
-                        <label for="wa3" class="w-full md:w-1/3 text-sm font-medium text-gray-700">WhatsApp 3 (Optional)</label>
-                        <input type="tel" id="wa3" name="wa3" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789">
+                        <label for="wa3" class="w-full md:w-1/3 text-sm font-medium text-gray-700">WhatsApp 3</label>
+                        <input type="tel" id="wa3" name="wa3" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="628123456789 (Mas Motorent)" required>
                     </div>
 
                     <hr class="my-8 border-gray-300 border-2">
@@ -61,17 +66,17 @@
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="helm" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Helm</label>
                                 <input type="number" id="helm" name="rentals[0][helm]" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
-                                <small class="text-gray-500">Jumlah helm yang ingin disewa. Kosongkan jika tidak diperlukan.</small>
+                                <small class="text-gray-500">Jumlah helm yang ingin disewa. Isi 0 jika tidak diperlukan.</small>
                             </div>
 
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="jashujan" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Jas Hujan</label>
                                 <input type="number" id="jashujan" name="rentals[0][jashujan]" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
-                                <small class="text-gray-500">Jumlah jas hujan yang ingin disewa. Kosongkan jika tidak diperlukan.</small>
+                                <small class="text-gray-500">Jumlah jas hujan yang ingin disewa. Isi 0 jika tidak diperlukan.</small>
                             </div>
 
                             <label for="jenis_motor" class="block text-sm font-medium text-gray-700">Pilih Jenis Motor</label>
-                            <label for="jenis_motor" class="block text-xs font-medium text-red-700">(Motor yang ada dipilihan adalah motor yang sedang dalam kondisi terbaik!)</label>
+                            <label for="jenis_motor" class="block text-xs font-medium text-red-700">(Pastikan pilihan anda dengan benar!)</label>
                             <div class="mb-4">
                                 <div class="flex flex-wrap gap-4 p-4">
                                     @foreach($jenis_motors as $jenis_motor)
@@ -85,7 +90,7 @@
                                              class="w-full h-32 object-cover rounded-md mb-2" loading="lazy">
                                         <div class="text-sm font-medium text-center">{{ $jenis_motor->stok->merk }}</div>
                                         <div class="text-sm text-gray-700 text-center">Rp. {{ number_format($jenis_motor->stok->harga_perHari, 0, ',', '.') }}</div>
-                                        <div class="text-xs text-gray-600 text-center">Stock: <span class="stock-count">{{ $jenis_motor->available_stock }}</span></div>
+                                        <div class="text-xs text-gray-600 text-center">Stok: <span class="stock-count">{{ $jenis_motor->available_stock }}</span></div>
                                     </div>
                                     @endforeach
                                 </div>
@@ -125,7 +130,7 @@
                     <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                         <label for="grand_total" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Total Keseluruhan</label>
                         <input type="text" id="grand_total" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" readonly>
-                        <small class="text-gray-500">Total keseluruhan mencakup biaya sewa dan biaya denda jika ada.</small>
+                        <small class="text-gray-500">Total keseluruhan mencakup biaya sewa dari seluruh unit yang akan disewa dan biaya denda jika ada.</small>
                     </div>
 
                     @include('rental.terms')

@@ -13,6 +13,7 @@ class CreateTransaksiTable extends Migration
             // $table->foreignId('id_user')->constrained('users');
             $table->foreignId('id_jenis')->constrained('jenis_motor');
             $table->string('nama_penyewa',50);
+            $table->string('alamat');
             $table->string('wa1',50);
             $table->string('wa2',50)->nullable();
             $table->string('wa3',50)->nullable();

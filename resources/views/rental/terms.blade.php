@@ -77,7 +77,7 @@
             'text-gray-500 bg-gray-300 cursor-not-allowed': !canAgree
         }"
         :disabled="!canAgree">
-        Submit Booking
+        Kirim Booking
     </button>
 </div>
 

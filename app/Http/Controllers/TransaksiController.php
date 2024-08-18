@@ -115,7 +115,10 @@ class TransaksiController extends Controller
     {
         $messages = [
             'nama_penyewa.required' => 'Nama penyewa harus diisi.',
+            'alamat.required' => 'Nama penyewa harus diisi.',
             'wa1.required' => 'Nomor WA 1 harus diisi.',
+            'wa2.required' => 'Nomor WA 2 harus diisi.',
+            'wa3.required' => 'Nomor WA 3 harus diisi.',
             'rentals.required' => 'Data rental harus diisi.',
             'rentals.*.tgl_sewa.required' => 'Tanggal sewa harus diisi.',
             'rentals.*.tgl_kembali.required' => 'Tanggal kembali harus diisi.',
@@ -130,9 +133,10 @@ class TransaksiController extends Controller
 
         $validated = $request->validate([
             'nama_penyewa' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
             'wa1' => 'required|string|max:20',
-            'wa2' => 'nullable|string|max:20',
-            'wa3' => 'nullable|string|max:20',
+            'wa2' => 'required|string|max:20',
+            'wa3' => 'required|string|max:20',
             'rentals' => 'required|array',
             'rentals.*.tgl_sewa' => 'required|date',
             'rentals.*.tgl_kembali' => 'required|date|after_or_equal:rentals.*.tgl_sewa',
@@ -162,6 +166,7 @@ class TransaksiController extends Controller
 
                 $rentalData = [
                     'nama_penyewa' => $validated['nama_penyewa'],
+                    'alamat' => $validated['alamat'],
                     'wa1' => $validated['wa1'],
                     'wa2' => $validated['wa2'],
                     'wa3' => $validated['wa3'],
