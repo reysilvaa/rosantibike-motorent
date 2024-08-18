@@ -465,14 +465,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+    // terlambat
+    function updateRentalInfo() {
+        const tglSewaInput = document.querySelector('.tgl_sewa');
+        const tglKembaliInput = document.querySelector('.tgl_kembali');
 
-    // Menambahkan event listener pada bookingForm
+        if (tglSewaInput && tglKembaliInput) {
+            const tglSewa = new Date(tglSewaInput.value);
+            const tglKembali = new Date(tglKembaliInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (tglSewa && tglKembali) {
+                const diff = tglKembali - tglSewa;
+                const totalHours = Math.floor(diff / (1000 * 60 * 60));
+                const days = Math.floor(totalHours / 24);
+                const hours = totalHours % 24;
+
+                document.getElementById('lama_sewa').textContent = `${days} hari ${hours} jam`;
+
+                const rentalHours = days * 24 + hours;
+                const maxRentalHours = 24;
+
+                let keterlambatan = 0;
+                if (rentalHours > maxRentalHours) {
+                    const lateHours = rentalHours - maxRentalHours;
+                    keterlambatan = lateHours;
+                }
+
+                document.getElementById('keterlambatan').textContent = `${keterlambatan} jam`;
+
+                const isBooking = tglSewa > today.setDate(today.getDate() + 1);
+                const hourlyRate = 15000;
+                let total = rentalHours * hourlyRate;
+
+                if (isBooking) {
+                    if (tglKembali > tglSewa) {
+                        document.getElementById('formatted_total').value = `Rp. ${total}`;
+                        document.getElementById('total').value = total;
+                    } else {
+                        document.getElementById('formatted_total').value = 'Rp. 0';
+                        document.getElementById('total').value = 0;
+                    }
+                } else {
+                    // Jika bukan pemesanan jauh hari
+                    document.getElementById('formatted_total').value = `Rp. ${total}`;
+                    document.getElementById('total').value = total;
+                }
+            }
+        }
+    }
+
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('input', updateRentalInfo);
     }
 
-    // Tambahkan event listeners ke setiap rental form
     document.querySelectorAll('.rental-form').forEach(form => {
         addEventListeners(form);
     });
