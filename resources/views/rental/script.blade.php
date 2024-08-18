@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (lateHoursModulo === 0) {
                     document.getElementById('keterlambatan').textContent = '0 jam';
                 } else {
-                    document.getElementById('keterlambatan').textContent = `-${lateHours} jam`;
+                    document.getElementById('keterlambatan').textContent = `${hours} jam`;
                 }
             } else {
                 document.getElementById('keterlambatan').textContent = '0 jam';
