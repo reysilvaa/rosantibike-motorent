@@ -49,21 +49,25 @@
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="tgl_sewa" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Tanggal dan Jam Sewa</label>
                                 <input type="datetime-local" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 tgl_sewa" name="rentals[0][tgl_sewa]" required>
+                                <small class="text-gray-500">Masukkan tanggal dan jam mulai penyewaan. Tanggal ini tidak boleh kurang dari hari ini.</small>
                             </div>
 
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="tgl_kembali" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Tanggal dan Jam Kembali</label>
                                 <input type="datetime-local" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 tgl_kembali" name="rentals[0][tgl_kembali]" required>
+                                <small class="text-gray-500">Masukkan tanggal dan jam akhir penyewaan. Harus sama atau setelah tanggal sewa.</small>
                             </div>
 
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="helm" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Helm</label>
                                 <input type="number" id="helm" name="rentals[0][helm]" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
+                                <small class="text-gray-500">Jumlah helm yang ingin disewa. Kosongkan jika tidak diperlukan.</small>
                             </div>
 
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="jashujan" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Jas Hujan</label>
                                 <input type="number" id="jashujan" name="rentals[0][jashujan]" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" placeholder="2" required>
+                                <small class="text-gray-500">Jumlah jas hujan yang ingin disewa. Kosongkan jika tidak diperlukan.</small>
                             </div>
 
                             <label for="jenis_motor" class="block text-sm font-medium text-gray-700">Pilih Jenis Motor</label>
@@ -89,6 +93,21 @@
                             </div>
 
                             <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
+                                <label for="lama_sewa" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Lama Sewa</label>
+                                <div id="lama_sewa" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm sm:text-sm py-2 px-3">
+                                    0 hari 0 jam
+                                </div>
+                            </div>
+
+                            <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
+                                <label for="keterlambatan" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Keterlambatan</label>
+                                <div id="keterlambatan" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm sm:text-sm py-2 px-3">
+                                    0 jam
+                                </div>
+                            </div>
+
+
+                            <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                                 <label for="formatted_total" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Harga per-unit</label>
                                 <input type="text" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 formatted_total" readonly>
                             </div>
@@ -106,6 +125,7 @@
                     <div class="mb-4 flex flex-col md:flex-row md:items-center gap-4">
                         <label for="grand_total" class="w-full md:w-1/3 text-sm font-medium text-gray-700">Total Keseluruhan</label>
                         <input type="text" id="grand_total" class="w-full md:w-2/3 mt-1 block border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3" readonly>
+                        <small class="text-gray-500">Total keseluruhan mencakup biaya sewa dan biaya denda jika ada.</small>
                     </div>
 
                     @include('rental.terms')

@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const tglSewa = new Date(tglSewaInput.value);
         const tglKembali = new Date(tglKembaliInput.value);
+        const dendaPerJam = 15000;
 
         if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || isNaN(hargaPerHari)) {
             errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon isi semua form dengan benar.</span>';
@@ -103,16 +104,24 @@ document.addEventListener('DOMContentLoaded', function() {
             return 0;
         }
 
+        const diffTime = tglKembali - tglSewa;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const remainingHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-        const diffTime = Math.abs(tglKembali - tglSewa);
-        const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-        const total = diffDays * hargaPerHari;
+        let total = diffDays * hargaPerHari;
+
+        if (remainingHours > 0 && remainingHours <= 6) {
+            total += remainingHours * dendaPerJam;
+        } else if (remainingHours > 6) {
+            total += hargaPerHari; // Jika lebih dari 6 jam, tambahkan biaya sewa untuk 1 hari penuh
+        }
 
         formattedTotal.value = `Rp. ${total.toLocaleString('id-ID')}`;
         totalInput.value = total;
 
         return total;
     }
+
 
     function updateGrandTotal() {
         let grandTotal = 0;
@@ -424,7 +433,52 @@ document.addEventListener('DOMContentLoaded', function() {
             this.submit();
         });
     });
+
+    function updateRentalInfo() {
+        const tglSewa = document.querySelector('.tgl_sewa').value;
+        const tglKembali = document.querySelector('.tgl_kembali').value;
+
+        if (tglSewa && tglKembali) {
+            const start = new Date(tglSewa);
+            const end = new Date(tglKembali);
+            const diff = end - start;
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(totalHours / 24);
+            const hours = totalHours % 24;
+
+            document.getElementById('lama_sewa').textContent = `${days} hari ${hours} jam`;
+
+            const rentalHours = days * 24 + hours;
+            const maxRentalHours = 24;
+
+            if (rentalHours > maxRentalHours) {
+                const lateHours = rentalHours - maxRentalHours;
+                const lateHoursModulo = lateHours % 24;
+
+                if (lateHoursModulo === 0) {
+                    document.getElementById('keterlambatan').textContent = '0 jam';
+                } else {
+                    document.getElementById('keterlambatan').textContent = `-${lateHours} jam`;
+                }
+            } else {
+                document.getElementById('keterlambatan').textContent = '0 jam';
+            }
+        }
+    }
+
+    // Menambahkan event listener pada bookingForm
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('input', updateRentalInfo);
+    }
+
+    // Tambahkan event listeners ke setiap rental form
+    document.querySelectorAll('.rental-form').forEach(form => {
+        addEventListeners(form);
+    });
+
 });
+
 </script>
 <style>
     .bg-indigo-600 {
