@@ -13,30 +13,31 @@ use Carbon\Carbon;
 class TransaksiController extends Controller
 {
     public function index()
-    {
-        $jenis_motors = JenisMotor::select('id_stok', DB::raw('MIN(id) as id'))
-            ->groupBy('id_stok')
-            ->get()
-            ->map(function ($item) {
-                $jenis_motor = JenisMotor::find($item->id);
+{
+    $jenis_motors = JenisMotor::select('jenis_motor.id_stok', DB::raw('MIN(jenis_motor.id) as id'))
+        ->join('stok', 'jenis_motor.id_stok', '=', 'stok.id')
+        ->groupBy('jenis_motor.id_stok')
+        ->orderBy('stok.harga_perHari', 'asc')
+        ->get()
+        ->map(function ($item) {
+            $jenis_motor = JenisMotor::find($item->id);
 
-                $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-                    ->where('status', 'ready')
-                    ->count();
+            $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                ->where('status', 'ready')
+                ->count();
 
-                $jenis_motor->available_stock = $available_stock;
-                $jenis_motor->total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
+            $jenis_motor->available_stock = $available_stock;
+            $jenis_motor->total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
 
-                // Get all id_jenis for this id_stok
-                $jenis_motor->all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-                    ->pluck('id')
-                    ->toJson();
+            $jenis_motor->all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                ->pluck('id')
+                ->toJson();
 
-                return $jenis_motor;
-            });
+            return $jenis_motor;
+        });
 
-        return view('rental.index', compact('jenis_motors'));
-    }
+    return view('rental.index', compact('jenis_motors'));
+}
     // public function find(Request $request)
     // {
     //     // Select the first 'ready' motor for each 'id_stok' group
