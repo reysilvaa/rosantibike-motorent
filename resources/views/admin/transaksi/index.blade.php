@@ -25,11 +25,11 @@
                                     <input type="checkbox" class="form-check-input" id="select_all_checkbox">
                                 </th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nopol</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Kembali</th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nama Penyewa</th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Jenis Motor</th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Sewa</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Kembali</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Status</th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Total</th>
                                 <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Action</th>
                             </tr>
@@ -74,18 +74,12 @@ $(document).ready(function() {
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'nopol', name: 'nopol'},
-            {data: 'nama_penyewa', name: 'nama_penyewa'},
-            {data: 'merk_motor', name: 'merk_motor'},
-            {data: 'tgl_sewa', name: 'tgl_sewa'},
-            {data: 'tgl_kembali', name: 'tgl_kembali'},
             {
                 data: 'status',
                 name: 'status',
                 render: function (data, type, row) {
-                    // Mengatur kelas berdasarkan status
                     let statusClass = '';
-                    let statusText = data || 'Unknown'; // Default to 'Unknown' jika data kosong
-
+                    let statusText = data || 'Unknown';
                     switch (data) {
                         case 'ready':
                             statusClass = 'bg-green-500 text-white';
@@ -108,6 +102,10 @@ $(document).ready(function() {
                     `;
                 }
             },
+            {data: 'tgl_kembali', name: 'tgl_kembali'},
+            {data: 'nama_penyewa', name: 'nama_penyewa'},
+            {data: 'merk_motor', name: 'merk_motor'},
+            {data: 'tgl_sewa', name: 'tgl_sewa'},
             {data: 'total', name: 'total'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
