@@ -53,7 +53,7 @@
                 <ol class="list-decimal list-inside space-y-2 custom-font">
                     <li>Penyewa bersedia di foto dengan unit motor yang akan disewa.</li>
                 </ol>
-                <p class="text-xs font-mono font-bold mt-4">
+                <p class="text-xs font-bold mt-4 custom-font">
                     Dengan menyetujui syarat dan ketentuan ini, pemilik membebaskan pihak penyewa dari segala tuntutan hukum yang mungkin timbul selama masa penyewaan.
                 </p>
             </div>
@@ -83,7 +83,7 @@
 
 <style>
     .custom-font {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
+        font-family: 'Poppins';
+        font-size: 12px;
     }
 </style>
