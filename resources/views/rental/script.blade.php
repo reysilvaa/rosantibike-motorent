@@ -8,6 +8,30 @@
         let selectedMotors = {};
         let bookedMotors = {};
 
+        addRentalBtn.addEventListener('click', function() {
+            const newRentalForm = rentalForms.children[0].cloneNode(true);
+            rentalCount++;
+            newRentalForm.querySelector('h3').textContent = `Rental ${rentalCount}`;
+            const inputs = newRentalForm.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.name = input.name.replace('[0]', `[${rentalCount - 1}]`);
+                if (input.type !== 'hidden') {
+                    input.value = '';
+                }
+            });
+            newRentalForm.querySelectorAll('.kanban-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
+                item.classList.add('bg-gray-100', 'border-gray-200');
+                item.querySelector('.selected-text')?.remove();
+                item.querySelector('.status-text')?.remove();
+            });
+            rentalForms.appendChild(newRentalForm);
+            addEventListeners(newRentalForm);
+            addKanbanSelectListeners();
+            updateMotorSelectionStatus();
+        });
+
+
         function initializeMotorStatus() {
             document.querySelectorAll('.rental-form').forEach(form => {
                 form.querySelectorAll('.kanban-item').forEach(item => {
@@ -309,29 +333,6 @@
             });
             updateMotorSelectionStatus();
         }
-
-        addRentalBtn.addEventListener('click', function() {
-            const newRentalForm = rentalForms.children[0].cloneNode(true);
-            rentalCount++;
-            newRentalForm.querySelector('h6').textContent = `Rental ${rentalCount}`;
-            const inputs = newRentalForm.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.name = input.name.replace('[0]', `[${rentalCount - 1}]`);
-                if (input.type !== 'hidden') {
-                    input.value = '';
-                }
-            });
-            newRentalForm.querySelectorAll('.kanban-item').forEach(item => {
-                item.classList.remove('bg-indigo-100', 'border-indigo-500', 'hover:bg-indigo-100', 'selected');
-                item.classList.add('bg-gray-100', 'border-gray-200');
-                item.querySelector('.selected-text')?.remove();
-                item.querySelector('.status-text')?.remove();
-            });
-            rentalForms.appendChild(newRentalForm);
-            addEventListeners(newRentalForm);
-            addKanbanSelectListeners();
-            updateMotorSelectionStatus();
-        });
 
         addKanbanSelectListeners();
         addEventListeners(rentalForms.children[0]);
