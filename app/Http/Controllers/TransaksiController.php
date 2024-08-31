@@ -162,7 +162,7 @@ class TransaksiController extends Controller
                 //     return back()->with('error', 'Motor dengan ID ' . $id_jenis . ' tidak tersedia untuk periode sewa yang dipilih.');
                 // }
 
-                $isBooking = $tgl_sewa->gt($today->copy()->addDays(1));
+                $isBooking = $tgl_sewa->gt($today->copy()->addDays(2));
 
                 $rentalData = [
                     'nama_penyewa' => $validated['nama_penyewa'],
