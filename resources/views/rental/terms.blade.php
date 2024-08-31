@@ -18,7 +18,7 @@
             });
         }
     }
-}" class="max-w-screen-sm mx-auto px-4 py-6">
+}" class="max-w-screen mx-auto px-4 py-6">
     <div class="mb-6">
         <h6 class="text-xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
         <div class="border border-gray-200 rounded-lg shadow-md p-4 sm:p-6 h-64 overflow-y-auto bg-white"
@@ -71,19 +71,20 @@
     <button
         type="submit"
         @click="submitForm($event)"
-        :class="{
-            'inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2': true,
-            'text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500': canAgree,
-            'text-gray-500 bg-gray-300 cursor-not-allowed': !canAgree
-        }"
+        :class="[
+            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2',
+            canAgree ? 'bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed'
+        ]"
         :disabled="!canAgree">
         Kirim Booking
     </button>
+
 </div>
 
 <style>
     .custom-font {
-        font-family: 'Poppins';
+        font-family: 'Poppins', sans-serif;
         font-size: 12px;
     }
 </style>
+
