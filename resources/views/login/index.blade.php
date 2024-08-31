@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    {{-- <script>
+    <script>
         $(document).ready(function () {
             $('#loginForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent the default form submission
@@ -104,6 +104,6 @@
                 });
             });
         });
-    </script> --}}
+    </script>
 </body>
 </html>
