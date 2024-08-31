@@ -81,27 +81,27 @@
                                 </div>
 
                                 <div class="mt-6">
-                                    <label for="jenis_motor" class="block text-md font-semibold text-gray-800 mb-2">Pilih Jenis Motor</label>
-                                    <p class="text-xs text-red-600 mb-4">(Pastikan pilihan anda dengan benar!)</p>
-                                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                                    <label for="jenis_motor" class="block text-lg font-semibold text-gray-800 mb-2">Pilih Jenis Motor</label>
+                                    <p class="text-sm text-red-600 mb-4">(Pastikan pilihan anda dengan benar!)</p>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                         @foreach($jenis_motors as $jenis_motor)
-                                        <div class="kanban-item border border-gray-200 rounded-lg cursor-pointer bg-white hover:shadow-md transition-all duration-300 ease-in-out flex flex-col justify-between overflow-hidden relative group"
+                                        <div class="kanban-item border border-gray-200 rounded-lg cursor-pointer bg-white hover:shadow-lg transition-all duration-300 ease-in-out flex flex-col justify-between overflow-hidden relative group"
                                              data-value="{{ $jenis_motor->id }}"
                                              data-price="{{ $jenis_motor->stok->harga_perHari }}"
                                              data-stock="{{ $jenis_motor->available_stock }}"
                                              data-all-ids="{{ $jenis_motor->all_ids }}">
                                             <div class="aspect-w-16 aspect-h-9">
-                                                <img src="{{ $jenis_motor->stok->foto ? (filter_var($jenis_motor->stok->foto, FILTER_VALIDATE_URL) ? $jenis_motor->stok->foto : asset('storage/' . $jenis_motor->stok->foto)) : 'https://via.placeholder.com/200x125' }}"
+                                                <img src="{{ $jenis_motor->stok->foto ? (filter_var($jenis_motor->stok->foto, FILTER_VALIDATE_URL) ? $jenis_motor->stok->foto : asset('storage/' . $jenis_motor->stok->foto)) : 'https://via.placeholder.com/300x200' }}"
                                                      alt="{{ $jenis_motor->stok->merk ?: 'Motor Image' }}"
-                                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                                             </div>
-                                            <div class="p-2 bg-white">
-                                                <h3 class="text-xs font-semibold text-gray-800 truncate">{{ $jenis_motor->stok->merk }}</h3>
-                                                <p class="text-sm font-bold text-indigo-600 mt-1">Rp. {{ number_format($jenis_motor->stok->harga_perHari, 0, ',', '.') }}</p>
+                                            <div class="p-3 bg-white">
+                                                <h3 class="text-sm font-semibold text-gray-800 truncate">{{ $jenis_motor->stok->merk }}</h3>
+                                                <p class="text-lg font-bold text-indigo-600 mt-1">Rp. {{ number_format($jenis_motor->stok->harga_perHari, 0, ',', '.') }}</p>
                                                 <p class="text-xs text-gray-500 mt-1">Stok: <span class="stock-count font-medium">{{ $jenis_motor->available_stock }}</span></p>
                                             </div>
-                                            <div class="selected-indicator absolute top-1 right-1 bg-green-500 text-white rounded-full p-1 hidden">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                            <div class="selected-indicator absolute top-2 right-2 bg-green-500 text-white rounded-full p-1 hidden">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
@@ -109,9 +109,8 @@
                                         @endforeach
                                     </div>
                                     <input type="hidden" class="id_jenis" name="rentals[0][id_jenis]" required>
-                                    <p class="selected-text text-green-600 font-bold mt-2 text-xs hidden"></p>
+                                    <p class="selected-text text-green-600 font-bold mt-4 text-sm hidden"></p>
                                 </div>
-
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                                     <div>
