@@ -1,11 +1,12 @@
 <div x-data="{
     canAgree: false,
+    agreementChecked: false,
     checkScroll(event) {
         const container = event.target;
         this.canAgree = container.scrollHeight - container.scrollTop <= container.clientHeight + 1;
     },
     submitForm(event) {
-        if (!this.canAgree || !document.getElementById('agreement').checked) {
+        if (!this.canAgree || !this.agreementChecked) {
             event.preventDefault();
             Swal.fire({
                 icon: 'warning',
@@ -62,25 +63,25 @@
     <div class="mb-6 flex items-center gap-3">
         <input type="checkbox" id="agreement" name="agreement" required
                class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+               x-model="agreementChecked"
                x-bind:disabled="!canAgree">
         <label for="agreement" class="text-sm font-medium text-gray-700"
                x-bind:class="{ 'opacity-50': !canAgree }">
             Saya telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
         </label>
     </div>
+
     <button
         type="submit"
         @click="submitForm($event)"
-        :class="[
-            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2',
-            canAgree ? 'bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed'
-        ]"
-        :disabled="!canAgree">
+        :class="{
+            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500': canAgree && agreementChecked,
+            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white cursor-not-allowed bg-gray-300 text-gray-500': !canAgree || !agreementChecked
+        }"
+        :disabled="!canAgree || !agreementChecked">
         Kirim Booking
     </button>
-
 </div>
-
 <style>
     .custom-font {
         font-family: 'Poppins', sans-serif;
