@@ -1,3 +1,4 @@
+
 <div x-data="{
     canAgree: false,
     agreementChecked: false,
@@ -19,13 +20,15 @@
             });
         }
     }
-}" class="max-w-screen mx-auto px-4 py-6">
+}"
+x-init="$watch('canAgree', value => console.log('canAgree:', value)); $watch('agreementChecked', value => console.log('agreementChecked:', value))"
+class="max-w-screen mx-auto px-4 py-6">
     <div class="mb-6">
         <h6 class="text-xl font-semibold mb-4 text-gray-900">Syarat dan Ketentuan</h6>
         <div class="border border-gray-200 rounded-lg shadow-md p-4 sm:p-6 h-64 overflow-y-auto bg-white"
-             x-on:scroll="checkScroll($event)"
-             x-ref="termsContainer">
-             <div class="prose prose-sm text-gray-800 mx-auto max-w-full">
+                x-on:scroll="checkScroll($event)"
+                x-ref="termsContainer">
+                <div class="prose prose-sm text-gray-800 mx-auto max-w-full">
                 <h3 class="text-lg font-bold mt-4 mb-2 border-b border-gray-300 pb-2">Syarat Jaminan</h3>
                 <ol class="list-decimal list-inside space-y-2 custom-font">
                     <li>Penyewa harus menyertakan E-KTP (Wajib) + Identitas lain yang mendukung.</li>
@@ -62,30 +65,24 @@
     </div>
     <div class="mb-6 flex items-center gap-3">
         <input type="checkbox" id="agreement" name="agreement" required
-               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-               x-model="agreementChecked"
-               x-bind:disabled="!canAgree">
+                class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                x-model="agreementChecked"
+                x-bind:disabled="!canAgree">
         <label for="agreement" class="text-sm font-medium text-gray-700"
-               x-bind:class="{ 'opacity-50': !canAgree }">
+                x-bind:class="{ 'opacity-50': !canAgree }">
             Saya telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
         </label>
     </div>
 
     <button
         type="submit"
-        @click="submitForm($event)"
-        :class="{
-            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500': canAgree && agreementChecked,
-            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white cursor-not-allowed bg-gray-300 text-gray-500 focus:outline-none': !(canAgree && agreementChecked)
+        x-on:click="submitForm($event)"
+        x-bind:class="{
+            'btn-enabled': canAgree && agreementChecked,
+            'btn-disabled': !(canAgree && agreementChecked)
         }"
-        :disabled="!canAgree || !agreementChecked">
+        x-bind:disabled="!canAgree || !agreementChecked"
+        class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         Kirim Booking
     </button>
 </div>
-
-<style>
-    .custom-font {
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px;
-    }
-</style>
