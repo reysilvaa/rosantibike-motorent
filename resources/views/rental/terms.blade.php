@@ -76,7 +76,7 @@
         @click="submitForm($event)"
         :class="{
             'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500': canAgree && agreementChecked,
-            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white cursor-not-allowed bg-gray-300 text-gray-500': !canAgree || !agreementChecked
+            'w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white cursor-not-allowed bg-gray-300 text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2': !canAgree || !agreementChecked
         }"
         :disabled="!canAgree || !agreementChecked">
         Kirim Booking
