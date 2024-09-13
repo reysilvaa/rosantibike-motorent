@@ -13,97 +13,31 @@ use Carbon\Carbon;
 class TransaksiController extends Controller
 {
     public function index()
-{
-    $jenis_motors = JenisMotor::select('jenis_motor.id_stok', DB::raw('MIN(jenis_motor.id) as id'))
-        ->join('stok', 'jenis_motor.id_stok', '=', 'stok.id')
-        ->groupBy('jenis_motor.id_stok')
-        ->orderBy('stok.harga_perHari', 'asc')
-        ->get()
-        ->map(function ($item) {
-            $jenis_motor = JenisMotor::find($item->id);
+    {
+        $jenis_motors = JenisMotor::select('jenis_motor.id_stok', DB::raw('MIN(jenis_motor.id) as id'))
+            ->join('stok', 'jenis_motor.id_stok', '=', 'stok.id')
+            ->groupBy('jenis_motor.id_stok')
+            ->orderBy('stok.harga_perHari', 'asc')
+            ->get()
+            ->map(function ($item) {
+                $jenis_motor = JenisMotor::find($item->id);
 
-            $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-                ->where('status', 'ready')
-                ->count();
+                $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                    ->where('status', 'ready')
+                    ->count();
 
-            $jenis_motor->available_stock = $available_stock;
-            $jenis_motor->total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
+                $jenis_motor->available_stock = $available_stock;
+                $jenis_motor->total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
 
-            $jenis_motor->all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-                ->pluck('id')
-                ->toJson();
+                $jenis_motor->all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
+                    ->pluck('id')
+                    ->toJson();
 
-            return $jenis_motor;
-        });
+                return $jenis_motor;
+            });
 
-    return view('rental.index', compact('jenis_motors'));
-}
-    // public function find(Request $request)
-    // {
-    //     // Select the first 'ready' motor for each 'id_stok' group
-    //     $jenis_motors = JenisMotor::where('status', 'ready')
-    //         ->select('id_stok', DB::raw('MIN(id) as id'))
-    //         ->groupBy('id_stok')
-    //         ->get()
-    //         ->map(function ($item) {
-    //             // Attempt to get an available jenis_motor
-    //             $jenis_motor = $this->getAvailableJenisMotor($item->id);
-
-    //             if (!$jenis_motor) {
-    //                 // If no available jenis_motor found, set properties to indicate this
-    //                 $jenis_motor = new JenisMotor();
-    //                 $jenis_motor->id = $item->id;
-    //                 $jenis_motor->available_stock = 0;
-    //                 $jenis_motor->total_stock = 0;
-    //                 $jenis_motor->all_ids = json_encode([]);
-    //                 return $jenis_motor;
-    //             }
-
-    //             // Calculate the available stock
-    //             $available_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-    //                 ->where('status', 'ready')
-    //                 ->count();
-
-    //             $total_stock = JenisMotor::where('id_stok', $jenis_motor->id_stok)->count();
-
-    //             $all_ids = JenisMotor::where('id_stok', $jenis_motor->id_stok)
-    //                 ->pluck('id')
-    //                 ->toJson();
-
-    //             $jenis_motor->available_stock = $available_stock;
-    //             $jenis_motor->total_stock = $total_stock;
-    //             $jenis_motor->all_ids = $all_ids;
-
-    //             return $jenis_motor->get();
-    //         });
-
-    //     return view('rental.index', compact('jenis_motors'));
-    // }
-
-    // private function getAvailableJenisMotor($id_jenis)
-    // {
-    //     $jenis_motor = JenisMotor::find($id_jenis);
-
-    //     if (!$jenis_motor) {
-    //         return null;
-    //     }
-
-    //     // Get the id_stok for the given id_jenis
-    //     $id_stok = $jenis_motor->id_stok;
-
-    //     // Check if the current jenis_motor is booked or rented
-    //     if ($this->checkMotorAvailability($id_jenis, Carbon::today(), Carbon::today()->addDays(7))) {
-    //         return $jenis_motor;
-    //     }
-
-    //     // Find another available jenis_motor with the same id_stok
-    //     return JenisMotor::where('id_stok', $id_stok)
-    //         ->where('status', 'ready')
-    //         ->where('id', '!=', $id_jenis)
-    //         ->first();
-    // }
-
-
+        return view('rental.index', compact('jenis_motors'));
+    }
 
     public function create()
     {
