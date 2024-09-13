@@ -60,13 +60,13 @@
                                         <input type="datetime-local" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 tgl_sewa" name="rentals[0][tgl_sewa]" required>
                                         <small class="text-gray-500">Masukkan tanggal dan jam mulai penyewaan. Tanggal ini tidak boleh kurang dari hari ini.</small>
                                     </div>
-
+                                    
                                     <div>
                                         <label for="tgl_kembali" class="block text-sm font-medium text-gray-700 mb-1">Tanggal dan Jam Kembali</label>
                                         <input type="datetime-local" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 tgl_kembali" name="rentals[0][tgl_kembali]" required>
-                                        <small class="text-gray-500">Masukkan tanggal dan jam akhir penyewaan. Harus sama atau setelah tanggal sewa.</small>
+                                        <small class="text-gray-500">Masukkan tanggal dan jam akhir penyewaan. Harus sama atau setelah tanggal sewa dan maksimal jam 20.00.</small>
                                     </div>
-
+                                    
                                     <div>
                                         <label for="helm" class="block text-sm font-medium text-gray-700 mb-1">Helm</label>
                                         <input type="number" id="helm" name="rentals[0][helm]" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="2" required>

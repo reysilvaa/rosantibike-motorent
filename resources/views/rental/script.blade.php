@@ -8,6 +8,39 @@
         let selectedMotors = {};
         let bookedMotors = {};
 
+        const tglSewa = document.querySelector('.tgl_sewa');
+        const tglKembali = document.querySelector('.tgl_kembali');
+        const maxHours = 20;
+
+        const showAlert = (message) => {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: message,
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-red-600 text-white'
+                }
+            });
+        };
+
+        const checkMaxTime = (input, message) => {
+            const selectedDate = new Date(input.value);
+            if (selectedDate.getHours() >= maxHours && selectedDate.getMinutes() > 0) {
+                showAlert(message);
+                input.value = '';
+            }
+        };
+
+        tglSewa.addEventListener('input', () => {
+            checkMaxTime(tglSewa, "Waktu Sewa tidak boleh lebih dari jam 20:00.");
+        });
+
+        tglKembali.addEventListener('input', () => {
+            checkMaxTime(tglKembali, "Waktu Kembali tidak boleh lebih dari jam 20:00.");
+        });
+
+
         addRentalBtn.addEventListener('click', function() {
             const newRentalForm = rentalForms.children[0].cloneNode(true);
             rentalCount++;
