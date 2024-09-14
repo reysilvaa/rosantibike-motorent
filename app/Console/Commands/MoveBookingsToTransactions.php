@@ -35,6 +35,7 @@ class MoveBookingsToTransactions extends Command
             foreach ($bookings as $booking) {
                 $transactionsData[] = [
                     'nama_penyewa' => $booking->nama_penyewa,
+                    'alamat' => $booking->alamat,
                     'wa1' => $booking->wa1,
                     'wa2' => $booking->wa2,
                     'wa3' => $booking->wa3,
