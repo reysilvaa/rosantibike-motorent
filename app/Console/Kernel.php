@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('bookings:move')->hourly(); // Atur sesuai kebutuhan
         $schedule->command('email:send-reminders')->daily(); // Atur sesuai kebutuhan
+        $schedule->command('motor:update-status')->everyMinute();
     }
 
 

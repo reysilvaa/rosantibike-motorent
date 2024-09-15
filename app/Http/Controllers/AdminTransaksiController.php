@@ -131,24 +131,6 @@ class AdminTransaksiController extends Controller
             $transaksi->tgl_kembali = $tglKembali;
         }
 
-        // // Jika jenis motor berubah
-        // if ($transaksi->id_jenis != $validated['id_jenis']) {
-        //     // Ubah status jenis motor lama menjadi ready
-        //     $jenisMotorLama = JenisMotor::findOrFail($transaksi->id_jenis);
-        //     $jenisMotorLama->status = 'ready';
-        //     $jenisMotorLama->save();
-
-        //     // Ubah status jenis motor baru menjadi disewa
-        //     $jenisMotorBaru->status = 'disewa';
-        //     $jenisMotorBaru->save();
-
-        //     // Perbarui id_jenis pada transaksi
-        //     $transaksi->id_jenis = $validated['id_jenis'];
-        // }
-
-        // // Simpan perubahan transaksi
-        // $transaksi->save();
-
         // Jika jenis motor lama tidak sama dengan yang baru
         if ($transaksi->id_jenis != $validated['id_jenis']) {
             // Ubah status jenis motor lama menjadi ready
