@@ -131,7 +131,25 @@ class AdminTransaksiController extends Controller
             $transaksi->tgl_kembali = $tglKembali;
         }
 
-        // Jika jenis motor berubah
+        // // Jika jenis motor berubah
+        // if ($transaksi->id_jenis != $validated['id_jenis']) {
+        //     // Ubah status jenis motor lama menjadi ready
+        //     $jenisMotorLama = JenisMotor::findOrFail($transaksi->id_jenis);
+        //     $jenisMotorLama->status = 'ready';
+        //     $jenisMotorLama->save();
+
+        //     // Ubah status jenis motor baru menjadi disewa
+        //     $jenisMotorBaru->status = 'disewa';
+        //     $jenisMotorBaru->save();
+
+        //     // Perbarui id_jenis pada transaksi
+        //     $transaksi->id_jenis = $validated['id_jenis'];
+        // }
+
+        // // Simpan perubahan transaksi
+        // $transaksi->save();
+
+        // Jika jenis motor lama tidak sama dengan yang baru
         if ($transaksi->id_jenis != $validated['id_jenis']) {
             // Ubah status jenis motor lama menjadi ready
             $jenisMotorLama = JenisMotor::findOrFail($transaksi->id_jenis);
@@ -139,15 +157,19 @@ class AdminTransaksiController extends Controller
             $jenisMotorLama->save();
 
             // Ubah status jenis motor baru menjadi disewa
+            $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
             $jenisMotorBaru->status = 'disewa';
             $jenisMotorBaru->save();
 
             // Perbarui id_jenis pada transaksi
             $transaksi->id_jenis = $validated['id_jenis'];
+        } else {
+            // Jika jenis motor sama, langsung ubah status menjadi disewa
+            $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
+            $jenisMotorBaru->status = 'disewa';
+            $jenisMotorBaru->save();
         }
 
-        // Simpan perubahan transaksi
-        $transaksi->save();
 
         // Redirect dengan pesan sukses
         return redirect()->route('admin.transaksi.edit', ['transaksi' => $id])->with('success', 'Transaksi berhasil diperbarui.');
