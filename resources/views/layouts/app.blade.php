@@ -20,7 +20,7 @@
       "@type": "Organization",
       "name": "RosantiBike Motorent",
       "url": "https://rosantibikemotorent.com",
-      "logo": "https://rosantibikemotorent.my.id/logo.png",
+      "logo": "https://rosantibikemotorent.com/logo.png",
       "sameAs": [
         "https://www.instagram.com/rosantibikemotorent",
         "https://www.facebook.com/rosantibikemotorent"

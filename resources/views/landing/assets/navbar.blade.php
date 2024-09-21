@@ -1,6 +1,7 @@
 @include('landing.assets.link.link')
 <head>
-    <meta http-equiv="Content-Security-Policy" content="
+<!-- Content Security Policy -->
+<meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net;
     style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
@@ -10,9 +11,34 @@
     frame-src 'self' https://www.google.com;
     object-src 'none';
     base-uri 'self';
-    ">
-    <meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">
-    <meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
+">
+
+<!-- SEO Metadata -->
+<meta name="keywords" content="sewa motor, motor rental, malang, rosantibike motorent">
+<meta name="description" content="RosantiBike Motorent - Sewa motor terpercaya di Malang dengan layanan antar-jemput.">
+<meta name="description" content="@yield('meta_description', 'Sewa motor berkualitas di Malang dengan harga bersaing! Temukan berbagai pilihan motor untuk perjalanan Anda di Malang. Layanan pelanggan profesional dan pengalaman rental motor terbaik hanya di Rosantibike Motorent.')">
+<meta name="description" content="Sewa motor di Malang dengan layanan terpercaya dan harga terbaik. Pilih dari berbagai pilihan motor berkualitas di Rosantibike Motorent. Ideal untuk perjalanan Anda di Malang. Hubungi kami untuk layanan pelanggan yang ramah dan efisien!">
+
+<!-- Organization Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "RosantiBike Motorent",
+  "url": "https://rosantibikemotorent.com",
+  "logo": "https://www.rosantibikemotorent.com/logo2.png",
+  "sameAs": [
+    "https://www.instagram.com/rosantibikemotorent",
+    "https://www.facebook.com/rosantibikemotorent"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+62-811-3535-122",
+    "contactType": "Customer Service"
+  }
+}
+</script>
+
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
