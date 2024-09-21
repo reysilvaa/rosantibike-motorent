@@ -3,8 +3,8 @@
 <head>
 
     {{-- Navbar --}}
+    <title>RosantiBike Motorent</title>
     <title>
-        <title>RosantiBike Motorent</title>
         @yield('title', 'Rental Motor Malang - RosantiBike Motorent')
     </title>
     @include('landing.assets.navbar')
