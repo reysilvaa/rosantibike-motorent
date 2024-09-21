@@ -1,5 +1,8 @@
 @include('landing.assets.link.link')
 <head>
+    <title>
+        RosantiBike Motorent
+    </title>
 <!-- Content Security Policy -->
 <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
