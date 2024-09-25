@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "mckenziearts/laravel-notify": "^2.5",
         "nesbot/carbon": "^2.72",
+        "spatie/laravel-sitemap": "^7.0",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {
