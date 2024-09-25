@@ -6,6 +6,11 @@
         <priority>0.8</priority>
             </url>
     <url>
+        <loc>https://rosantibikemotorent.com/booking</loc>
+            <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+            </url>
+    <url>
         <loc>https://rosantibikemotorent.com/petualangan</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
