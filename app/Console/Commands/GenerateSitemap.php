@@ -28,8 +28,11 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-        // Ganti URL dengan URL website Anda
-        SitemapGenerator::create('https://rosantibikemotorent.com')
+        // URL website Anda
+        $url = 'https://rosantibikemotorent.com';
+
+        // Generate sitemap
+        SitemapGenerator::create($url)
             ->getSitemap()
             ->writeToDisk('public', 'sitemap.xml');
 
