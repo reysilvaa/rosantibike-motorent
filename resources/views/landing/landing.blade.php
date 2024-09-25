@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id" class="overflow-x-hidden">
 <head>
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "name": "RosantiBike Motorent",
+          "url": "https://www.rosantibikemotorent.com"
+        }
+        </script>
+        
 
     {{-- Navbar --}}
     <title>RosantiBike Motorent</title>
