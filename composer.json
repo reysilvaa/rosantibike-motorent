@@ -14,6 +14,7 @@
         "mckenziearts/laravel-notify": "^2.5",
         "nesbot/carbon": "^2.72",
         "spatie/laravel-sitemap": "^7.0",
+        "tymon/jwt-auth": "^2.1",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {
