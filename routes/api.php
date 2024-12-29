@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminBookingController;
 use App\Http\Controllers\Api\AdminTransaksiController;
+use App\Http\Controllers\Api\TransaksiController;
 
 Route::prefix('admin/booking')->group(function () {
     Route::get('/', [AdminBookingController::class, 'index']);
@@ -23,6 +24,15 @@ Route::prefix('admin/transaksi')->group(function () {
     Route::post('/bulk-delete', [AdminTransaksiController::class, 'bulkDelete']); // Endpoint untuk menghapus banyak transaksi
     Route::get('/datatable', [AdminTransaksiController::class, 'getData']); // Endpoint untuk DataTables
 });
+
+
+Route::prefix('transaksi')->group(function () {
+    Route::get('/', [TransaksiController::class, 'index']); // GET /api/transaksi
+    Route::post('/create', [TransaksiController::class, 'create']); // POST /api/transaksi/create
+    Route::post('/store', [TransaksiController::class, 'store']); // POST /api/transaksi/store
+    Route::post('/check-booking-dates', [TransaksiController::class, 'checkBookingDates']); // POST /api/transaksi/check-booking-dates
+});
+
 
 
 Route::post('login', [AuthController::class, 'login']);
