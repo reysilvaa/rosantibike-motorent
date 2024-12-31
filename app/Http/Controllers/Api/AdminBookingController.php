@@ -22,12 +22,14 @@ class AdminBookingController extends Controller
             ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
             ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status')
             ->get();
+        $count = $data->count();
 
         // Kembalikan data dalam bentuk JSON
         return response()->json([
             'success' => true,
             'message' => 'Booking list retrieved successfully',
-            'data' => $data
+            'data' => $data,
+            'count' => $count
         ]);
     }
 

@@ -18,11 +18,13 @@ class AdminTransaksiController extends Controller
             ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status')
             ->get();
 
-        $totalCount = $data->count();  // menghitung jumlah data
+        $totalCount1 = $data->count();  // menghitung jumlah data
+        $totalCount2 = JenisMotor::all()->where('status', 'ready')->count();  // menghitung jumlah data
 
         return response()->json([
             'data' => $data,
-            'count' => $totalCount
+            'motor_tersewa' => $totalCount1,
+            'sisa_motor' => $totalCount2
         ], 200);
     }
 

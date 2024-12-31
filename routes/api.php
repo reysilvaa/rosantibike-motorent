@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminBookingController;
 use App\Http\Controllers\Api\AdminTransaksiController;
 use App\Http\Controllers\Api\TransaksiController;
+use App\Http\Controllers\Api\JenisMotorController;
 
 Route::prefix('admin/booking')->group(function () {
     Route::get('/', [AdminBookingController::class, 'index']);
@@ -25,6 +26,7 @@ Route::prefix('admin/transaksi')->group(function () {
     Route::get('/datatable', [AdminTransaksiController::class, 'getData']); // Endpoint untuk DataTables
 });
 
+Route::apiResource('admin/jenis-motor', JenisMotorController::class);
 
 Route::prefix('transaksi')->group(function () {
     Route::get('/', [TransaksiController::class, 'index']); // GET /api/transaksi
