@@ -18,7 +18,12 @@ class AdminTransaksiController extends Controller
             ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status')
             ->get();
 
-        return response()->json($data, 200);
+        $totalCount = $data->count();  // menghitung jumlah data
+
+        return response()->json([
+            'data' => $data,
+            'count' => $totalCount
+        ], 200);
     }
 
     // Endpoint untuk mengambil detail transaksi berdasarkan ID
