@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingUpdated;
 use App\Models\JenisMotor;
 use App\Models\Booking;
 use Illuminate\Http\Request;
@@ -75,6 +76,7 @@ class AdminBookingController extends Controller
                 ->rawColumns(['action', 'checkbox'])
                 ->make(true);
         }
+
     }
 
 
@@ -96,37 +98,38 @@ class AdminBookingController extends Controller
             'tgl_kembali' => 'required|date|after_or_equal:today',
             'id_jenis' => 'required|exists:jenis_motor,id',
         ]);
-
+    
         $booking = Booking::findOrFail($id);
         $originalTotal = $booking->total;
         $originalTglKembali = $booking->tgl_kembali;
         $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
-
+    
         if ($validated['tgl_kembali'] != $originalTglKembali) {
             $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($validated['tgl_kembali']);
             $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotorBaru->harga_perHari;
             $booking->total = $originalTotal + $totalHargaPerpanjangan;
             $booking->tgl_kembali = $validated['tgl_kembali'];
         }
-
+    
         if ($booking->id_jenis != $validated['id_jenis']) {
             $jenisMotorLama = JenisMotor::findOrFail($booking->id_jenis);
             $jenisMotorLama->status = 'ready';
             $jenisMotorLama->save();
-
-            // $jenisMotorBaru->status = 'ready';
-            // $jenisMotorBaru->save();
-
+    
             $booking->id_jenis = $validated['id_jenis'];
         }
-
+    
         $booking->save();
-
+    
+        // Memicu event untuk broadcast
+        event(new BookingUpdated($booking));
+    
+        // Notify user
         notify()->preset('success', [
             'title' => 'Booking Berhasil Diperbarui',
             'message' => 'Booking berhasil diperbarui dengan total baru.'
         ]);
-
+    
         return redirect()->route('admin.booking.edit', ['booking' => $id]);
     }
 

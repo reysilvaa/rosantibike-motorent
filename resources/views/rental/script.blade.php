@@ -20,15 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Listen for rental updates
-    Echo.channel('rentals')
-        .listen('.rental.updated', (e) => {
-            if (e.type === 'booking') {
-                updateBookingStatus(e.rental);
-            } else {
-                updateTransactionStatus(e.rental);
-            }
-            updateMotorAvailability(e.rental.id_jenis);
-        });
+    window.Echo.channel('rentals')
+    .listen('.rental.updated', (e) => {
+        console.log('Event received:', e);
+        if (e.type === 'booking') {
+            updateBookingStatus(e.rental);
+        } else {
+            updateTransactionStatus(e.rental);
+        }
+        updateMotorAvailability(e.rental.id_jenis);
+    })
+    .error((error) => {
+        console.error('Error with Pusher:', error);
+    });
+
 
     const tglSewa = document.querySelector('.tgl_sewa');
     const tglKembali = document.querySelector('.tgl_kembali');

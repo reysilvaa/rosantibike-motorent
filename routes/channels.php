@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+Broadcast::channel('booking-channel', function ($user) {
+    return true; // Untuk channel publik, Anda bisa mengembalikan true
+});
+Broadcast::channel('rentals', function ($user) {
+    return true; // Untuk channel publik, Anda bisa mengembalikan true
+});

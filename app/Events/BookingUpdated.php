@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Events;
 
+use App\Models\Booking;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class BookingUpdated implements ShouldBroadcast
 {
@@ -14,13 +14,27 @@ class BookingUpdated implements ShouldBroadcast
 
     public $booking;
 
-    public function __construct($booking)
+    public function __construct(Booking $booking)
     {
         $this->booking = $booking;
     }
 
     public function broadcastOn()
     {
-        return new Channel('bookings');
+        return new Channel('booking-channel');
+    }
+
+    public function broadcastAs()
+    {
+        return 'booking-updated';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'id' => $this->booking->id,
+            'updated_at' => $this->booking->updated_at->toDateTimeString(),
+            'message' => 'Booking has been updated'
+        ];
     }
 }
