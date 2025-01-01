@@ -99,7 +99,6 @@
     @include('landing.assets.kontak')
 
     <!-- Footer -->
-    @include('landing.assets.footer')
 
     <script>
             // Smooth scrolling for anchor links
@@ -138,4 +137,6 @@
             });
     </script>
 </body>
+@include('landing.assets.footer')
+
 </html>

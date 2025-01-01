@@ -29,7 +29,7 @@
         }
     </style>
 </head>
-<body>
+{{-- <body>
     <!-- Page Content -->
-</body>
+</body> --}}
 </html>
