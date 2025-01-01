@@ -53,8 +53,12 @@ class TransaksiUpdated implements ShouldBroadcast
     {
         return [
             'id' => $this->transaksi->id,
-            'updated_at' => $this->transaksi->updated_at->toDateTimeString(),
-            'message' => 'transaksi has been updated'
+            'tgl_sewa' => $this->transaksi->tgl_sewa->format('d-m-Y H:i'),
+            'tgl_kembali' => $this->transaksi->tgl_kembali->format('d-m-Y H:i'),
+            'total' => number_format($this->transaksi->total, 0, ',', '.'),
+            'nopol' => $this->transaksi->jenisMotor->nopol,
+            'status_motor' => $this->transaksi->jenisMotor->status,
+            'message' => 'Transaksi telah diperbarui'
         ];
     }
 }
