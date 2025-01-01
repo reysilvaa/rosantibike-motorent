@@ -112,14 +112,22 @@ class TransaksiController extends Controller
                     'helm' => $rental['helm'],
                     'jashujan' => $rental['jashujan'],
                 ];
-
+                
+                // Tambahkan elemen khusus jika bukan booking
                 if ($isBooking) {
                     $booking = Booking::create($rentalData);
                     event(new RentalUpdated($booking, 'booking'));
                 } else {
+                    $jenisMotor = JenisMotor::find($id_jenis);
+                    if ($jenisMotor) {
+                        $jenisMotor->status = 'disewa';
+                        $jenisMotor->save();
+                    }
+                
+                    // Buat transaksi baru
                     $transaction = Transaksi::create($rentalData);
                     event(new RentalUpdated($transaction, 'transaction'));
-                }
+                }              
             }
             DB::commit();
             return redirect()->route('rental.preview');
