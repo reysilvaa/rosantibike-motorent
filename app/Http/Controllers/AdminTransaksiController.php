@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\TransaksiUpdated;
 use App\Models\JenisMotor;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -76,9 +77,6 @@ class AdminTransaksiController extends Controller
                 ->make(true);
         }
     }
-
-
-
     public function edit($id)
     {
         // Temukan transaksi yang akan diedit
@@ -94,7 +92,6 @@ class AdminTransaksiController extends Controller
         // Tampilkan view edit dengan data transaksi dan daftar jenis motor
         return view('admin.transaksi.edit', compact('transaksi', 'jenisMotorList'));
     }
-
     public function update(Request $request, $id)
     {
         // Validasi input
@@ -102,62 +99,70 @@ class AdminTransaksiController extends Controller
             'tgl_kembali' => 'required|date|after_or_equal:today',
             'id_jenis' => 'required|exists:jenis_motor,id',
         ]);
-
+    
         // Temukan transaksi yang akan diperbarui
         $transaksi = Transaksi::findOrFail($id);
-
+    
         // Simpan tanggal kembali yang asli
         $originalTglKembali = $transaksi->tgl_kembali;
-
+    
         // Ambil data jenis motor terbaru
         $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
-
+    
         // Cek apakah tanggal kembali berubah
         if ($validated['tgl_kembali'] != $originalTglKembali) {
             // Jika tanggal kembali berubah, hitung perpanjangan
             $tglSewa = $transaksi->tgl_sewa;
             $tglKembali = $validated['tgl_kembali'];
-
+    
             // Hitung jumlah hari perpanjangan
-            $jumlahHariPerpanjangan = $originalTglKembali->diffInDays($tglKembali);
-
+            $jumlahHariPerpanjangan = $tglSewa->diffInDays($tglKembali);
+    
             // Hitung total harga perpanjangan
             $totalHargaPerpanjangan = $jumlahHariPerpanjangan * $jenisMotorBaru->harga_perHari;
-
+    
             // Tambahkan total perpanjangan ke total yang sudah ada
             $transaksi->total += $totalHargaPerpanjangan;
-
+    
             // Perbarui tanggal kembali
             $transaksi->tgl_kembali = $tglKembali;
         }
-
+    
         // Jika jenis motor lama tidak sama dengan yang baru
         if ($transaksi->id_jenis != $validated['id_jenis']) {
             // Ubah status jenis motor lama menjadi ready
             $jenisMotorLama = JenisMotor::findOrFail($transaksi->id_jenis);
             $jenisMotorLama->status = 'ready';
             $jenisMotorLama->save();
-
+    
             // Ubah status jenis motor baru menjadi disewa
             $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
             $jenisMotorBaru->status = 'disewa';
             $jenisMotorBaru->save();
-
+    
             // Perbarui id_jenis pada transaksi
             $transaksi->id_jenis = $validated['id_jenis'];
         } else {
             // Jika jenis motor sama, langsung ubah status menjadi disewa
-            $jenisMotorBaru = JenisMotor::findOrFail($validated['id_jenis']);
             $jenisMotorBaru->status = 'disewa';
             $jenisMotorBaru->save();
         }
-
-
+    
+        // Simpan perubahan transaksi
+        $transaksi->save();
+         event(new TransaksiUpdated($transaksi));
+    
+        // Notify user
+        notify()->preset('success', [
+            'title' => 'Booking Berhasil Diperbarui',
+            'message' => 'Booking berhasil diperbarui dengan total baru.'
+        ]);
+    
+    
         // Redirect dengan pesan sukses
         return redirect()->route('admin.transaksi.edit', ['transaksi' => $id])->with('success', 'Transaksi berhasil diperbarui.');
     }
-
-
+    
 
     public function destroy(Transaksi $transaksi)
     {
@@ -190,8 +195,19 @@ class AdminTransaksiController extends Controller
             }
         });
 
-        // Delete the transactions after updating JenisMotor statuses
-        Transaksi::whereIn('id', $ids)->delete();
+    // Trigger the TransaksiUpdated event for each transaction
+    Transaksi::whereIn('id', $ids)->each(function ($transaksi) {
+        event(new TransaksiUpdated($transaksi));
+    });
+
+    // Delete the transactions after updating JenisMotor statuses and triggering events
+    Transaksi::whereIn('id', $ids)->delete();
+
+    // Notify user
+    notify()->preset('success', [
+        'title' => 'Transaksi Berhasil Dihapus',
+        'message' => 'Transaksi berhasil dihapus.'
+    ]);
 
         // Return a success response
         return response()->json(['success' => "Transaksi deleted successfully."]);

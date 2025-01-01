@@ -17,67 +17,115 @@
         </div>
         <div class="p-4">
             <button class="bg-red-600 text-white px-4 py-2 rounded-md mb-3 hover:bg-red-700" id="bulk-delete">Delete Selected</button>
-                <div class="overflow-x-auto">
-                    <table id="data-table" class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">
-                                    <input type="checkbox" class="form-check-input" id="select_all_checkbox">
-                                </th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nopol</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Status</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Kembali</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nama Penyewa</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Jenis Motor</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Sewa</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Total</th>
-                                <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- content otomatis datatables --}}
-                        </tbody>
-                    </table>
-                </div>
-
+            <div class="overflow-x-auto">
+                <table id="data-table" class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">
+                                <input type="checkbox" class="form-check-input" id="select_all_checkbox">
+                            </th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nopol</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Status</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Kembali</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Nama Penyewa</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Jenis Motor</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Tanggal Sewa</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Total</th>
+                            <th class="px-4 py-3 text-center text-sm font-medium uppercase tracking-wider">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {{-- content otomatis datatables --}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <x-back-to-list-button route="{{ route('dashboard') }}" />
 </div>
+<x-back-to-list-button route="{{ route('dashboard') }}" />
+
 @endsection
-@push('styles')
-<script type="text/javascript">
-$(document).ready(function() {
-    $.extend($.fn.dataTable.defaults, {
-        language: {
-            paginate: {
-                previous: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Previous</button>',
-                next: '<button class="px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100">Next</button>',
-            },
-            info: '<span class="text-sm text-gray-700 px-3 py-2">Showing _START_ to _END_ of _TOTAL_ entries</span>',
-            lengthMenu: '<span class="text-sm text-gray-700 px-3 py-2">Show _MENU_ entries</span>',
-            search: '<span class="text-sm text-gray-700 px-3 py-2">Search:</span>'
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+<script type="module">
+    // Import Echo
+    import Echo from 'https://cdn.jsdelivr.net/npm/laravel-echo@1.10.0/dist/echo.js';
+
+    $(document).ready(function() {
+        try {
+            // Initialize Echo with Pusher
+            window.Echo = new Echo({
+                broadcaster: 'pusher',
+                key: '{{ env('PUSHER_APP_KEY') }}',
+                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                encrypted: true
+            });
+
+            window.Echo.connector.pusher.connection.bind('connected', () => {
+                console.log('✅ Connected to Pusher');
+            });
+
+            window.Echo.connector.pusher.connection.bind('error', (error) => {
+                console.error('❌ Pusher Connection Error:', error);
+            });
+
+            // Listen for both transaksi and rental updates
+            window.Echo.channel('transaksi-channel')
+                .listen('.transaksi-updated', (event) => {
+                    console.log('🔔 Transaksi Updated Event Received:', event);
+                    refreshTable();
+                });
+
+            window.Echo.channel('rentals')
+                .listen('.rental.updated', (event) => {
+                    console.log('🔔 Rental Updated Event Received:', event);
+                    refreshTable();
+                });
+
+            // Function to refresh DataTable
+            function refreshTable() {
+                try {
+                    let table = $('#data-table').DataTable();
+                    console.log('📊 Reloading DataTable...');
+                    table.ajax.reload(null, false);
+                    console.log('✅ DataTable Reload Complete');
+                } catch (error) {
+                    console.error('❌ Error reloading DataTable:', error);
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error initializing Echo:', error);
         }
     });
+</script>
 
+<!-- Import DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
+<!-- Import DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
     var table = $('#data-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: "{{ route('admin.transaksi.data') }}",
-        // fixedHeader: true,
         paging: true,
         searching: true,
         ordering: true,
-        responsive: true, // Menambahkan opsi responsive
+        responsive: true,
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'nopol', name: 'nopol'},
             {
                 data: 'status',
                 name: 'status',
-                render: function (data, type, row) {
+                render: function (data) {
                     let statusClass = '';
                     let statusText = data || 'Unknown';
                     switch (data) {
@@ -93,13 +141,7 @@ $(document).ready(function() {
                         default:
                             statusClass = 'bg-gray-500 text-white';
                     }
-
-                    // Mengembalikan HTML untuk sel dengan status
-                    return `
-                        <span class="inline-block px-2 py-1 rounded text-xs font-medium ${statusClass}">
-                            ${statusText}
-                        </span>
-                    `;
+                    return `<span class="inline-block px-2 py-1 rounded text-xs font-medium ${statusClass}">${statusText}</span>`;
                 }
             },
             {data: 'tgl_kembali', name: 'tgl_kembali'},
@@ -108,39 +150,26 @@ $(document).ready(function() {
             {data: 'tgl_sewa', name: 'tgl_sewa'},
             {data: 'total', name: 'total'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        drawCallback: function() {
-            // Menambahkan gaya pada tombol pagination
-            $('.paginate_button').addClass('px-3 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100');
-            $('.paginate_button.current').addClass('bg-blue-600 text-white hover:bg-blue-700').removeClass('text-gray-700 bg-white hover:bg-gray-100');
-            $('.dataTables_info').addClass('text-sm text-gray-700 px-3 py-2');
-
-            // Menyelaraskan filter length dan search secara horizontal
-            $('.dataTables_length').addClass('flex items-center space-x-4 mb-2');
-            $('.dataTables_filter').addClass('flex items-center space-x-4 mb-2');
-
-            // Menambahkan gaya pada elemen select dan input
-            $('.dataTables_length select').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
-            $('.dataTables_filter input').addClass('py-2 px-3 border-2 border-blue-500 bg-white rounded-md shadow-md hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm');
-        }
+        ]
     });
 
-    // Menangani klik pada kontrol "Select all"
-    $('#select_all_checkbox').on('click', function(){
+    // Handle select all checkbox
+    $('#select_all_checkbox').on('click', function() {
         var rows = table.rows({ 'search': 'applied' }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
 
-    // Menangani klik pada checkbox untuk mengatur status kontrol "Select all"
-    $('#data-table tbody').on('change', 'input[type="checkbox"]', function(){
-        if(!this.checked){
-            var el = $('#select_all_checkbox').get(0);
-            if(el && el.checked && ('indeterminate' in el)){
-                el.indeterminate = true;
-            }
-        }
+    // Handle individual checkbox change
+    $('#data-table tbody').on('change', 'input[type="checkbox"]', function() {
+        var totalCheckboxes = $('input[type="checkbox"]', table.rows({ 'search': 'applied' }).nodes()).length;
+        var checkedCheckboxes = $('input[type="checkbox"]:checked', table.rows({ 'search': 'applied' }).nodes()).length;
+
+        // Update the select all checkbox based on individual checkboxes
+        $('#select_all_checkbox').prop('checked', totalCheckboxes === checkedCheckboxes);
+        $('#select_all_checkbox').prop('indeterminate', checkedCheckboxes > 0 && checkedCheckboxes < totalCheckboxes);
     });
 
+    // Handle bulk delete
     $('#bulk-delete').on('click', function(e){
         var ids = [];
         $('.transaksi_checkbox:checked').each(function(){
@@ -193,48 +222,7 @@ $(document).ready(function() {
                 text: 'Silakan pilih setidaknya satu transaksi untuk dihapus.',
                 confirmButtonColor: '#4c51bf'  // Warna indigo-600 untuk tombol "OK"
             });
-        }
-    });
-
-    // Menangani tombol delete
-    $('#data-table').on('click', '.delete', function(){
-        var id = $(this).data('id');
-
-        Swal.fire({
-            icon: 'question',
-            title: 'Apakah Anda yakin?',
-            text: 'Anda ingin menghapus booking ini?',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#4c51bf',  // Warna indigo-600
-            cancelButtonColor: '#d33',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "/admin/transaksi/" + id,
-                    method: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response){
-                        table.draw();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Booking Berhasil Dihapus',
-                            text: 'Booking berhasil dihapus.'
-                        });
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Kesalahan',
-                            text: 'Terjadi kesalahan saat mencoba menghapus booking.'
-                        });
-                    }
-                });
-            }
-        });
+   }
     });
 });
 </script>

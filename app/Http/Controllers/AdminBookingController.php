@@ -162,13 +162,15 @@ class AdminBookingController extends Controller
             if ($jenisMotor) {
                 $jenisMotor->update(['status' => 'ready']);
             }
+
+            event(new BookingUpdated($booking));
+            $booking->delete();
         });
 
-        Booking::whereIn('id', $ids)->delete();
-
+        // Notify user
         notify()->preset('success', [
-            'title' => 'Bulk Delete Berhasil',
-            'message' => 'Bookings berhasil dihapus.'
+            'title' => 'Transaksi Berhasil Dihapus',
+            'message' => 'Transaksi berhasil dihapus.'
         ]);
 
         return response()->json(['success' => 'Bookings deleted successfully.']);
