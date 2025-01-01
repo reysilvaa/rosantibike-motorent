@@ -9,6 +9,7 @@ use App\Models\Stok;
 use App\Models\Booking;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Events\RentalUpdated;
 
 class TransaksiController extends Controller
 {
@@ -113,22 +114,20 @@ class TransaksiController extends Controller
                 ];
 
                 if ($isBooking) {
-                    Booking::create($rentalData);
+                    $booking = Booking::create($rentalData);
+                    event(new RentalUpdated($booking, 'booking'));
                 } else {
-                    Transaksi::create($rentalData);
-                    $jenis_motor = JenisMotor::find($id_jenis);
-                    if ($jenis_motor) {
-                        $jenis_motor->update(['status' => 'disewa']);
-                    }
+                    $transaction = Transaksi::create($rentalData);
+                    event(new RentalUpdated($transaction, 'transaction'));
                 }
             }
-
             DB::commit();
-            return redirect()->route('rental.preview')->with('success', 'Transaksi berhasil dibuat.');
+            return redirect()->route('rental.preview');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
+
     }
 
     private function checkMotorAvailability($id_jenis, $tgl_sewa, $tgl_kembali)

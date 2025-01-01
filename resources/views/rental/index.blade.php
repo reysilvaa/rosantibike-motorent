@@ -130,6 +130,8 @@
                                     <div>
                                         <label for="formatted_total" class="block text-sm font-medium text-gray-700 mb-1">Harga per-unit</label>
                                         <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 formatted_total" readonly>
+                                        {{-- <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 formatted_total" readonly id="formatted_total"> --}}
+
                                     </div>
                                 </div>
 

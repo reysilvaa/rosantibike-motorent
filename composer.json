@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "mckenziearts/laravel-notify": "^2.5",
         "nesbot/carbon": "^2.72",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-sitemap": "^7.0",
         "tymon/jwt-auth": "^2.1",
         "yajra/laravel-datatables-oracle": "^10.11"
