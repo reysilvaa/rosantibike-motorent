@@ -1,7 +1,7 @@
 <title>
     @yield('title', 'List Harga Rental Motor Matic - Rental Motor Rosanti')
 </title>
-<body class="font-['Poppins'] bg-gray-50 text-gray-800">
+<body class="font-['Poppins'] bg-gray-50 text-gray-800 flex flex-col min-h-screen">
     @include('landing.assets.navbar-no-scroll')
 
     <main class="pt-24 pb-16">
