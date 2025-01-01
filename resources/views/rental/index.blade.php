@@ -143,7 +143,7 @@
                             Tambahkan Booking
                         </button>
 
-                        <div id="error-message" class="text-red-600 mb-4 text-sm"></div>
+                        {{-- <div id="error-message" class="text-red-600 mb-4 text-sm"></div> --}}
 
                         <div class="mb-6">
                             <label for="grand_total" class="block text-sm font-medium text-gray-700 mb-1">Total Keseluruhan</label>

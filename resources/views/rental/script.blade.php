@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const rentalForms = document.getElementById('rentalForms');
     const addRentalBtn = document.getElementById('addRental');
-    const errorMessageDiv = document.getElementById('error-message');
+    // const errorMessageDiv = document.getElementById('error-message');
     const grandTotalInput = document.getElementById('grand_total');
     let rentalCount = 1;
     let selectedMotors = {};
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dendaPerJam = 15000;
 
         if (isNaN(tglSewa.getTime()) || isNaN(tglKembali.getTime()) || isNaN(hargaPerHari)) {
-            errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon isi semua form dengan benar.</span>';
+            // errorMessageDiv.innerHTML = '<span class="text-red-600">⚠️ Mohon isi semua form dengan benar.</span>';
             formattedTotal.value = '';
             totalInput.value = '';
             return 0;
@@ -284,8 +284,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const tglSewaInput = rentalForm.querySelector('.tgl_sewa');
         const tglKembaliInput = rentalForm.querySelector('.tgl_kembali');
         const idJenisInput = rentalForm.querySelector('.id_jenis');
+        // const errorMessageDiv = rentalForm.querySelector('.error-message'); // Tempat pesan error
 
-        if (tglSewaInput.value && tglKembaliInput.value && idJenisInput.value) {
+        if (!tglSewaInput.value || !tglKembaliInput.value || !idJenisInput.value) {
+            console.error('Salah satu elemen input tidak ditemukan di dalam form.');
+            return;
+        }
+
+        // Tampilkan loading
+        Swal.fire({
+            title: 'Memeriksa Ketersediaan...',
+            text: 'Mohon tunggu sebentar.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
             const isBooked = await cekTanggalBooking(tglSewaInput.value, tglKembaliInput.value, idJenisInput.value);
 
             if (isBooked) {
@@ -302,7 +318,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 tglKembaliInput.classList.add('border-yellow-500');
                 bookedMotors[idJenisInput.value] = true;
             } else {
-                errorMessageDiv.textContent = '';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Motor Tersedia',
+                    text: '✔️ Motor ini tersedia untuk tanggal yang dipilih.',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                        confirmButton: 'bg-green-500 text-white'
+                    }
+                });
+                // errorMessageDiv.textContent = '';
                 tglKembaliInput.classList.remove('border-yellow-500');
                 bookedMotors[idJenisInput.value] = false;
             }
@@ -310,16 +335,32 @@ document.addEventListener('DOMContentLoaded', function() {
             updateMotorSelectionStatus();
             updateGrandTotal();
 
-            try {
-                const response = await fetch(`/booking/get-available-stock?id_jenis=${idJenisInput.value}&tgl_sewa=${tglSewaInput.value}&tgl_kembali=${tglKembaliInput.value}`);
-                const data = await response.json();
-                const stockElement = rentalForm.querySelector(`.kanban-item[data-value="${idJenisInput.value}"] .stock-count`);
-                if (stockElement) {
-                    stockElement.textContent = `Tersedia: ${data.available_stock}`;
-                }
-            } catch (error) {
-                console.error('Error fetching available stock:', error);
+            // Periksa stok tersedia
+            const response = await fetch(`/booking/get-available-stock?id_jenis=${idJenisInput.value}&tgl_sewa=${tglSewaInput.value}&tgl_kembali=${tglKembaliInput.value}`);
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
             }
+
+            const data = await response.json();
+            const stockElement = rentalForm.querySelector(`.kanban-item[data-value="${idJenisInput.value}"] .stock-count`);
+            if (stockElement) {
+                stockElement.textContent = `Tersedia: ${data.available_stock}`;
+            } else {
+                console.warn('Elemen stok tidak ditemukan untuk id_jenis:', idJenisInput.value);
+            }
+        } catch (error) {
+            console.error('Terjadi kesalahan:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Terjadi kesalahan saat memproses permintaan Anda.',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'bg-red-500 text-white'
+                }
+            });
+        } finally {
+            Swal.close();
         }
     }
 
@@ -412,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     selectedText.classList.add('selected-text');
                     this.appendChild(selectedText);
 
-                    errorMessageDiv.textContent = '';
+                    // errorMessageDiv.textContent = '';
                     updateDateCheck(form);
                     updateMotorSelectionStatus();
                 });
@@ -526,7 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let total = totalHours * hourlyRate;
 
                 document.getElementById('formatted_total').value = `Rp. ${total.toLocaleString('id-ID')}`;
-                document.getElementById('total').value = total;
+                document.getElementById('formatted_total').value = total;
             }
         }
     }
