@@ -1,11 +1,8 @@
-<footer class="bg-gray-800 text-white py-12">
+<footer class="bg-gray-800 text-white py-12 fixed bottom-0 left-0 w-full">
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <h3 class="text-2xl font-bold mb-4">RosantiBike Motorent</h3>
-                {{-- <h3 class="text-2xl font-bold mb-4">
-                    <img src="https://i.ibb.co.com/k6sDTzz/Upscale-Image-1-20240729-removebg.png" alt="Upscale-Image-1-20240729" class="logo-image max-w-[250px] h-auto">
-                </h3> --}}
                 <p class="text-gray-400">Setiap perjalanan penuh tawa Anda adalah kisah sukses kami.</p>
             </div>
             <div>
