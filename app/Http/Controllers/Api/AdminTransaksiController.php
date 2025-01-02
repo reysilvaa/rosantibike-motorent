@@ -13,21 +13,29 @@ class AdminTransaksiController extends Controller
     // Endpoint untuk mengambil semua data transaksi
     public function index(Request $request)
     {
-        $data = Transaksi::with(['jenisMotor.stok'])
+        $lastUpdated = $request->query('last_updated', null);
+    
+        $query = Transaksi::with(['jenisMotor.stok'])
             ->leftJoin('jenis_motor', 'transaksi.id_jenis', '=', 'jenis_motor.id')
-            ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status')
-            ->get();
-
-        $totalCount1 = $data->count();  // menghitung jumlah data
-        $totalCount2 = JenisMotor::all()->where('status', 'ready')->count();  // menghitung jumlah data
-
+            ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status');
+    
+        if ($lastUpdated) {
+            $query->where('transaksi.updated_at', '>', $lastUpdated);
+        }
+    
+        $data = $query->get();
+    
+        $totalCount1 = Transaksi::count(); // Total transaksi
+        $totalCount2 = JenisMotor::where('status', 'ready')->count(); // Total motor ready
+    
         return response()->json([
             'data' => $data,
             'motor_tersewa' => $totalCount1,
-            'sisa_motor' => $totalCount2
+            'sisa_motor' => $totalCount2,
+            'timestamp' => now(), // Tanda waktu untuk permintaan berikutnya
         ], 200);
     }
-
+    
     // Endpoint untuk mengambil detail transaksi berdasarkan ID
     public function show($id)
     {

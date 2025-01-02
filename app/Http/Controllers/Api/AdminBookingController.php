@@ -18,6 +18,8 @@ class AdminBookingController extends Controller
     public function bookings(Request $request)
     {
         // Ambil semua data booking dengan relasi
+        $lastUpdated = $request->query('last_updated', null);
+
         $data = Booking::with(['jenisMotor.stok'])
             ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
             ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status')
@@ -29,7 +31,8 @@ class AdminBookingController extends Controller
             'success' => true,
             'message' => 'Booking list retrieved successfully',
             'data' => $data,
-            'count' => $count
+            'count' => $count,
+            'timestamps' => $lastUpdated,
         ]);
     }
 

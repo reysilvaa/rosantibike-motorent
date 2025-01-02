@@ -12,13 +12,16 @@ use App\Http\Controllers\Controller;
 class JenisMotorController extends Controller
 {
     // Display a listing of the resource.
-    public function index()
+    public function index(Request $request)
     {
+        $lastUpdated = $request->query('last_updated', null);
+
         $jenisMotors = JenisMotor::with('stok')->get();
         $count = $jenisMotors->count();
         return response()->json([
             'data' => $jenisMotors,
-            'count' => $count
+            'count' => $count,
+            'timestamps' => $lastUpdated,
         ]);
     }
 
