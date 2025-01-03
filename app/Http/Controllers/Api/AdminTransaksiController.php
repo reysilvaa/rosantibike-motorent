@@ -13,26 +13,43 @@ class AdminTransaksiController extends Controller
     // Endpoint untuk mengambil semua data transaksi
     public function index(Request $request)
     {
+        // Get search and lastUpdated query parameters
+        $search = $request->query('search', null);
         $lastUpdated = $request->query('last_updated', null);
-    
+        
+        // Start building the query
         $query = Transaksi::with(['jenisMotor.stok'])
-            ->leftJoin('jenis_motor', 'transaksi.id_jenis', '=', 'jenis_motor.id')
-            ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status');
-    
+                          ->leftJoin('jenis_motor', 'transaksi.id_jenis', '=', 'jenis_motor.id')
+                          ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status');
+        
+        // Apply lastUpdated condition if available
         if ($lastUpdated) {
             $query->where('transaksi.updated_at', '>', $lastUpdated);
         }
     
-        $data = $query->get();
+        // Apply search condition if there is a search query
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('transaksi.id', 'like', "%$search%")
+                  ->orWhere('jenis_motor.nopol', 'like', "%$search%")
+                  ->orWhere('transaksi.nama_penyewa', 'like', "%$search%"); // Add more fields as needed
+                //   ->orWhere('transaksi.*', 'like', "%$search%"); // Replace with other relevant columns
+            });
+        }
     
+        // Execute the query and get the data
+        $data = $query->get();
+        
+        // Get total counts
         $totalCount1 = Transaksi::count(); // Total transaksi
         $totalCount2 = JenisMotor::where('status', 'ready')->count(); // Total motor ready
     
+        // Return the response
         return response()->json([
             'data' => $data,
             'motor_tersewa' => $totalCount1,
             'sisa_motor' => $totalCount2,
-            'timestamp' => now(), // Tanda waktu untuk permintaan berikutnya
+            'timestamp' => now(), // Timestamp for the next request
         ], 200);
     }
     
