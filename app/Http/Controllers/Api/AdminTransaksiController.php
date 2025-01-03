@@ -22,21 +22,20 @@ class AdminTransaksiController extends Controller
                           ->leftJoin('jenis_motor', 'transaksi.id_jenis', '=', 'jenis_motor.id')
                           ->select('transaksi.*', 'jenis_motor.nopol', 'jenis_motor.status');
         
-        // Apply lastUpdated condition if available
-        if ($lastUpdated) {
-            $query->where('transaksi.updated_at', '>', $lastUpdated);
-        }
-    
+                          
         // Apply search condition if there is a search query
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('transaksi.id', 'like', "%$search%")
-                  ->orWhere('jenis_motor.nopol', 'like', "%$search%")
-                  ->orWhere('transaksi.nama_penyewa', 'like', "%$search%"); // Add more fields as needed
-                //   ->orWhere('transaksi.*', 'like', "%$search%"); // Replace with other relevant columns
+                ->orWhere('jenis_motor.nopol', 'like', "%$search%")
+                ->orWhere('transaksi.nama_penyewa', 'like', "%$search%"); // Add more fields as needed
             });
         }
-    
+        
+        // Apply lastUpdated condition if available
+        if ($lastUpdated) {
+            $query->where('transaksi.updated_at', '>', $lastUpdated);
+        }
         // Execute the query and get the data
         $data = $query->get();
         
