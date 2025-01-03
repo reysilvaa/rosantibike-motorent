@@ -32,7 +32,7 @@ class AdminBookingController extends Controller
             'message' => 'Booking list retrieved successfully',
             'data' => $data,
             'count' => $count,
-            'timestamps' => $lastUpdated,
+            'timestamps' => now(),
         ]);
     }
 
