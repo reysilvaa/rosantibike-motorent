@@ -17,25 +17,47 @@ class AdminBookingController extends Controller
 
     public function bookings(Request $request)
     {
-        // Ambil semua data booking dengan relasi
+        // Get search query parameter
+        $search = $request->query('search', null);
         $lastUpdated = $request->query('last_updated', null);
-
-        $data = Booking::with(['jenisMotor.stok'])
-            ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
-            ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status')
-            ->get();
-        $count = $data->count();
-
-        // Kembalikan data dalam bentuk JSON
+    
+        // Start building the query
+        $query = Booking::with(['jenisMotor.stok'])
+                        ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
+                        ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status');
+    
+        // Apply search condition if there is a search query
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('booking.id', 'like', "%$search%")
+                  ->orWhere('jenis_motor.nopol', 'like', "%$search%")
+                  ->orWhere('booking.nama_penyewa', 'like', "%$search%"); // Add more fields as needed
+            });
+        }
+    
+        // Optionally apply the 'last_updated' filter
+        if ($lastUpdated) {
+            $query->where('booking.updated_at', '>=', $lastUpdated);
+        }
+    
+        // Get the results
+        $data = $query->get();
+    
+        // If no data found, return an empty response (no message)
+        if ($data->isEmpty()) {
+            return response()->json([]);
+        }
+    
+        // Return the results if data is found
         return response()->json([
             'success' => true,
             'message' => 'Booking list retrieved successfully',
             'data' => $data,
-            'count' => $count,
+            'count' => $data->count(),
             'timestamps' => now(),
         ]);
     }
-
+    
 
     public function show($id)
     {
