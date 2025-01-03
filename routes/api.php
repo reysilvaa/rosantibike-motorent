@@ -1,12 +1,17 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\InvoiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminBookingController;
 use App\Http\Controllers\Api\AdminTransaksiController;
 use App\Http\Controllers\Api\TransaksiController;
 use App\Http\Controllers\Api\JenisMotorController;
+
+
+Route::get('invoice/preview/{type}/{id}', [InvoiceController::class, 'previewInvoice']);
+Route::get('invoice/download/{type}/{id}', [InvoiceController::class, 'downloadInvoice']);
 
 Route::middleware('throttle:1000,1')->prefix('admin/booking')->group(function () {
     Route::get('/', [AdminBookingController::class, 'index']);
