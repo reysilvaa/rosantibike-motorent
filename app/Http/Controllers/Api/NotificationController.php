@@ -34,7 +34,7 @@ class NotificationController extends Controller
             // dd($factory);
             
             // Membuat instance database (sesuaikan dengan kebutuhan Anda, misalnya, menggunakan Realtime Database atau Firestore)
-            $this->messaging = $factory->createDatabase(); // Jika menggunakan Firestore, ganti dengan createFirestore()
+            $this->messaging = $factory->createMessaging(); // Jika menggunakan Firestore, ganti dengan createFirestore()
             
             Log::info('Firebase Messaging initialized successfully');
         } catch (\Exception $e) {
