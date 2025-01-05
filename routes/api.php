@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\AdminBookingController;
 use App\Http\Controllers\Api\AdminTransaksiController;
 use App\Http\Controllers\Api\TransaksiController;
 use App\Http\Controllers\Api\JenisMotorController;
+use App\Http\Controllers\Api\NotificationController;
+
+Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
 
 
 Route::get('invoice/preview/{type}/{id}', [InvoiceController::class, 'previewInvoice']);

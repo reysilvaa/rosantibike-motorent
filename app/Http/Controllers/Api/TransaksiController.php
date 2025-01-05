@@ -10,6 +10,7 @@ use App\Models\Stok;
 use App\Models\Booking;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class TransaksiController extends Controller
 {
@@ -45,6 +46,7 @@ class TransaksiController extends Controller
         $jenis_motor = JenisMotor::all();
         return response()->json(['jenis_motor' => $jenis_motor]);
     }
+        
     public function store(Request $request)
     {
         $messages = [
@@ -63,6 +65,7 @@ class TransaksiController extends Controller
             'rentals.*.jashujan.required' => 'Jumlah jas hujan harus diisi.',
             'rentals.*.helm.required' => 'Jumlah helm harus diisi.',
             'agreement.accepted' => 'Persetujuan harus diterima.',
+            'device_token.required' => 'Device token harus ada',
         ];
 
         try {
@@ -72,6 +75,7 @@ class TransaksiController extends Controller
                 'wa1' => 'required|string|max:20',
                 'wa2' => 'required|string|max:20',
                 'wa3' => 'required|string|max:20',
+                'device_token' => 'required|string',
                 'rentals' => 'required|array',
                 'rentals.*.tgl_sewa' => 'required|date',
                 'rentals.*.tgl_kembali' => 'required|date|after_or_equal:rentals.*.tgl_sewa',
@@ -81,23 +85,17 @@ class TransaksiController extends Controller
                 'rentals.*.helm' => 'required|integer',
                 'agreement' => 'accepted',
             ], $messages);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validasi gagal',
-                'errors' => $e->errors()
-            ], 422);
-        }
 
-        DB::beginTransaction();
+            DB::beginTransaction();
 
-        try {
             $today = Carbon::today();
+            $createdTransactions = [];
 
             foreach ($validated['rentals'] as $rental) {
                 $tgl_sewa = Carbon::parse($rental['tgl_sewa']);
                 $tgl_kembali = Carbon::parse($rental['tgl_kembali']);
                 $id_jenis = $rental['id_jenis'];
+                $jenis_motor = JenisMotor::find($id_jenis);
 
                 $isBooking = $tgl_sewa->gt($today->copy()->addDays(2));
 
@@ -116,21 +114,41 @@ class TransaksiController extends Controller
                 ];
 
                 if ($isBooking) {
-                    Booking::create($rentalData);
+                    $transaction = Booking::create($rentalData);
                 } else {
-                    Transaksi::create($rentalData);
-                    $jenis_motor = JenisMotor::find($id_jenis);
+                    $transaction = Transaksi::create($rentalData);
                     if ($jenis_motor) {
                         $jenis_motor->update(['status' => 'disewa']);
                     }
                 }
+
+                // Prepare notification data
+                $notificationData = [
+                    'token' => $validated['device_token'],
+                    'title' => $isBooking ? 'Booking Baru' : 'Transaksi Sewa Baru',
+                    'body' => "Penyewaan {$jenis_motor->nama} oleh {$validated['nama_penyewa']} untuk tanggal " . 
+                            $tgl_sewa->format('d/m/Y') . " sampai " . $tgl_kembali->format('d/m/Y'),
+                    'transaction_id' => (string)$transaction->id,
+                    'motor_type' => $jenis_motor->nama
+                ];
+
+                // Send notification
+                Http::post(route('api.send-notification'), $notificationData);
+
+                $createdTransactions[] = [
+                    'id' => $transaction->id,
+                    'type' => $isBooking ? 'booking' : 'rental'
+                ];
             }
 
             DB::commit();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Transaksi berhasil dibuat'
+                'message' => 'Transaksi berhasil dibuat',
+                'data' => $createdTransactions
             ], 200);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
