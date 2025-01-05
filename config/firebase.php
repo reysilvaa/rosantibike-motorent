@@ -50,7 +50,21 @@ return [
              *
              */
 
-            'credentials' => env('FIREBASE_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
+            'credentials' => [
+                'type' => 'service_account',
+                'project_id' => 'rosantibikemotorent',
+                'private_key_id' => '090e3585f496d67fb4bece89864476ffff6fbb0f',
+                'private_key' => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDO3t167D1CiCTe\n9+ipZdHjRBtBcyzrt8EJ6oSoZ84kMDImruc8vdotTfNS/UMUDwQ95wHtGrWWfuNg\nXyQIqUC5tfLlnqZ407nlhWxvzjlBjz1r99GmbvqSjmRX+4llYfIxgy1Rb3h8o46m\nG8SrFpKQWB83OArSFbn2U53LkZM/ydpXYqQOAjBa/ogRAigl6k5g4IitKYvb6MfX\nwfxjRW/HULb+FyckrAAiuaWo4Hhp8FjTc7r/PK5LNB4gRcovv/IXaMMS7ejfAIFq\nwD2rDrfDO6MUoDDrDEHQB2I0YBeXHgF9519DD6YrN7AKmWSFaRyM7SeZdQVtYshV\n7d8Clj8ZAgMBAAECggEAIoVRt8DC0z6lSnjboCL/1JkppDEcUqR6B9XU98ZEwciy\nIb7nkv0KcqtymottPWRpHIxXR7IAkeHQPyV5PaHCzYq1gwhHttt8BrdOWlTzPIOy\n5/i1iTy1Py4YRA9TRPIEiKsfbZq4pDHl7MWu+q7cW858vQny0k5yVw7qgs0i4Y6Y\nST2BlylbU5BtH6Fb6zMQiupo8mKwKNDiurJTPTDtkA5DO/e1y+Pvrb/0do1ASBbD\n+2eJdTqUFTQYoL05wC+IPmV8xlrvgwo4oHFGWbCFHXzbqBJPCIxHkzOPvmogNa72\ngjyOhdkQZOW1d1O0QtinOq1milAsCoB0c+0LD2obtQKBgQD3d0NlVF+O/y6ngpUB\nq/QQBB0BB0J0SMJMYY4/F+BYwRL2/tV7+4zpjVx6ptWpIEWYfTJk4iP4TMcimNuU\nt6aZAdolD2W93vRurB++bFtfOPwkWjSbk5+PiYWxMxMxeZnOdp+tBvLYLIpKi3dh\nY2nETkknCLpSFjgT/rhKphwmbQKBgQDWATV1K0vDFgySG4/SpMy0ojqzCNFKvtXN\n3/i9dr5JmryF5d8Vdi0pMFMIdQBtF+NQ5zYTBlw7INlzAl1yF9TMVMuZEoyf4PwQ\nV2jyrCrGMMsiaDv0397hL6+jNNZGIpeMNzCNDAYXxevY7yrSzJUNIZH6f2DzScP+\nz7c9Kn1/3QKBgQCJNCa5173jmrhTR6M1+hCnkKBEIbJGptCTaMNlV+ebTfEl4MSc\nqSvHkgjkN/veeXYcxc1bAcbPtEH0fKvCGNDVpKE+Svst+p+rfONcwNcoRIAH57uj\nRoYBH05woNDTbYhJYJvHY0LheFB0ZD8cT/IkVQNaEQy81nThISksukyBQQKBgFd/\nGQc1030Ix8z4/d2myZdU+OD4SvHfgnTxDLcSFIztegTYzlPtBFvhySEdDTaNXMBY\nOBChOhZmwOE351LdkYCVbsTAA8TebNCVnHATmk1756HCsjjVS0AQiiQVV0JHpGSM\nsAoLD3aq0lnYt06GnK5IunGLoOz3jO3iqU2V0Mf1AoGAOCQZbQgtTD7h5bXoFKLS\n5YsO86Lclp7WmChbCcmKtG7SL1dCakc30iogFwWI0BH6mxfB1vWcbnNx5f29807C\nwIQqskDvtT149ToywR3QAbsbjx9x++3CLCGV4cQmcudIMTNfaawMXYRmT+aXS1cU\nJeArIx2fJaVnqwiL7bj/aaU=\n-----END PRIVATE KEY-----\n",
+                'client_email' => 'firebase-adminsdk-49xcg@rosantibikemotorent.iam.gserviceaccount.com',
+                'client_id' => '104776711570897417205',
+                'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
+                'token_uri' => 'https://oauth2.googleapis.com/token',
+                'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
+                'client_x509_cert_url' => 'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-49xcg%40rosantibikemotorent.iam.gserviceaccount.com',
+                'universe_domain' => 'googleapis.com',
+            ],
+            
+            
 
             /*
              * ------------------------------------------------------------------------
