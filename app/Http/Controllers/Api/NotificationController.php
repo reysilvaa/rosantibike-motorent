@@ -17,8 +17,9 @@ class NotificationController extends Controller
     {
         try {
             Log::info('Initializing Firebase Messaging');
-            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
-            $this->messaging = $factory->createMessaging();
+            $factory = (new Factory)->withServiceAccount(config('rosantibike-motorent.project.app.firebase.credentials'));
+            dd($factory);
+            $this->messaging = $factory->createDatabase();
             Log::info('Firebase Messaging initialized successfully');
         } catch (\Exception $e) {
             Log::error('Firebase initialization error: ' . $e->getMessage());
