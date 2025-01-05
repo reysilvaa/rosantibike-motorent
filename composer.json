@@ -9,6 +9,8 @@
         "barryvdh/laravel-dompdf": "^2.2",
         "beyondcode/laravel-websockets": "^1.14",
         "guzzlehttp/guzzle": "^7.2",
+        "kreait/firebase-php": "*",
+        "kreait/laravel-firebase": "^5.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",

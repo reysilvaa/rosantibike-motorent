@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Api/NotificationController.php
 
 namespace App\Http\Controllers\Api;
 
@@ -8,6 +7,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
@@ -15,12 +15,21 @@ class NotificationController extends Controller
 
     public function __construct()
     {
-        $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
-        $this->messaging = $factory->createMessaging();
+        try {
+            Log::info('Initializing Firebase Messaging');
+            $factory = (new Factory)->withServiceAccount(config('firebase.credentials'));
+            $this->messaging = $factory->createMessaging();
+            Log::info('Firebase Messaging initialized successfully');
+        } catch (\Exception $e) {
+            Log::error('Firebase initialization error: ' . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function sendNotification(Request $request)
     {
+        Log::info('Received notification request', $request->all());
+
         $validated = $request->validate([
             'token' => 'required|string',
             'title' => 'required|string',
@@ -28,6 +37,8 @@ class NotificationController extends Controller
             'transaction_id' => 'required|string',
             'motor_type' => 'required|string',
         ]);
+
+        Log::info('Validation passed', $validated);
 
         try {
             $message = CloudMessage::withTarget('token', $validated['token'])
@@ -38,13 +49,32 @@ class NotificationController extends Controller
                     'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
                 ]);
 
-            $this->messaging->send($message);
+            Log::info('Prepared message', [
+                'token' => $validated['token'],
+                'notification' => [
+                    'title' => $validated['title'],
+                    'body' => $validated['body']
+                ],
+                'data' => [
+                    'transaction_id' => $validated['transaction_id'],
+                    'motor_type' => $validated['motor_type']
+                ]
+            ]);
+
+            $result = $this->messaging->send($message);
+            Log::info('Notification sent successfully', ['result' => $result]);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notifikasi berhasil dikirim'
+                'message' => 'Notifikasi berhasil dikirim',
+                'result' => $result
             ]);
         } catch (\Exception $e) {
+            Log::error('Failed to send notification', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Gagal mengirim notifikasi: ' . $e->getMessage()
