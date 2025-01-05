@@ -17,15 +17,32 @@ class NotificationController extends Controller
     {
         try {
             Log::info('Initializing Firebase Messaging');
-            $factory = (new Factory)->withServiceAccount(config('rosantibike-motorent.project.app.firebase.credentials'));
-            dd($factory);
-            $this->messaging = $factory->createDatabase();
+            
+            // Pastikan untuk menggunakan path konfigurasi yang benar
+            $credentials = config('firebase.projects.app.credentials');
+            
+            // Cek apakah kredensial ada
+            if (!$credentials) {
+                Log::error('Firebase credentials are missing');
+                throw new \Exception('Firebase credentials are missing');
+            }
+    
+            // Inisialisasi Firebase Factory dengan kredensial yang benar
+            $factory = (new Factory)->withServiceAccount($credentials);
+            
+            // Untuk debug, pastikan objek Factory telah diinisialisasi dengan benar
+            // dd($factory);
+            
+            // Membuat instance database (sesuaikan dengan kebutuhan Anda, misalnya, menggunakan Realtime Database atau Firestore)
+            $this->messaging = $factory->createDatabase(); // Jika menggunakan Firestore, ganti dengan createFirestore()
+            
             Log::info('Firebase Messaging initialized successfully');
         } catch (\Exception $e) {
             Log::error('Firebase initialization error: ' . $e->getMessage());
             throw $e;
         }
     }
+    
 
     public function sendNotification(Request $request)
     {
