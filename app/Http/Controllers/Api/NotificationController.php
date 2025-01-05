@@ -30,10 +30,7 @@ class NotificationController extends Controller
             // Inisialisasi Firebase Factory dengan kredensial yang benar
             $factory = (new Factory)->withServiceAccount($credentials);
             
-            // Untuk debug, pastikan objek Factory telah diinisialisasi dengan benar
-            // dd($factory);
-            
-            // Membuat instance database (sesuaikan dengan kebutuhan Anda, misalnya, menggunakan Realtime Database atau Firestore)
+            // Membuat instance messaging
             $this->messaging = $factory->createMessaging(); // Jika menggunakan Firestore, ganti dengan createFirestore()
             
             Log::info('Firebase Messaging initialized successfully');
@@ -59,12 +56,13 @@ class NotificationController extends Controller
         Log::info('Validation passed', $validated);
 
         try {
+            // Mempersiapkan pesan untuk dikirim
             $message = CloudMessage::withTarget('token', $validated['token'])
                 ->withNotification(Notification::create($validated['title'], $validated['body']))
                 ->withData([
                     'transaction_id' => $validated['transaction_id'],
                     'motor_type' => $validated['motor_type'],
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK' // Aksi klik untuk aplikasi Flutter
                 ]);
 
             Log::info('Prepared message', [
@@ -79,6 +77,7 @@ class NotificationController extends Controller
                 ]
             ]);
 
+            // Mengirim pesan ke Firebase
             $result = $this->messaging->send($message);
             Log::info('Notification sent successfully', ['result' => $result]);
 

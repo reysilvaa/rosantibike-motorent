@@ -48,7 +48,7 @@ class TransaksiController extends Controller
     }
         
     public function store(Request $request)
-    {
+    {        
         $messages = [
             'nama_penyewa.required' => 'Nama penyewa harus diisi.',
             'alamat.required' => 'Alamat harus diisi.',
@@ -122,23 +122,28 @@ class TransaksiController extends Controller
                     }
                 }
 
-                // Prepare notification data
-                $notificationData = [
-                    'token' => $validated['device_token'],
-                    'title' => $isBooking ? 'Booking Baru' : 'Transaksi Sewa Baru',
-                    'body' => "Penyewaan {$jenis_motor->nama} oleh {$validated['nama_penyewa']} untuk tanggal " . 
-                            $tgl_sewa->format('d/m/Y') . " sampai " . $tgl_kembali->format('d/m/Y'),
-                    'transaction_id' => (string)$transaction->id,
-                    'motor_type' => $jenis_motor->nama
-                ];
+                // // Prepare notification data
+                // $notificationData = [
+                //     'to' => $validated['device_token'],
+                //     'notification' => [
+                //         'title' => $isBooking ? 'Booking Baru' : 'Transaksi Sewa Baru',
+                //         'body' => "Penyewaan {$jenis_motor->merk} oleh {$validated['nama_penyewa']} untuk tanggal " . 
+                //                  $tgl_sewa->format('d/m/Y') . " sampai " . $tgl_kembali->format('d/m/Y'),
+                //     ],
+                //     'data' => [
+                //         'transaction_id' => (string)$transaction->id,
+                //         'motor_type' => $jenis_motor->merk,
+                //     ]
+                // ];
+                
 
                 // Send notification
-                Http::post(route('api.send-notification'), $notificationData);
+                // Http::post(route('api.send-notification'), $notificationData);
 
-                $createdTransactions[] = [
-                    'id' => $transaction->id,
-                    'type' => $isBooking ? 'booking' : 'rental'
-                ];
+                // $createdTransactions[] = [
+                //     'id' => $transaction->id,
+                //     'type' => $isBooking ? 'booking' : 'rental'
+                // ];
             }
 
             DB::commit();
