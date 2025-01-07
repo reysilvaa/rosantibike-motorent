@@ -7,16 +7,9 @@ use App\Models\JenisMotor;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
 
 class AdminBookingController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function index()
     {
         return response()->json(['message' => 'Welcome to Admin Booking API']);
@@ -24,31 +17,38 @@ class AdminBookingController extends Controller
 
     public function bookings(Request $request)
     {
+        // Get search query parameter
         $search = $request->query('search', null);
         $lastUpdated = $request->query('last_updated', null);
-
+    
+        // Start building the query
         $query = Booking::with(['jenisMotor.stok'])
                         ->leftJoin('jenis_motor', 'booking.id_jenis', '=', 'jenis_motor.id')
                         ->select('booking.*', 'jenis_motor.nopol', 'jenis_motor.status');
-
+    
+        // Apply search condition if there is a search query
         if ($search) {
-            $query->where(function ($q) use ($search) {
+            $query->where(function($q) use ($search) {
                 $q->where('booking.id', 'like', "%$search%")
                   ->orWhere('jenis_motor.nopol', 'like', "%$search%")
-                  ->orWhere('booking.nama_penyewa', 'like', "%$search%");
+                  ->orWhere('booking.nama_penyewa', 'like', "%$search%"); // Add more fields as needed
             });
         }
-
+    
+        // Optionally apply the 'last_updated' filter
         if ($lastUpdated) {
             $query->where('booking.updated_at', '>=', $lastUpdated);
         }
-
+    
+        // Get the results
         $data = $query->get();
-
+    
+        // If no data found, return an empty response (no message)
         if ($data->isEmpty()) {
             return response()->json([]);
         }
-
+    
+        // Return the results if data is found
         return response()->json([
             'success' => true,
             'message' => 'Booking list retrieved successfully',
@@ -57,6 +57,7 @@ class AdminBookingController extends Controller
             'timestamps' => now(),
         ]);
     }
+    
 
     public function show($id)
     {
