@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\JenisMotor;
 use App\Models\Stok;
 use App\Models\Transaksi;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
 class JenisMotorController extends Controller
 {
+    public function __construct()
+    {
+        // Terapkan autentikasi JWT untuk semua metode di controller ini
+        $this->middleware('auth:api');
+    }
+
     // Display a listing of the resource.
     public function index(Request $request)
     {
