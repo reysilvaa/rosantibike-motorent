@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InvoiceController;
 use Illuminate\Http\Request;
@@ -15,7 +14,7 @@ Route::post('/send-notification', [NotificationController::class, 'sendNotificat
 Route::get('invoice/preview/{type}/{id}', [InvoiceController::class, 'previewInvoice']);
 Route::get('invoice/download/{type}/{id}', [InvoiceController::class, 'downloadInvoice']);
 
-Route::prefix('admin/booking')->group(function () {
+Route::prefix('admin/booking')->middleware('auth:api')->group(function () {
     Route::get('/', [AdminBookingController::class, 'index']);
     Route::get('/list', [AdminBookingController::class, 'bookings']);
     Route::get('/{id}', [AdminBookingController::class, 'show']);
@@ -24,7 +23,7 @@ Route::prefix('admin/booking')->group(function () {
     Route::post('/bulk-delete', [AdminBookingController::class, 'bulkDelete']);
 });
 
-Route::prefix('admin/transaksi')->group(function () {
+Route::prefix('admin/transaksi')->middleware('auth:api')->group(function () {
     Route::get('/', [AdminTransaksiController::class, 'index']);
     Route::get('/{id}', [AdminTransaksiController::class, 'show']);
     Route::post('/update/{id}', [AdminTransaksiController::class, 'update']);
@@ -33,7 +32,7 @@ Route::prefix('admin/transaksi')->group(function () {
     Route::get('/datatable', [AdminTransaksiController::class, 'getData']);
 });
 
-Route::apiResource('admin/jenis-motor', JenisMotorController::class);
+Route::apiResource('admin/jenis-motor', JenisMotorController::class)->middleware('auth:api');
 
 Route::prefix('transaksi')->group(function () {
     Route::get('/', [TransaksiController::class, 'index']);
