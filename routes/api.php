@@ -50,5 +50,7 @@ Route::middleware(['throttle:1000,1'])->prefix('transaksi')->group(function () {
 
 // Endpoint login, logout, dan profil
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
-Route::get('me', [AuthController::class, 'me'])->middleware('auth:api');
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('me', [AuthController::class, 'me']);
+});
