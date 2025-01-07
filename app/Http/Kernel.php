@@ -43,7 +43,6 @@ class Kernel extends HttpKernel
       // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
       \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
       \Illuminate\Routing\Middleware\SubstituteBindings::class,
-      \Illuminate\Routing\Middleware\ThrottleRequests::class.':1000,1',  // 60 request per menit
 
 
     ],

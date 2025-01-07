@@ -10,6 +10,11 @@ use App\Http\Controllers\Controller;
 
 class AdminTransaksiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     // Endpoint untuk mengambil semua data transaksi
     public function index(Request $request)
     {

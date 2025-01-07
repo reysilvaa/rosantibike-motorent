@@ -1,96 +1,74 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-    // Login dan menghasilkan token
+    // Method untuk login API dengan JWT
     public function login(Request $request)
     {
         // Validasi input
-        $credentials = $request->validate([
-            'uname' => 'required|string',
-            'pass' => 'required|string',
+        $request->validate([
+            'uname' => 'required|string', // Login berdasarkan username
+            'pass' => 'required|string',  // Password
         ]);
 
         // Cari user berdasarkan username
-        $user = User::where('uname', $credentials['uname'])->first();
+        $user = User::where('uname', $request->uname)->first();
 
-        // Cek apakah user ada dan password valid
-        if (!$user || !Hash::check($credentials['pass'], $user->pass)) {
-            Log::warning('Percobaan login gagal untuk username: ' . $credentials['uname']);
-            return response()->json(['message' => 'Username atau password salah!'], 401);
+        // Cek apakah user ada dan password sesuai
+        if (!$user || !Hash::check($request->pass, $user->pass)) {
+            return response()->json(['error' => 'Invalid credentials'], 401); // Kredensial salah
         }
 
-        // Generate token JWT
+        // Coba login menggunakan JWT
         try {
             $token = JWTAuth::fromUser($user);
         } catch (JWTException $e) {
-            Log::error('Gagal membuat token: ' . $e->getMessage());
-            return response()->json(['message' => 'Gagal membuat token.'], 500);
+            return response()->json(['error' => 'Could not create token'], 500); // Gagal membuat token
         }
 
-        // Log login berhasil
-        Log::info('User ' . $user->uname . ' berhasil login.');
+        // Jika login berhasil, kembalikan token
+        return $this->respondWithToken($token);
+    }
 
+    // Method untuk logout API
+    public function logout()
+    {
+        // Logout pengguna
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken()); // Invalidate token yang sedang aktif
+            return response()->json(['message' => 'Successfully logged out']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to log out'], 500); // Gagal logout
+        }
+    }
+
+    // Method untuk refresh token
+    public function refresh()
+    {
+        try {
+            $refreshedToken = JWTAuth::refresh(); // Refresh token yang telah kadaluarsa
+            return $this->respondWithToken($refreshedToken);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to refresh token'], 500); // Gagal refresh token
+        }
+    }
+
+    // Helper untuk membungkus response dengan token
+    protected function respondWithToken($token)
+    {
         return response()->json([
-            'message' => 'Login berhasil.',
-            'token' => $token,
-            'user' => $user
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60 // Waktu kedaluwarsa dalam detik
         ]);
     }
-
-    // Logout user
-    public function logout(Request $request)
-    {
-        // Ambil token dari header Authorization
-        $token = $request->header('Authorization');
-        if (!$token) {
-            return response()->json(['message' => 'Token tidak ditemukan.'], 400);
-        }
-
-        // Invalidate token
-        try {
-            JWTAuth::invalidate($token);
-            return response()->json(['message' => 'Logout berhasil.']);
-        } catch (JWTException $e) {
-            return response()->json(['message' => 'Gagal logout.'], 500);
-        }
-    }
-
-    public function me(Request $request)
-    {
-        $token = $request->header('Authorization');
-
-        if (!$token) {
-            return response()->json(['message' => 'Token tidak ditemukan.'], 400);
-        }
-
-        try {
-            // Validasi dan autentikasi token
-            $user = JWTAuth::setToken(str_replace('Bearer ', '', $token))->authenticate();
-
-            if (!$user) {
-                return response()->json(['message' => 'User tidak ditemukan.'], 404);
-            }
-
-            return response()->json(['user' => $user]);
-
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['message' => 'Token sudah kedaluwarsa.', 'error' => $e->getMessage()], 401);
-        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['message' => 'Token tidak valid.', 'error' => $e->getMessage()], 401);
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['message' => 'Token tidak ditemukan.', 'error' => $e->getMessage()], 400);
-        }
-    }
-
 }
