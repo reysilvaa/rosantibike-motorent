@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\JenisMotor;
 use App\Models\Stok;
+use App\Models\Transaksi;
 use Illuminate\Support\Facades\Storage;
-use Cloudinary\Uploader;
 use App\Http\Controllers\Controller;
-\
+
 class JenisMotorController extends Controller
 {
     // Display a listing of the resource.
@@ -17,7 +17,6 @@ class JenisMotorController extends Controller
         $lastUpdated = $request->query('last_updated', null);
 
         $jenisMotors = JenisMotor::with('stok')->get();
-
         $count = $jenisMotors->count();
         return response()->json([
             'data' => $jenisMotors,
@@ -55,18 +54,6 @@ class JenisMotorController extends Controller
 
         $data = $validated;
         $data['status'] = 'ready'; // Set the status to 'ready'
-
-        // Jika ada foto yang diupload
-        if ($request->hasFile('foto')) {
-            // Upload ke Cloudinary di folder rosantibike/motors/
-            $file = $request->file('foto');
-            $uploadedFile = Uploader::upload($file->getRealPath(), [
-                'folder' => 'rosantibike/motors/',
-            ]);
-
-            // Simpan URL foto yang diupload ke Cloudinary
-            $data['foto'] = $uploadedFile['secure_url'];
-        }
 
         $jenisMotor = JenisMotor::create($data);
 
@@ -112,22 +99,8 @@ class JenisMotorController extends Controller
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
 
-        $data = $validated;
-
-        // Jika ada foto baru yang diupload
-        if ($request->hasFile('foto')) {
-            // Upload foto ke Cloudinary
-            $file = $request->file('foto');
-            $uploadedFile = Uploader::upload($file->getRealPath(), [
-                'folder' => 'rosantibike/motors/',
-            ]);
-
-            // Simpan URL foto baru
-            $data['foto'] = $uploadedFile['secure_url'];
-        }
-
         $jenisMotor = JenisMotor::findOrFail($id);
-        $jenisMotor->update($data);
+        $jenisMotor->update($validated);
 
         return response()->json([
             'message' => 'Jenis Motor berhasil diperbarui',
