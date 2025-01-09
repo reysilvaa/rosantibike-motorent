@@ -7,9 +7,9 @@ RosantiBike Motorent adalah aplikasi web berbasis Laravel yang dirancang untuk m
 ## 📋 Persyaratan
 Sebelum memulai, pastikan Anda telah menginstal:
 
-- [PHP](https://www.php.net/downloads) (versi 7.4 atau lebih baru)
+- [PHP](https://www.php.net/downloads) (versi 8.1)
 - [Composer](https://getcomposer.org/)
-- [Laravel](https://laravel.com/docs/installation) (versi terbaru disarankan)
+- [Laravel](https://laravel.com/docs/installation)
 - [Node.js](https://nodejs.org/) dan npm/yarn
 - Server database seperti MySQL
 
