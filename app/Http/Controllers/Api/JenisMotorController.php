@@ -17,6 +17,10 @@ class JenisMotorController extends Controller
         $lastUpdated = $request->query('last_updated', null);
 
         $jenisMotors = JenisMotor::with('stok')->get();
+        
+        foreach ($jenisMotors as $jenisMotor) {
+            $jenisMotor->stok->foto = Storage::url($jenisMotor->stok->foto);
+        }
         $count = $jenisMotors->count();
         return response()->json([
             'data' => $jenisMotors,
