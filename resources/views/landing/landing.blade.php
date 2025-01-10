@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id" class="overflow-x-hidden">
-<head>
+    <head>
+        <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F5L46F7N9X"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F5L46F7N9X');
+    </script>
     <script type="application/ld+json">
         {
           "@context": "http://schema.org",
