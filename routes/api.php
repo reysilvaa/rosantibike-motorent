@@ -33,21 +33,13 @@ Route::prefix('admin/transaksi')->middleware('auth:api')->group(function () {
 });
 
 Route::prefix('admin/jenis-motors')->middleware('auth:api')->group(function () {
-    // Store (Create) a new JenisMotor
     Route::post('/store', [JenisMotorController::class, 'store']);
-    
-    // Update an existing JenisMotor by ID
     Route::put('/{id}', [JenisMotorController::class, 'update']);
-    
-    // List all JenisMotor
     Route::get('/', [JenisMotorController::class, 'index']);
-    
-    // Show a specific JenisMotor by ID
     Route::get('/{id}', [JenisMotorController::class, 'show']);
-    
-    // Delete a specific JenisMotor by ID
     Route::delete('/{id}', [JenisMotorController::class, 'destroy']);
 });
+
 Route::prefix('transaksi')->group(function () {
     Route::get('/', [TransaksiController::class, 'index']);
     Route::post('/create', [TransaksiController::class, 'create']);
