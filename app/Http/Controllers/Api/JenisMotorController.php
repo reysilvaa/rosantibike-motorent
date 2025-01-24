@@ -46,23 +46,45 @@ class JenisMotorController extends Controller
             'id_stok.required' => 'Pilihan Merk Motor wajib diisi.',
             'id_stok.exists' => 'Pilihan Merk Motor tidak valid.',
         ];
-
+    
         $validated = $request->validate([
             'nopol' => 'required|string|max:10',
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
-
+    
+        // Add status field to data
         $data = $validated;
         $data['status'] = 'ready'; // Set the status to 'ready'
-
+    
+        // Create the JenisMotor resource
         $jenisMotor = JenisMotor::create($data);
-
+    
+        // Include related stok data
+        $jenisMotor->load('stok');  // Ensure stok data is loaded
+    
+        // Format the response to match the required structure
         return response()->json([
             'message' => 'Jenis Motor berhasil dibuat',
-            'data' => $jenisMotor
+            'data' => [
+                'id' => $jenisMotor->id,
+                'id_stok' => $jenisMotor->id_stok,
+                'nopol' => $jenisMotor->nopol,
+                'status' => $jenisMotor->status,
+                'stok' => [
+                    'id' => $jenisMotor->stok->id,
+                    'merk' => $jenisMotor->stok->merk,
+                    'judul' => $jenisMotor->stok->judul,
+                    'deskripsi1' => $jenisMotor->stok->deskripsi1,
+                    'deskripsi2' => $jenisMotor->stok->deskripsi2,
+                    'deskripsi3' => $jenisMotor->stok->deskripsi3,
+                    'kategori' => $jenisMotor->stok->kategori,
+                    'harga_perHari' => $jenisMotor->stok->harga_perHari,
+                    'foto' => $jenisMotor->stok->foto,
+                ]
+            ]
         ], 201);
     }
-
+    
     // Display the specified resource.
     public function show($id)
     {
@@ -93,29 +115,39 @@ class JenisMotorController extends Controller
             'id_stok.required' => 'Pilihan Merk Motor wajib diisi.',
             'id_stok.exists' => 'Pilihan Merk Motor tidak valid.',
         ];
-
+    
         $validated = $request->validate([
             'nopol' => 'required|string|max:255',
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
-
+    
+        // Find and update the JenisMotor resource
         $jenisMotor = JenisMotor::findOrFail($id);
         $jenisMotor->update($validated);
-
+    
+        // Load the related stok data
+        $jenisMotor->load('stok');
+    
+        // Format the response to match the required structure
         return response()->json([
             'message' => 'Jenis Motor berhasil diperbarui',
-            'data' => $jenisMotor
+            'data' => [
+                'id' => $jenisMotor->id,
+                'id_stok' => $jenisMotor->id_stok,
+                'nopol' => $jenisMotor->nopol,
+                'status' => $jenisMotor->status,
+                'stok' => [
+                    'id' => $jenisMotor->stok->id,
+                    'merk' => $jenisMotor->stok->merk,
+                    'judul' => $jenisMotor->stok->judul,
+                    'deskripsi1' => $jenisMotor->stok->deskripsi1,
+                    'deskripsi2' => $jenisMotor->stok->deskripsi2,
+                    'deskripsi3' => $jenisMotor->stok->deskripsi3,
+                    'kategori' => $jenisMotor->stok->kategori,
+                    'harga_perHari' => $jenisMotor->stok->harga_perHari,
+                    'foto' => $jenisMotor->stok->foto,
+                ]
+            ]
         ]);
-    }
-
-    // Remove the specified resource from storage.
-    public function destroy($id)
-    {
-        $jenisMotor = JenisMotor::findOrFail($id);
-        $jenisMotor->delete();
-
-        return response()->json([
-            'message' => 'Jenis Motor berhasil dihapus'
-        ]);
-    }
+    }    
 }
