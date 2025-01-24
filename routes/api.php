@@ -34,7 +34,7 @@ Route::prefix('admin/transaksi')->middleware('auth:api')->group(function () {
 
 Route::prefix('admin/jenis-motors')->middleware('auth:api')->group(function () {
     // Store (Create) a new JenisMotor
-    Route::post('/', [JenisMotorController::class, 'store']);
+    Route::post('/store', [JenisMotorController::class, 'store']);
     
     // Update an existing JenisMotor by ID
     Route::put('/{id}', [JenisMotorController::class, 'update']);
