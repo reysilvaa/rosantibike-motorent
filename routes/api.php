@@ -32,7 +32,7 @@ Route::prefix('admin/transaksi')->middleware('auth:api')->group(function () {
     Route::get('/datatable', [AdminTransaksiController::class, 'getData']);
 });
 
-Route::prefix('admin/jenis-motors')->group(function () {
+Route::prefix('admin/jenis-motors')->middleware('auth:api')->group(function () {
     // Store (Create) a new JenisMotor
     Route::post('/', [JenisMotorController::class, 'store']);
     
