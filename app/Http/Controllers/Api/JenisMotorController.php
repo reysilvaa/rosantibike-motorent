@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\JenisMotor;
 use App\Models\Stok;
-use App\Models\Transaksi;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 
 class JenisMotorController extends Controller
 {
-    // Display a listing of the resource.
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): JsonResponse
     {
         $lastUpdated = $request->query('last_updated', null);
 
@@ -25,8 +26,10 @@ class JenisMotorController extends Controller
         ]);
     }
 
-    // Show the form for creating a new resource.
-    public function create()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): JsonResponse
     {
         $jenisMotors = JenisMotor::with('stok')->distinct('id_stok')->get();
         $stoks = Stok::all();
@@ -36,8 +39,10 @@ class JenisMotorController extends Controller
         ]);
     }
 
-    // Store a newly created resource in storage.
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request): JsonResponse
     {
         $messages = [
             'nopol.required' => 'Nomor Polisi wajib diisi.',
@@ -48,7 +53,7 @@ class JenisMotorController extends Controller
         ];
     
         $validated = $request->validate([
-            'nopol' => 'required|string|max:10',
+            'nopol' => 'required|string|max:9', // Sesuaikan panjang dengan 9
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
     
@@ -59,10 +64,10 @@ class JenisMotorController extends Controller
         // Create the JenisMotor resource
         $jenisMotor = JenisMotor::create($data);
     
-        // Include related stok data
-        $jenisMotor->load('stok');  // Ensure stok data is loaded
+        // Load related stok data
+        $jenisMotor->load('stok');
     
-        // Format the response to match the required structure
+        // Return the formatted response
         return response()->json([
             'message' => 'Jenis Motor berhasil dibuat',
             'data' => [
@@ -84,29 +89,47 @@ class JenisMotorController extends Controller
             ]
         ], 201);
     }
-    
-    // Display the specified resource.
-    public function show($id)
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id): JsonResponse
     {
-        $jenisMotor = JenisMotor::findOrFail($id);
-        return response()->json([
-            'data' => $jenisMotor
-        ]);
+        try {
+            $jenisMotor = JenisMotor::with('stok')->findOrFail($id);
+            return response()->json([
+                'data' => $jenisMotor
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Jenis Motor tidak ditemukan'
+            ], 404);
+        }
     }
 
-    // Show the form for editing the specified resource.
-    public function edit($id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id): JsonResponse
     {
-        $stoks = Stok::all();
-        $jenisMotor = JenisMotor::with('stok')->findOrFail($id);
-        return response()->json([
-            'jenisMotor' => $jenisMotor,
-            'stoks' => $stoks
-        ]);
+        try {
+            $jenisMotor = JenisMotor::with('stok')->findOrFail($id);
+            $stoks = Stok::all();
+            return response()->json([
+                'jenisMotor' => $jenisMotor,
+                'stoks' => $stoks
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Jenis Motor tidak ditemukan'
+            ], 404);
+        }
     }
 
-    // Update the specified resource in storage.
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id): JsonResponse
     {
         $messages = [
             'nopol.required' => 'Nomor Polisi wajib diisi.',
@@ -117,18 +140,18 @@ class JenisMotorController extends Controller
         ];
     
         $validated = $request->validate([
-            'nopol' => 'required|string|max:255',
+            'nopol' => 'required|string|max:9', // Sesuaikan panjang dengan 9
             'id_stok' => 'required|exists:stok,id',
         ], $messages);
     
-        // Find and update the JenisMotor resource
+        // Find the JenisMotor resource and update it
         $jenisMotor = JenisMotor::findOrFail($id);
         $jenisMotor->update($validated);
     
-        // Load the related stok data
+        // Load related stok data
         $jenisMotor->load('stok');
     
-        // Format the response to match the required structure
+        // Return the formatted response
         return response()->json([
             'message' => 'Jenis Motor berhasil diperbarui',
             'data' => [
@@ -149,5 +172,5 @@ class JenisMotorController extends Controller
                 ]
             ]
         ]);
-    }    
+    }
 }
