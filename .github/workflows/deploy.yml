@@ -5,7 +5,6 @@ on:
     branches:
       - main  # Ganti dengan nama branch utama yang kamu gunakan (misal: master)
 
-
 jobs:
   deploy:
     runs-on: ubuntu-20.04
@@ -20,11 +19,21 @@ jobs:
           echo "${{ secrets.VPS_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          # Debugging: cek apakah file SSH key sudah ada dan apakah permission sudah benar
+          ls -l ~/.ssh
+          cat ~/.ssh/id_rsa
+          cat ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          echo "Testing SSH connection..."
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} exit
 
       - name: Deploy ke VPS
         run: |
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd var/www/rosantibike/html
+          echo "Deploying to VPS..."
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd /var/www/rosantibike/html
             git pull origin main  # Pastikan project di VPS sudah berada di branch yang sama
             # Contoh untuk Laravel:
             composer install --no-dev --optimize-autoloader
