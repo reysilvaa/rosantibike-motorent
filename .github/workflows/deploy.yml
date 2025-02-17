@@ -24,7 +24,7 @@ jobs:
       - name: Deploy ke VPS
         run: |
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd /path/to/project
+            cd var/www/rosantibike/html
             git pull origin main  # Pastikan project di VPS sudah berada di branch yang sama
             # Contoh untuk Laravel:
             composer install --no-dev --optimize-autoloader
