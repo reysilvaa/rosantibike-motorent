@@ -19,28 +19,20 @@ jobs:
           echo "${{ secrets.VPS_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-          # Debugging: cek apakah file SSH key sudah ada dan apakah permission sudah benar
-          ls -l ~/.ssh
-          cat ~/.ssh/id_rsa
-          cat ~/.ssh/known_hosts
 
       - name: Test SSH connection
         run: |
-          echo "Testing SSH connection..."
           ssh -v -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} exit
 
       - name: Deploy ke VPS
         run: |
-          echo "Deploying to VPS..."
-          ssh -v -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
             cd /var/www/rosantibike/html
-            git pull origin main  # Pastikan project di VPS sudah berada di branch yang sama
-            # Contoh untuk Laravel:
+            git pull origin main
             composer install --no-dev --optimize-autoloader
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            # Restart service jika perlu (misal: PHP-FPM, Nginx)
             sudo systemctl restart php8.1-fpm
             sudo systemctl restart nginx
           EOF
