@@ -5,6 +5,7 @@ on:
     branches:
       - main  # Ganti dengan nama branch utama yang kamu gunakan (misal: master)
 
+
 jobs:
   deploy:
     runs-on: ubuntu-20.04
