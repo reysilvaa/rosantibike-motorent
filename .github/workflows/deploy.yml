@@ -25,7 +25,6 @@ jobs:
             composer install --no-interaction --prefer-dist --optimize-autoloader
             npm i
             npm run build
-            composer i
             php artisan migrate --force
             php artisan config:clear
             php artisan config:cache
