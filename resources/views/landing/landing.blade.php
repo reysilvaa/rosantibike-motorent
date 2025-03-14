@@ -59,7 +59,9 @@
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight" x-text="typingText"></h1>
             <p class="text-xl md:text-2xl mb-8 font-light">
                 Sewa motor berkualitas untuk petualangan Anda di Kota Malang
+                <p class="text-xl md:text-2xl mb-8 font-light">
                 Nama : Moch Reynald Silva Baktiar
+                <p class="text-xl md:text-2xl mb-8 font-light">
                 NIM  : 2241720203
             </p>
             <a href="https://wa.me/628113535122" id="pesan-now" class="bg-white text-blue-600 py-3 px-8 rounded-full text-lg font-semibold shadow-md hover:bg-blue-50 transition duration-300 ease-in-out" target="_blank">
