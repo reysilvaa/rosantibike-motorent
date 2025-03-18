@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Stok;
 use App\Models\JenisMotor;
-use Carbon\Carbon;
 
 class MotorSeeder extends Seeder
 {
@@ -16,9 +15,7 @@ class MotorSeeder extends Seeder
      */
     public function run()
     {
-        // Clear existing data
-        JenisMotor::truncate();
-        Stok::truncate();
+
 
         // Create stock entries
         $beatFl = Stok::create([
@@ -98,37 +95,28 @@ class MotorSeeder extends Seeder
             'kategori' => 'Matic',
         ]);
 
-        // Current timestamp
-        $now = Carbon::now();
-
         // Create motorcycle types for Beat Fl
         $beatFlNopols = ['N 2045 ADK', 'N 5828 ADF', 'N 5986 ADH'];
         foreach ($beatFlNopols as $nopol) {
             JenisMotor::create([
                 'id_stok' => $beatFl->id,
-                'status' => 'available',
+                'status' => 'ready',
                 'nopol' => $nopol,
-                'created_at' => $now,
-                'updated_at' => $now,
             ]);
         }
 
         // Create motorcycle type for Scoopy
         JenisMotor::create([
             'id_stok' => $scoopy->id,
-            'status' => 'available',
+            'status' => 'ready',
             'nopol' => 'N 6393 EDN',
-            'created_at' => $now,
-            'updated_at' => $now,
         ]);
 
         // Create motorcycle type for Vario 125cc
         JenisMotor::create([
             'id_stok' => $vario125->id,
-            'status' => 'available',
+            'status' => 'ready',
             'nopol' => 'N 2238 ABV',
-            'created_at' => $now,
-            'updated_at' => $now,
         ]);
 
         // Create motorcycle types for Vario 150cc
@@ -136,10 +124,8 @@ class MotorSeeder extends Seeder
         foreach ($vario150Nopols as $nopol) {
             JenisMotor::create([
                 'id_stok' => $vario150->id,
-                'status' => 'available',
+                'status' => 'ready',
                 'nopol' => $nopol,
-                'created_at' => $now,
-                'updated_at' => $now,
             ]);
         }
 
@@ -148,29 +134,23 @@ class MotorSeeder extends Seeder
         foreach ($maxiLexiNopols as $nopol) {
             JenisMotor::create([
                 'id_stok' => $maxiLexi->id,
-                'status' => 'available',
+                'status' => 'ready',
                 'nopol' => $nopol,
-                'created_at' => $now,
-                'updated_at' => $now,
             ]);
         }
 
         // Create motorcycle type for Soul GT
         JenisMotor::create([
             'id_stok' => $soulGT->id,
-            'status' => 'available',
+            'status' => 'ready',
             'nopol' => 'N 5993 ADJ',
-            'created_at' => $now,
-            'updated_at' => $now,
         ]);
 
         // Create motorcycle type for PCX
         JenisMotor::create([
             'id_stok' => $pcx->id,
-            'status' => 'available',
+            'status' => 'ready',
             'nopol' => 'N 2603 ACA',
-            'created_at' => $now,
-            'updated_at' => $now,
         ]);
     }
 }
