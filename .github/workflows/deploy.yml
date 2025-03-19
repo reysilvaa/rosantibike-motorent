@@ -3,7 +3,7 @@ name: Deploy Laravel ke VPS
 on:
   push:
     branches:
-      - main  # Ganti sesuai branch utama Anda
+      - main  # Ganti dengan branch utama proyekmu
 
 jobs:
   deploy:
@@ -20,49 +20,66 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e  # Stop jika terjadi error
+            set -e  # Hentikan skrip jika ada error
 
+            echo "🚀 Memulai deploy ke VPS..."
+
+            # Masuk ke direktori proyek
+            cd /var/www/rosantibike
+
+            echo "🔄 Reset perubahan lokal yang belum di-commit..."
+            git reset --hard
+            git clean -fd
+
+            # Tambahkan safe directory agar tidak error
             git config --global --add safe.directory /var/www/rosantibike
+            echo "✅ Git repository diizinkan!"
 
-            echo "Memulai proses deploy ke VPS..."
-            
-            MAX_RETRIES=3
-            RETRY=0
+            # Tarik kode terbaru dari GitHub
+            echo "🔄 Fetching latest code..."
+            git pull origin main
 
-            while [ $RETRY -lt $MAX_RETRIES ]; do
-              echo "Percobaan ke-$((RETRY+1))"
-
-              if cd /var/www/rosantibike && \
-                 git pull origin main && \
-                 composer install --no-interaction --prefer-dist --optimize-autoloader && \
-                 npm ci && npm run build && npm audit fix && \
-                #  php artisan migrate --force && \
-                 php artisan config:clear && \
-                 php artisan config:cache && \
-                 php artisan route:cache && \
-                 php artisan view:cache && \
-                 chmod -R 775 storage bootstrap/cache && \
-                 chown -R www-data:www-data storage bootstrap/cache; then
-                echo "Deploy berhasil!"
-                break
-              fi
-
-              RETRY=$((RETRY+1))
-              echo "Deploy gagal, mencoba lagi dalam 10 detik..."
-              sleep 10
-            done
-
-            if [ $RETRY -eq $MAX_RETRIES ]; then
-              echo "Deploy tetap gagal setelah $MAX_RETRIES percobaan."
-              exit 1
+            # Pastikan Composer terinstall
+            if ! command -v composer &> /dev/null; then
+              echo "⚠️ Composer tidak ditemukan, menginstall..."
+              curl -sS https://getcomposer.org/installer | php
+              sudo mv composer.phar /usr/local/bin/composer
             fi
 
-            # Pastikan Supervisor berjalan (jika menggunakan queue worker)
-            if sudo systemctl list-units --full --all | grep -Fq "supervisor.service"; then
-              sudo systemctl restart supervisor
-            fi
+            echo "📦 Menginstall dependensi PHP..."
+            composer install --no-interaction --prefer-dist --optimize-autoloader
 
-            # Restart Nginx dan PHP-FPM
+            # Pastikan Node.js dan npm sesuai dengan versi VPS
+            echo "🔍 Memeriksa versi Node.js dan npm..."
+            node -v
+            npm -v
+
+            echo "📦 Menginstall npm dependencies..."
+            npm ci --legacy-peer-deps  # Menghindari konflik dependency
+
+            echo "⚡ Membuild frontend..."
+            npm run build
+
+            echo "🛠️ Optimasi konfigurasi Laravel..."
+            php artisan config:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            echo "⚡ Menjalankan migrasi database..."
+            php artisan migrate --force
+
+            echo "🛠️ Mengatur izin folder..."
+            chmod -R 775 storage bootstrap/cache
+            chown -R www-data:www-data storage bootstrap/cache
+
+            echo "🔄 Memeriksa Supervisor..."
+            if ! systemctl is-active --quiet supervisor; then
+              sudo systemctl start supervisor
+            fi
+            sudo systemctl restart supervisor
+
+            echo "🔄 Restarting Nginx dan PHP-FPM..."
             sudo systemctl restart nginx php8.2-fpm
 
             echo "✅ Deploy selesai tanpa error!"
