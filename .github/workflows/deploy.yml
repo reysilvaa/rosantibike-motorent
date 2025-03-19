@@ -24,7 +24,6 @@ jobs:
 
             git config --global --add safe.directory /var/www/rosantibike
 
-
             echo "Memulai proses deploy ke VPS..."
             
             MAX_RETRIES=3
