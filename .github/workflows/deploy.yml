@@ -1,9 +1,9 @@
-name: Deploy ke VPS
+name: Deploy Laravel ke VPS
 
 on:
   push:
     branches:
-      - main  # Gantilah dengan branch utama Anda
+      - main  # Ganti sesuai branch utama Anda
 
 jobs:
   deploy:
@@ -13,21 +13,51 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Deploy to VPS
+      - name: Deploy ke VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /var/www/laravel/rosantibike-motorent
+            set -e  # Stop jika terjadi error
+            
+            # Masuk ke direktori proyek
+            cd /var/www/rosantibike
+
+            # Ambil update terbaru dari Git
             git pull origin main
+
+            # Pastikan Composer sudah terinstall
             composer install --no-interaction --prefer-dist --optimize-autoloader
-            npm i
+
+            # Pastikan Node.js dan npm sudah terinstall
+            if ! command -v node &> /dev/null; then
+              curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+              sudo apt install -y nodejs
+            fi
+
+            # Instal dependensi dan build frontend
+            npm ci
             npm run build
+
+            # Jalankan migrasi database
             php artisan migrate --force
+
+            # Bersihkan dan cache ulang konfigurasi
             php artisan config:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+
+            # Pastikan folder storage memiliki izin yang benar
+            chmod -R 775 storage bootstrap/cache
+            chown -R www-data:www-data storage bootstrap/cache
+
+            # Pastikan Supervisor berjalan (jika menggunakan queue worker)
+            if sudo systemctl list-units --full --all | grep -Fq "supervisor.service"; then
+              sudo systemctl restart supervisor
+            fi
+
+            # Restart Nginx dan PHP-FPM
             sudo systemctl restart nginx php8.2-fpm
