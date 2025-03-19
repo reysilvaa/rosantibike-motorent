@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e  # Stop jika terjadi error
+            set -e  # Stop jika terjadi error #tes
             
             # Masuk ke direktori proyek
             cd /var/www/rosantibike
