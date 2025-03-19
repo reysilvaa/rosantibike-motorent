@@ -20,39 +20,40 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e  # Stop jika terjadi error #tes
+            set -e  # Stop jika terjadi error
+
+            echo "Memulai proses deploy ke VPS..."
             
-            # Masuk ke direktori proyek
-            cd /var/www/rosantibike
+            MAX_RETRIES=3
+            RETRY=0
 
-            # Ambil update terbaru dari Git tes
-            git pull origin main
+            while [ $RETRY -lt $MAX_RETRIES ]; do
+              echo "Percobaan ke-$((RETRY+1))"
 
-            # Pastikan Composer sudah terinstall
-            composer install --no-interaction --prefer-dist --optimize-autoloader
+              if cd /var/www/rosantibike && \
+                 git pull origin main && \
+                 composer install --no-interaction --prefer-dist --optimize-autoloader && \
+                 npm ci && npm run build && \
+                 php artisan migrate --force && \
+                 php artisan config:clear && \
+                 php artisan config:cache && \
+                 php artisan route:cache && \
+                 php artisan view:cache && \
+                 chmod -R 775 storage bootstrap/cache && \
+                 chown -R www-data:www-data storage bootstrap/cache; then
+                echo "Deploy berhasil!"
+                break
+              fi
 
-            # Pastikan Node.js dan npm sudah terinstall
-            if ! command -v node &> /dev/null; then
-              curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-              sudo apt install -y nodejs
+              RETRY=$((RETRY+1))
+              echo "Deploy gagal, mencoba lagi dalam 10 detik..."
+              sleep 10
+            done
+
+            if [ $RETRY -eq $MAX_RETRIES ]; then
+              echo "Deploy tetap gagal setelah $MAX_RETRIES percobaan."
+              exit 1
             fi
-
-            # Instal dependensi dan build frontend
-            npm ci
-            npm run build
-
-            # Jalankan migrasi database
-            php artisan migrate --force
-
-            # Bersihkan dan cache ulang konfigurasi
-            php artisan config:clear
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-
-            # Pastikan folder storage memiliki izin yang benar
-            chmod -R 775 storage bootstrap/cache
-            chown -R www-data:www-data storage bootstrap/cache
 
             # Pastikan Supervisor berjalan (jika menggunakan queue worker)
             if sudo systemctl list-units --full --all | grep -Fq "supervisor.service"; then
@@ -61,3 +62,9 @@ jobs:
 
             # Restart Nginx dan PHP-FPM
             sudo systemctl restart nginx php8.2-fpm
+
+            echo "✅ Deploy selesai tanpa error!"
+
+      - name: Notifikasi jika Gagal
+        if: failure()
+        run: echo "🚨 Deploy Laravel ke VPS gagal! Periksa log di GitHub Actions."
