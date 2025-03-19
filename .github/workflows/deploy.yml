@@ -3,7 +3,7 @@ name: Deploy Laravel ke VPS
 on:
   push:
     branches:
-      - main  # Ganti dengan branch utama proyekmu
+      - main
 
 jobs:
   deploy:
@@ -20,42 +20,30 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e  # Hentikan skrip jika ada error
+            set -e  # Hentikan jika terjadi error
 
             echo "🚀 Memulai deploy ke VPS..."
 
             # Masuk ke direktori proyek
             cd /var/www/rosantibike
 
-            echo "🔄 Reset perubahan lokal yang belum di-commit..."
+            echo "🔄 Reset perubahan lokal..."
             git reset --hard
             git clean -fd
-
-            # Tambahkan safe directory agar tidak error
             git config --global --add safe.directory /var/www/rosantibike
-            echo "✅ Git repository diizinkan!"
 
-            # Tarik kode terbaru dari GitHub
-            echo "🔄 Fetching latest code..."
+            echo "🔄 Tarik kode terbaru..."
             git pull origin main
 
-            # Pastikan Composer terinstall
-            if ! command -v composer &> /dev/null; then
-              echo "⚠️ Composer tidak ditemukan, menginstall..."
-              curl -sS https://getcomposer.org/installer | php
-              sudo mv composer.phar /usr/local/bin/composer
-            fi
-
             echo "📦 Menginstall dependensi PHP..."
+            export COMPOSER_ALLOW_SUPERUSER=1
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
-            # Pastikan Node.js dan npm sesuai dengan versi VPS
-            echo "🔍 Memeriksa versi Node.js dan npm..."
-            node -v
-            npm -v
+            echo "🔍 Memeriksa dan memperbaiki autoloading..."
+            composer dump-autoload
 
-            echo "📦 Menginstall npm dependencies..."
-            npm ci --legacy-peer-deps  # Menghindari konflik dependency
+            echo "📦 Menginstall dependensi npm..."
+            npm ci --legacy-peer-deps
 
             echo "⚡ Membuild frontend..."
             npm run build
@@ -65,10 +53,7 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-
-            echo "⚡ Menjalankan migrasi database..."
-            php artisan migrate --force
-
+            
             echo "🛠️ Mengatur izin folder..."
             chmod -R 775 storage bootstrap/cache
             chown -R www-data:www-data storage bootstrap/cache
@@ -83,7 +68,3 @@ jobs:
             sudo systemctl restart nginx php8.2-fpm
 
             echo "✅ Deploy selesai tanpa error!"
-
-      - name: Notifikasi jika Gagal
-        if: failure()
-        run: echo "🚨 Deploy Laravel ke VPS gagal! Periksa log di GitHub Actions."
