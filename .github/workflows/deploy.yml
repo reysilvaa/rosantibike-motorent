@@ -25,7 +25,7 @@ jobs:
             # Masuk ke direktori proyek
             cd /var/www/rosantibike
 
-            # Ambil update terbaru dari Git
+            # Ambil update terbaru dari Git tes
             git pull origin main
 
             # Pastikan Composer sudah terinstall
